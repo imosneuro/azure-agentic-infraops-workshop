@@ -52,10 +52,10 @@ defined in [.sync-config.json](../.sync-config.json) at the workspace root.
 
 ```mermaid
 %%{init: {'theme':'neutral'}}%%
-pie title File Classification (~100 files)
-    "autoSync (copy blindly)" : 70
+pie title File Classification (~65 patterns)
+    "autoSync (copy blindly)" : 42
     "reviewSync (copy + flag)" : 3
-    "neverSync (skip entirely)" : 30
+    "neverSync (skip entirely)" : 20
 ```
 
 ### autoSync — Copy Without Question
@@ -70,8 +70,8 @@ These files serve the same purpose in both repos and should always track upstrea
 | DevContainer | `devcontainer.json`, `post-create.sh`, `update-tools.sh` |
 | VS Code | `.vscode/**` |
 | Config | `lefthook.yml`, `commitlint.config.js`, `.gitignore`, `.gitattributes` |
-| Scripts | `scripts/*.mjs`, `scripts/*.ps1`, `scripts/workflow-generator/**` |
-| MCP | `mcp/azure-pricing-mcp/**` |
+| Scripts | `scripts/*.mjs`, `scripts/*.ps1`, `scripts/workflow-generator/*.mjs` etc. |
+| MCP | `mcp/azure-pricing-mcp/src/**`, `tests/**`, `docs/**`, `scripts/**`, config files |
 | Samples | `agent-output/_sample/**` |
 | Root | `CONTRIBUTING.md`, `LICENSE`, `requirements.txt` |
 
@@ -96,6 +96,9 @@ These files get copied but the sync-reviewer agent pays extra attention:
 | Workshop Scripts | `scripts/hackathon/**` |
 | Infrastructure | `infra/**` |
 | Source-Only | `scenarios/**` (doesn't exist in workshop) |
+| Workflows | `.github/workflows/**` (workshop manages its own) |
+| MCP Archive | `mcp/azure-pricing-mcp/.archive/**`, `.github/**`, `.pre-commit-config.yaml` |
+| Binaries | `scripts/workflow-generator/output/**` (generated assets) |
 
 ## Workflow Sequence
 

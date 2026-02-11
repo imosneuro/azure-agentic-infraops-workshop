@@ -108,6 +108,10 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git checkout -b "$SYNC_BRANCH"
+
+          # Clean up temp files before staging
+          rm -f sync-output.txt
+
           git add -A
           git commit -m "chore(sync): upstream sync $(date -u +%Y-%m-%d)
 

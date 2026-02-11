@@ -21,7 +21,6 @@
     ".github/skills/git-commit/**",
     ".github/skills/github-operations/**",
     ".github/skills/make-skill-template/**",
-    ".github/workflows/**",
     ".github/ISSUE_TEMPLATE/**",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".github/data/**",
@@ -38,8 +37,22 @@
     "LICENSE",
     "scripts/*.mjs",
     "scripts/*.ps1",
-    "scripts/workflow-generator/**",
-    "mcp/azure-pricing-mcp/**",
+    "scripts/workflow-generator/*.mjs",
+    "scripts/workflow-generator/*.ps1",
+    "scripts/workflow-generator/*.json",
+    "scripts/workflow-generator/*.md",
+    "mcp/azure-pricing-mcp/src/**",
+    "mcp/azure-pricing-mcp/tests/**",
+    "mcp/azure-pricing-mcp/docs/**",
+    "mcp/azure-pricing-mcp/scripts/**",
+    "mcp/azure-pricing-mcp/pyproject.toml",
+    "mcp/azure-pricing-mcp/requirements.txt",
+    "mcp/azure-pricing-mcp/README.md",
+    "mcp/azure-pricing-mcp/LICENSE",
+    "mcp/azure-pricing-mcp/Dockerfile",
+    "mcp/azure-pricing-mcp/MANIFEST.in",
+    "mcp/azure-pricing-mcp/INSTALL.md",
+    "mcp/azure-pricing-mcp/CHANGELOG.md",
     "agent-output/_sample/**"
   ],
   "reviewSync": [
@@ -61,6 +74,12 @@
     "Copilot-Processing.md",
     "scenarios/**",
     "agent-output/static-webapp/**",
-    "agent-output/e2e-conductor-test/**"
+    "agent-output/e2e-conductor-test/**",
+    ".github/workflows/**",
+    "mcp/azure-pricing-mcp/.archive/**",
+    "mcp/azure-pricing-mcp/.github/**",
+    "mcp/azure-pricing-mcp/.pre-commit-config.yaml",
+    "mcp/azure-pricing-mcp/CONTRIBUTING.md",
+    "scripts/workflow-generator/output/**"
   ]
 }
