@@ -1,13 +1,17 @@
 # Upstream Sync Workflow
 #
 # Detects changes in the source repo (azure-agentic-infraops), copies
-# sync-safe files to a staging branch, creates a GitHub issue with a
-# diff manifest, and assigns it to the Copilot coding agent with the
-# sync-reviewer custom agent for autonomous validation and PR creation.
+# sync-safe files to a staging branch, creates a GitHub issue with
+# inline agent instructions and a diff manifest, and assigns it to the
+# Copilot coding agent for autonomous validation and PR creation.
+#
+# All agent context (never-modify list, validation steps, reviewSync
+# rules, PR requirements) is embedded directly in the issue body so
+# no custom_agent API field is required.
 #
 # Trigger: manual only (workflow_dispatch)
 # Auth:    requires SYNC_PAT secret (fine-grained PAT with issues:write,
-#          contents:write, pull-requests:write, metadata:read)
+#          contents:write, pull-requests:write, actions:write, metadata:read)
 
 name: upstream-sync
 
@@ -132,30 +136,55 @@ jobs:
           DATE=$(date -u +%Y-%m-%d)
 
           ISSUE_BODY=$(cat <<'ISSUE_EOF'
-          ## 🔄 Upstream Sync: DATE_PLACEHOLDER
+          ## Upstream Sync: DATE_PLACEHOLDER
 
           MANIFEST_PLACEHOLDER
 
-          ### Requirements
+          ## Context
 
-          1. **Review** all synced files for compatibility with the workshop repo
-          2. **Validate** — run these commands and fix any failures:
-             - `npm install` (in case dependencies changed)
+          This workshop repo (`jonathan-vella/azure-agentic-infraops-workshop`) is
+          a challenge-based fork of the source repo (`jonathan-vella/azure-agentic-infraops`).
+          It shares agents, instructions, skills, devcontainer config, and scripts
+          with the source, but has its own `hackathon/`, `docs/`, and `docs-writer` skill.
+
+          The sync brought in updates to shared files. Your job is to validate these
+          updates don't break workshop-specific content.
+
+          ## Task
+
+          1. **Checkout** the staging branch `BRANCH_PLACEHOLDER` which already contains the synced files
+          2. **Run validation** — fix any failures in synced files only:
+             - `npm install`
              - `npm run lint:md`
              - `npm run lint:agent-frontmatter`
              - `npm run lint:skills-format`
-          3. **Check for stale references** — `grep -rn "scenarios/" .github/ .devcontainer/` and remove any hits
-          4. **reviewSync files** — check `.github/copilot-instructions.md`, `.devcontainer/README.md`, and `pyproject.toml` for source-specific content that needs workshop adaptation
-          5. **Preserve** all workshop-specific files (see sync-reviewer agent rules)
+          3. **Check for stale references**: `grep -rn "scenarios/" .github/ .devcontainer/` — remove any hits (workshop has no `scenarios/` folder)
+          4. **reviewSync files** — these were copied but need workshop adaptation:
+             | File | What to Check |
+             | --- | --- |
+             | `.github/copilot-instructions.md` | Remove `scenarios/` references; keep workshop entries |
+             | `.devcontainer/README.md` | Remove `scenarios/` references; keep workshop notes |
+             | `pyproject.toml` | Keep workshop `version` and `name`; accept dependency updates |
+          5. **Open a draft PR** targeting `main` from `BRANCH_PLACEHOLDER`
 
-          ### Implementation Details
+          ## Never Modify These Files
 
-          - Base branch: `BRANCH_PLACEHOLDER` (already contains synced files)
-          - Target: `main`
-          - Follow conventions in `.github/copilot-instructions.md`
-          - Use the `.github/agents/sync-reviewer.agent.md` for detailed rules
+          These are workshop-customized and must not be changed:
 
-          ### Acceptance Criteria
+          - `hackathon/**` — all hackathon materials
+          - `.github/skills/docs-writer/**` — workshop-customized skill
+          - `docs/**` — all workshop documentation
+          - `README.md`, `VERSION.md`, `CHANGELOG.md`, `CONTRIBUTORS.md` — workshop identity
+          - `package.json` — workshop version differs from source
+
+          ## PR Requirements
+
+          - **Title**: `chore(sync): upstream sync DATE_PLACEHOLDER`
+          - **Body**: Table listing every changed file with one-line rationale
+          - **Labels**: `upstream-sync`
+          - **Draft**: Always open as draft for human review
+
+          ## Acceptance Criteria
 
           - [ ] `npm run lint:md` passes
           - [ ] `npm run lint:agent-frontmatter` passes
@@ -164,6 +193,13 @@ jobs:
           - [ ] reviewSync files adapted for workshop context
           - [ ] PR description lists all changes with rationale
           - [ ] No workshop-specific content is overwritten
+
+          ## Standards
+
+          Follow `.github/copilot-instructions.md`:
+          - Default region: `swedencentral` (except Static Web Apps → `westeurope`)
+          - Required tags: `Environment`, `ManagedBy`, `Project`, `Owner`
+          - AVM-first for Bicep; TLS 1.2, HTTPS-only, managed identity
           ISSUE_EOF
           )
 
@@ -172,7 +208,7 @@ jobs:
           ISSUE_BODY="${ISSUE_BODY//BRANCH_PLACEHOLDER/$SYNC_BRANCH}"
           ISSUE_BODY="${ISSUE_BODY//MANIFEST_PLACEHOLDER/$MANIFEST}"
 
-          # Create issue and assign to Copilot coding agent
+          # Create issue
           ISSUE_URL=$(gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
@@ -186,28 +222,22 @@ jobs:
           ISSUE_NUMBER=$(echo "$ISSUE_URL" | grep -oE '[0-9]+$')
           echo "📋 Issue created: $ISSUE_URL"
 
-          # Assign to Copilot coding agent with sync-reviewer custom agent
-          # NOTE: Must use --input with JSON body for nested objects.
-          # gh api -f flags do NOT properly construct nested JSON.
+          # Assign Copilot coding agent via the standard assignees endpoint.
+          # All instructions live in the issue body — no custom_agent needed.
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/${{ github.repository }}/issues/${ISSUE_NUMBER}/assignees \
-            --input - <<EOF || {
-          {
-            "assignees": ["copilot-swe-agent[bot]"],
-            "agent_assignment": {
-              "target_repo": "${{ github.repository }}",
-              "base_branch": "$SYNC_BRANCH",
-              "custom_instructions": "Read the issue body for full context. Use the sync-reviewer agent rules in .github/agents/sync-reviewer.agent.md. The SYNC-MANIFEST.md on the staging branch lists all changed files.",
-              "custom_agent": "sync-reviewer"
-            }
-          }
-          EOF
-              echo "⚠️ Could not assign to Copilot coding agent."
-              echo "The issue was created at $ISSUE_URL."
-              echo "You can manually assign Copilot from the issue page."
+            "/repos/${{ github.repository }}/issues/${ISSUE_NUMBER}/assignees" \
+            -f "assignees[]=copilot-swe-agent[bot]" || {
+              echo "⚠️ Could not assign Copilot via assignees endpoint."
+              echo "Attempting fallback via gh issue edit..."
+              gh issue edit "$ISSUE_NUMBER" \
+                --repo "${{ github.repository }}" \
+                --add-assignee "copilot-swe-agent[bot]" || {
+                echo "⚠️ Fallback also failed. Assign Copilot manually."
+                echo "Issue: $ISSUE_URL"
+              }
             }
 
           echo "## ✅ Upstream Sync Complete" >> "$GITHUB_STEP_SUMMARY"
@@ -215,7 +245,7 @@ jobs:
           echo "- **Staging branch**: \`$SYNC_BRANCH\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- **Issue**: $ISSUE_URL" >> "$GITHUB_STEP_SUMMARY"
           echo "- **Files changed**: ${{ steps.sync.outputs.change_count }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Copilot agent**: sync-reviewer assigned" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Copilot agent**: assigned" >> "$GITHUB_STEP_SUMMARY"
 
       # -----------------------------------------------------------------
       # 7. No changes summary
