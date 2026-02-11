@@ -73,6 +73,7 @@ concurrency:
 | `create-release.yml` | Automated release creation | Manual dispatch |
 | `avm-version-check.yml` | Azure Verified Module version checks | Scheduled |
 | `azure-deprecation-tracker.yml` | Azure deprecation monitoring | Scheduled |
+| `pr-labeler.yml` | Auto-label PRs by branch convention | PR opened to main |
 
 ## Validation Scripts
 

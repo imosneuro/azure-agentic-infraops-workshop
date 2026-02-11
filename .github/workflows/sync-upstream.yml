@@ -158,7 +158,7 @@ jobs:
              - `npm run lint:md`
              - `npm run lint:agent-frontmatter`
              - `npm run lint:skills-format`
-          3. **Check for stale references**: `grep -rn "scenarios/" .github/ .devcontainer/` — remove any hits (workshop has no `scenarios/` folder)
+          3. **Check for stale references**: `grep -rn "scenarios/" .github/ .devcontainer/ --exclude-dir=.github/skills/docs-writer` — remove any hits in synced files only (workshop has no `scenarios/` folder). **Do NOT modify files listed in the "Never Modify" section below, even if they contain `scenarios/` references.**
           4. **reviewSync files** — these were copied but need workshop adaptation:
              | File | What to Check |
              | --- | --- |
@@ -207,7 +207,11 @@ jobs:
             planning docs, or any temporary scripts. Commit only the actual fixes.
           - **Do NOT modify `.gitignore`** — workshop-specific entries must be preserved.
           - **Do NOT remove `SYNC-MANIFEST.md` from `.gitignore`** — it is excluded intentionally.
-          - **Create the PR directly** using `gh pr create` — do not create intermediate files.
+          - **Create the PR directly** using this exact command pattern (do not create intermediate files):
+            ```
+            gh pr create --draft --base main --title "chore(sync): upstream sync DATE_PLACEHOLDER" --label upstream-sync --body "<your PR body>"
+            ```
+          - The `--label upstream-sync` flag is **mandatory** — do not omit it.
           ISSUE_EOF
           )
 

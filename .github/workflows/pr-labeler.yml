@@ -1,0 +1,49 @@
+# PR Auto-Labeler
+#
+# Automatically applies labels to PRs based on branch naming conventions.
+# Prevents missing labels when Copilot coding agent creates sync PRs.
+#
+# Trigger: pull_request opened/synchronize to main
+
+name: pr-labeler
+
+on:
+  pull_request:
+    types: [opened]
+    branches: [main]
+
+permissions:
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  label:
+    name: auto-label
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply labels based on branch name
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const branch = context.payload.pull_request.head.ref;
+            const labels = [];
+
+            // Sync branches created by sync-upstream workflow or Copilot agent
+            if (branch.startsWith('sync/upstream') || branch.startsWith('copilot/sync-upstream')) {
+              labels.push('upstream-sync');
+            }
+
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: labels,
+              });
+              core.info(`Applied labels: ${labels.join(', ')}`);
+            } else {
+              core.info(`No matching label rules for branch: ${branch}`);
+            }

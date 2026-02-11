@@ -85,7 +85,7 @@ Read `.github/skills/azure-defaults/SKILL.md` FIRST for regional standards, nami
 security baseline, and workflow integration patterns common to all agents.
 ```
 
-If you author workshop-specific agents (for example under `hackathon/**/agents/`), use the correct
+If you author challenge-local agents (for example under `hackathon/**/agents/`), use the correct
 relative path from that folder.
 
 ## Authoritative Standards (Avoid Drift)

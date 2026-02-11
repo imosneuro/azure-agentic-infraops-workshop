@@ -82,9 +82,9 @@ npm run lint:md:fix
 ### 1. Fork & Clone
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/azure-agentic-infraops-workshop.git
-cd azure-agentic-infraops-workshop
-git remote add upstream https://github.com/jonathan-vella/azure-agentic-infraops-workshop.git
+git clone https://github.com/YOUR-USERNAME/azure-agentic-infraops.git
+cd azure-agentic-infraops
+git remote add upstream https://github.com/jonathan-vella/azure-agentic-infraops.git
 ```
 
 ### 2. Create a Branch

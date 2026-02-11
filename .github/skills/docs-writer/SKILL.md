@@ -89,8 +89,8 @@ When a new agent, skill, or scenario is added to the repo:
      `.github/instructions/docs.instructions.md` agent count/table
    - New skill → update `docs/README.md` skill tables,
      `.github/instructions/docs.instructions.md` skill count/table
-   - New scenario → update `scenarios/README.md` table,
-     `docs/README.md` scenario table
+   - New hackathon challenge → update `hackathon/challenges/README.md` table,
+     `docs/README.md` hackathon references
 3. **Match existing patterns**: Study adjacent entries in each table
    to match column format, emoji conventions, and description style.
 4. **Update counts**: Increment totals in section headings

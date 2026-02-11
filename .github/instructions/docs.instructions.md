@@ -79,7 +79,7 @@ Do NOT reference these removed agents/skills:
 | **Current state** | No historical context in main docs |
 | **Action-oriented** | Every section answers "how do I...?" |
 | **Minimal** | If it doesn't help users today, remove it |
-| **Workshop challenges for depth** | Point to `hackathon/` for hands-on |
+| **Challenges for depth** | Point to `hackathon/challenges/` for hands-on |
 
 ## Validation
 
