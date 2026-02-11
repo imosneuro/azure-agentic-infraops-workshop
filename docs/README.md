@@ -18,6 +18,7 @@
 | [Quota Requirements](quota-requirements.md) | Azure resource quota per team |
 | [Troubleshooting](troubleshooting.md) | Common issues and fixes |
 | [Dev Containers](dev-containers.md) | Dev container setup and customization |
+| [Upstream Sync](upstream-sync.md) | How upstream changes flow to this repo |
 | [Glossary](GLOSSARY.md) | Key terms and definitions |
 
 ## Agents (8 + 3 Subagents)

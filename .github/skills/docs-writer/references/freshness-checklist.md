@@ -162,6 +162,21 @@ Add brief context about the agent's role where helpful.
 
 **Auto-fix**: Replace incorrect duration/team counts.
 
+### 10. Upstream Sync Configuration
+
+**Source of truth**: `.sync-config.json` at workspace root.
+
+**Files to check**:
+
+| File | What to verify |
+| --- | --- |
+| `docs/upstream-sync.md` | File tier counts match `.sync-config.json` arrays |
+| `docs/upstream-sync.md` | PAT instructions match current GitHub UI |
+| `.github/agents/sync-reviewer.agent.md` | neverSync file list matches config |
+| `.github/workflows/sync-upstream.yml` | Uses `secrets.SYNC_PAT` correctly |
+
+**Auto-fix**: Update file counts and tier listings in `docs/upstream-sync.md`.
+
 ## Summary Table Template
 
 When reporting audit results, use this format:

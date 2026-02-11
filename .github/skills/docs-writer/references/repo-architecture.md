@@ -7,13 +7,15 @@
 ```text
 azure-agentic-infraops-workshop/
 ├── .github/
-│   ├── agents/              # 8 agent definitions + 3 subagents
+│   ├── agents/              # 9 agent definitions + 3 subagents
 │   │   └── _subagents/      # Validation subagents (lint, what-if, review)
 │   ├── skills/              # 8 skill definitions (incl. docs-writer)
 │   │   └── azure-artifacts/templates/ # 16 artifact templates
 │   ├── instructions/        # 15 file-type instruction files
+│   └── workflows/           # 5 CI/automation workflows
+├── .sync-config.json        # Upstream sync file classification
 ├── agent-output/{project}/  # Agent-generated artifacts (01-07)
-├── docs/                    # User-facing documentation (14 files)
+├── docs/                    # User-facing documentation (15 files)
 │   └── guides/              # Workflow and versioning guides
 ├── hackathon/               # 6-hour hands-on hackathon materials
 ├── infra/bicep/             # Bicep module library
@@ -21,7 +23,7 @@ azure-agentic-infraops-workshop/
 └── scripts/                 # Validation and automation scripts
 ```
 
-## Agent Inventory (8 Primary + 3 Subagents)
+## Agent Inventory (9 Primary + 3 Subagents)
 
 ### Primary Agents
 
@@ -35,6 +37,7 @@ azure-agentic-infraops-workshop/
 | Bicep Code | `bicep-code.agent.md` | Sonnet 4.5 | 5 | Bicep in `infra/bicep/` |
 | Deploy | `deploy.agent.md` | Sonnet 4.5 | 6 | `06-deployment-summary.md` |
 | Diagnose | `diagnose.agent.md` | Sonnet 4.5 | — | Diagnostic reports |
+| Sync Reviewer | `sync-reviewer.agent.md` | Sonnet 4.5 | — | Sync validation PRs |
 
 ### Validation Subagents (in `_subagents/`)
 
@@ -138,6 +141,8 @@ updating when agents or skills change:
 | `VERSION.md` | Canonical version number |
 | `CHANGELOG.md` | Release history |
 | `README.md` (root) | Overview, project structure, tech stack |
+| `.sync-config.json` | Upstream sync file tiers (autoSync/reviewSync/neverSync) |
+| `docs/upstream-sync.md` | Sync documentation (file counts, PAT instructions) |
 
 ## docs/ Folder Contents
 
@@ -155,6 +160,7 @@ updating when agents or skills change:
 | `troubleshooting.md` | Common issues and fixes |
 | `dev-containers.md` | Dev container setup |
 | `GLOSSARY.md` | Terms and definitions |
+| `upstream-sync.md` | How upstream changes flow to this repo |
 | `guides/development-workflow.md` | Branch, commit, and PR conventions |
 | `guides/automated-versioning.md` | Automated version bump guide |
 

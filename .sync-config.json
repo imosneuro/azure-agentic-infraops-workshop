@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Configuration for upstream sync from azure-agentic-infraops to the workshop repo.",
+  "source": {
+    "owner": "jonathan-vella",
+    "repo": "azure-agentic-infraops",
+    "defaultRef": "main"
+  },
+  "target": {
+    "owner": "jonathan-vella",
+    "repo": "azure-agentic-infraops-workshop",
+    "branchPrefix": "sync/upstream"
+  },
+  "autoSync": [
+    ".github/agents/**",
+    ".github/instructions/**",
+    ".github/skills/azure-adr/**",
+    ".github/skills/azure-artifacts/**",
+    ".github/skills/azure-defaults/**",
+    ".github/skills/azure-diagrams/**",
+    ".github/skills/git-commit/**",
+    ".github/skills/github-operations/**",
+    ".github/skills/make-skill-template/**",
+    ".github/workflows/**",
+    ".github/ISSUE_TEMPLATE/**",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/data/**",
+    ".devcontainer/devcontainer.json",
+    ".devcontainer/post-create.sh",
+    ".devcontainer/update-tools.sh",
+    ".vscode/**",
+    "lefthook.yml",
+    "commitlint.config.js",
+    "requirements.txt",
+    ".gitignore",
+    ".gitattributes",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "scripts/*.mjs",
+    "scripts/*.ps1",
+    "scripts/workflow-generator/**",
+    "mcp/azure-pricing-mcp/**",
+    "agent-output/_sample/**"
+  ],
+  "reviewSync": [
+    ".github/copilot-instructions.md",
+    ".devcontainer/README.md",
+    "pyproject.toml"
+  ],
+  "neverSync": [
+    "README.md",
+    "VERSION.md",
+    "CHANGELOG.md",
+    "CONTRIBUTORS.md",
+    "package.json",
+    ".github/skills/docs-writer/**",
+    "hackathon/**",
+    "scripts/hackathon/**",
+    "docs/**",
+    "infra/**",
+    "Copilot-Processing.md",
+    "scenarios/**",
+    "agent-output/static-webapp/**",
+    "agent-output/e2e-conductor-test/**"
+  ]
+}
