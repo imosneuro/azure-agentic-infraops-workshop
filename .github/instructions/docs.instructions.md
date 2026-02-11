@@ -16,7 +16,7 @@ Every doc file must start with:
 ```markdown
 # {Title}
 
-> Version 8.0.0 | {One-line description}
+> [Current Version](../VERSION.md) | {One-line description}
 ```
 
 ### Single H1 Rule
@@ -31,38 +31,45 @@ Each file has exactly ONE H1 heading (the title). Use H2+ for all other sections
 
 ## Current Architecture (as of 2026-02-03)
 
-### Agents (6 total)
+### Agents (8 total)
 
 | Agent | Purpose |
 |-------|---------|
+| `infraops-conductor` | Master orchestrator with approval gates |
 | `requirements` | Gather infrastructure requirements |
 | `architect` | WAF assessment and architecture design |
+| `design` | Architecture diagrams and ADRs |
 | `bicep-plan` | Implementation planning and governance |
 | `bicep-code` | Bicep template generation |
 | `deploy` | Azure deployment execution |
 | `diagnose` | Post-deployment health diagnostics |
 
-### Skills (10 total)
+### Skills (8 total)
 
 | Skill | Category | Purpose |
 |-------|----------|---------|
 | `azure-adr` | Document Creation | Architecture Decision Records |
+| `azure-artifacts` | Artifact Generation | Template H2s, styling, generation rules |
+| `azure-defaults` | Azure Conventions | Regions, naming, AVM, WAF, pricing, tags |
 | `azure-diagrams` | Document Creation | Python architecture diagrams |
-| `azure-workload-docs` | Workflow Automation | 7 documentation types |
-| `azure-deployment-preflight` | Workflow Automation | Pre-deployment validation |
-| `github-issues` | Workflow Automation | Issue management |
-| `github-pull-requests` | Workflow Automation | PR management |
-| `gh-cli` | Tool Integration | GitHub CLI reference |
+| `github-operations` | Workflow Automation | GitHub issues, PRs, CLI, Actions, releases |
 | `git-commit` | Tool Integration | Commit conventions |
+| `docs-writer` | Documentation | Repo-aware docs maintenance |
 | `make-skill-template` | Meta | Skill creation helper |
 
 ## Prohibited References
 
-Do NOT reference these removed agents (they are now skills):
+Do NOT reference these removed agents/skills:
 
 - ❌ `diagram.agent.md` → Use `azure-diagrams` skill
 - ❌ `adr.agent.md` → Use `azure-adr` skill
-- ❌ `docs.agent.md` → Use `azure-workload-docs` skill
+- ❌ `docs.agent.md` → Use `azure-artifacts` skill
+- ❌ `azure-workload-docs` skill → Use `azure-artifacts` skill
+- ❌ `azure-deployment-preflight` skill → Merged into deploy agent
+- ❌ `orchestration-helper` skill → Deleted (absorbed into conductor)
+- ❌ `github-issues` / `github-pull-requests` skills → Use `github-operations`
+- ❌ `gh-cli` skill → Merged into `github-operations`
+- ❌ `_shared/` directory → Use `azure-defaults` + `azure-artifacts` skills
 
 ## Content Principles
 

@@ -25,8 +25,8 @@ pre-commit:
     link-check:
       glob: "docs/**/*.md"
       run: |
-        # Get staged docs markdown files, excluding _superseded
-        STAGED_DOCS=$(git diff --cached --name-only --diff-filter=ACM | grep '^docs/.*\.md$' | grep -v '_superseded' || true)
+        # Get staged docs markdown files
+        STAGED_DOCS=$(git diff --cached --name-only --diff-filter=ACM | grep '^docs/.*\.md$' || true)
         if [ -n "$STAGED_DOCS" ]; then
           echo "🔗 Checking links in $(echo "$STAGED_DOCS" | wc -l | tr -d ' ') doc file(s)..."
           # Use npx to run from local node_modules (avoids Node.js 24 global install bug)
@@ -38,14 +38,50 @@ pre-commit:
     artifact-validation:
       glob: "agent-output/**/*.md"
       run: |
-        # Check if any core artifacts are staged
-        STAGED_CORE=$(git diff --cached --name-only --diff-filter=ACM | grep -E '(01-requirements|02-architecture-assessment|04-implementation-plan|04-governance-constraints|06-deployment-summary)\.md$' || true)
-        if [ -n "$STAGED_CORE" ]; then
-          echo "📋 Validating core artifact structure..."
-          npm run lint:artifact-templates
+        # Check if any agent-output artifacts are staged
+        STAGED_ARTIFACTS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^agent-output/.*\.md$' || true)
+        if [ -n "$STAGED_ARTIFACTS" ]; then
+          COUNT=$(echo "$STAGED_ARTIFACTS" | wc -l | tr -d ' ')
+          echo "📋 Validating $COUNT artifact(s) against templates..."
+          # Run full artifact validation - blocks on any H2 mismatch
+          if ! npm run lint:artifact-templates; then
+            echo ""
+            echo "❌ Artifact template validation failed!"
+            echo ""
+            echo "🔧 To fix:"
+            echo "   1. Check .github/instructions/artifact-h2-reference.instructions.md"
+            echo "   2. Use EXACT H2 headings from that file"
+            echo "   3. Run: npm run fix:artifact-h2 <file> --apply"
+            echo "   4. Re-stage and commit"
+            echo ""
+            exit 1
+          fi
         else
-          echo "ℹ️  No core artifacts to validate"
+          echo "ℹ️  No agent-output artifacts to validate"
         fi
+      fail_text: |
+        ❌ Artifact H2 structure validation failed!
+
+        📚 Reference: .github/instructions/artifact-h2-reference.instructions.md
+        🔧 Auto-fix: npm run fix:artifact-h2 <file> --apply
+
+    agent-frontmatter:
+      glob: "**/*.agent.md"
+      run: |
+        # Check if any agent files are staged
+        STAGED_AGENTS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.agent\.md$' || true)
+        if [ -n "$STAGED_AGENTS" ]; then
+          COUNT=$(echo "$STAGED_AGENTS" | wc -l | tr -d ' ')
+          echo "🤖 Validating $COUNT agent file(s)..."
+          npm run lint:agent-frontmatter
+        else
+          echo "ℹ️  No agent files to validate"
+        fi
+      fail_text: |
+        ❌ Agent frontmatter validation failed!
+
+        🔧 Check YAML syntax in agent definitions
+        📚 Reference: .github/instructions/agents-definitions.instructions.md
 
 commit-msg:
   commands:
@@ -63,3 +99,32 @@ commit-msg:
              feat: add new Azure App Service module
              fix(bicep): correct storage account naming
              docs: update README with deployment steps
+
+# New validation checks (warn mode until 2026-02-10)
+# TODO: Change to blocking after 2026-02-10
+post-commit:
+  commands:
+    version-sync:
+      run: |
+        echo "🔍 Checking version synchronization..."
+        node scripts/validate-version-sync.mjs || echo "⚠️  Version sync check failed (warn mode)"
+      fail_text: "Version sync warning - will enforce after 2026-02-10"
+
+    deprecated-refs:
+      glob: "*.md"
+      run: |
+        echo "🔍 Checking for deprecated references..."
+        node scripts/validate-no-deprecated-refs.mjs || echo "⚠️  Deprecated refs check failed (warn mode)"
+      fail_text: "Deprecated references warning - will enforce after 2026-02-10"
+
+    json-syntax:
+      glob: "*.json"
+      run: |
+        echo "🔍 Validating JSON syntax..."
+        STAGED_JSON=$(git diff --cached --name-only --diff-filter=ACM | grep '\.json$' | grep -v node_modules | grep -v infra || true)
+        if [ -n "$STAGED_JSON" ]; then
+          for f in $STAGED_JSON; do
+            node -e "JSON.parse(require('fs').readFileSync('$f'))" 2>/dev/null && echo "  ✓ $f" || echo "  ✗ $f - Invalid JSON"
+          done
+        fi
+      fail_text: "JSON syntax warning - will enforce after 2026-02-10"

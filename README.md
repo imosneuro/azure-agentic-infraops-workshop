@@ -20,7 +20,7 @@
       alt="Logo" width="120" height="120">
   </a>
 
-  <h1 align="center">Agentic InfraOps Workshop</h1>
+  <h1 align="center">Agentic InfraOps Hackathon</h1>
 
   <p align="center">
     <strong>A hands-on hackathon for building Azure infrastructure with AI agents</strong>
