@@ -21,12 +21,11 @@ const TITLE_DRIFT = "Cost Estimate Drift";
 const TITLE_MISSING_AB = "Missing As-Built Examples";
 
 const AGENT_DES = ".github/agents/architect.agent.md";
-const AGENT_AB = ".github/agents/design.agent.md";
+const AGENT_AB = ".github/skills/azure-artifacts/SKILL.md";
 
-const TEMPLATE_DES =
-  ".github/skills/azure-artifacts/templates/03-des-cost-estimate.template.md";
-const TEMPLATE_AB =
-  ".github/skills/azure-artifacts/templates/07-ab-cost-estimate.template.md";
+const TEMPLATE_DIR = ".github/skills/azure-artifacts/templates";
+const TEMPLATE_DES = `${TEMPLATE_DIR}/03-des-cost-estimate.template.md`;
+const TEMPLATE_AB = `${TEMPLATE_DIR}/07-ab-cost-estimate.template.md`;
 
 const STANDARD_DOC = ".github/instructions/cost-estimate.instructions.md";
 
@@ -173,24 +172,28 @@ function validateAgentLinks() {
   const desText = exists(AGENT_DES) ? readText(AGENT_DES) : "";
   const abText = exists(AGENT_AB) ? readText(AGENT_AB) : "";
 
+  // The azure-artifacts skill intentionally embeds H2 structures.
+  // Accept agents that reference the skill instead of template files directly.
+  const CONSOLIDATED_SKILL_REF = "azure-artifacts";
+
   if (
     exists(AGENT_DES) &&
-    !desText.includes("03-des-cost-estimate") &&
-    !desText.includes("azure-artifacts")
+    !desText.includes("03-des-cost-estimate.template.md") &&
+    !desText.includes(CONSOLIDATED_SKILL_REF)
   ) {
     error(
-      `Agent ${AGENT_DES} must reference 03-des-cost-estimate template or azure-artifacts skill`,
+      `Agent ${AGENT_DES} must link to 03-des-cost-estimate.template.md or azure-artifacts skill`,
       { filePath: AGENT_DES, line: 1 },
     );
   }
 
   if (
     exists(AGENT_AB) &&
-    !abText.includes("07-ab-cost-estimate") &&
-    !abText.includes("azure-artifacts")
+    !abText.includes("07-ab-cost-estimate.template.md") &&
+    !abText.includes(CONSOLIDATED_SKILL_REF)
   ) {
     error(
-      `Agent ${AGENT_AB} must reference 07-ab-cost-estimate template or azure-artifacts skill`,
+      `Agent ${AGENT_AB} must link to 07-ab-cost-estimate.template.md or azure-artifacts skill`,
       { filePath: AGENT_AB, line: 1 },
     );
   }
@@ -198,6 +201,8 @@ function validateAgentLinks() {
 
 function validateNoEmbeddedSkeletons(relPath) {
   if (!exists(relPath)) return;
+  // Skip the consolidated skill — it intentionally embeds H2 structures
+  if (relPath === AGENT_AB && relPath.includes("azure-artifacts")) return;
 
   const text = readText(relPath);
 

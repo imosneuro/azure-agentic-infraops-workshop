@@ -6,7 +6,7 @@ Azure environments through coordinated AI agents.
 This file is the quick contributor entrypoint.
 The canonical, detailed contributor workflow (branch protection, PR flow, automation, versioning) is:
 
-- [Development Workflow Guide](docs/guides/development-workflow.md)
+- [Development Workflow Guide](docs/workflow.md)
 
 ## 🎯 What We're Looking For
 
@@ -18,7 +18,7 @@ The canonical, detailed contributor workflow (branch protection, PR flow, automa
    - Additional validation checks
 
 2. **Documentation**
-   - Workflow improvements (`docs/guides/development-workflow.md`)
+   - Workflow improvements (`docs/workflow.md`)
    - Better examples and use cases
    - Troubleshooting guides
 
@@ -39,8 +39,8 @@ The canonical, detailed contributor workflow (branch protection, PR flow, automa
 This repo uses a protected `main` branch.
 Contributions land via pull requests with required checks and review.
 
-- Workflow details: [Development Workflow Guide](docs/guides/development-workflow.md)
-- Agent workflow details: [Agent Workflow Reference](docs/guides/development-workflow.md)
+- Workflow details: [Development Workflow Guide](docs/workflow.md)
+- Agent workflow details: [Agent Workflow Reference](docs/workflow.md)
 
 ### Code Standards
 
@@ -70,7 +70,7 @@ This repository uses [markdownlint](https://github.com/DavidAnson/markdownlint) 
 # Check for issues
 npm run lint:md
 
-# Check links (docs/ only; excludes docs/_superseded)
+# Check links (docs/ only)
 npm run lint:links
 
 # Auto-fix issues
@@ -82,9 +82,9 @@ npm run lint:md:fix
 ### 1. Fork & Clone
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/azure-agentic-infraops-workshop.git
-cd azure-agentic-infraops-workshop
-git remote add upstream https://github.com/jonathan-vella/azure-agentic-infraops-workshop.git
+git clone https://github.com/YOUR-USERNAME/azure-agentic-infraops.git
+cd azure-agentic-infraops
+git remote add upstream https://github.com/jonathan-vella/azure-agentic-infraops.git
 ```
 
 ### 2. Create a Branch
@@ -103,7 +103,7 @@ git checkout -b fix/issue-description
 
 For the full local-to-PR flow, see:
 
-- [Development Workflow Guide](docs/guides/development-workflow.md)
+- [Development Workflow Guide](docs/workflow.md)
 
 ### 4. Commit & Push
 

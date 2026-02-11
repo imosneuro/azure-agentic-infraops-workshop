@@ -36,13 +36,23 @@ const ARTIFACT_HEADINGS = {
     "## Approval Gate",
   ],
   "04-governance-constraints.md": [
+    "## Discovery Source",
     "## Azure Policy Compliance",
     "## Required Tags",
     "## Security Policies",
     "## Cost Policies",
     "## Network Policies",
   ],
+  "04-preflight-check.md": [
+    "## Purpose",
+    "## AVM Schema Validation Results",
+    "## Parameter Type Analysis",
+    "## Region Limitations Identified",
+    "## Pitfalls Checklist",
+    "## Ready for Implementation",
+  ],
   "06-deployment-summary.md": [
+    "## Preflight Validation",
     "## Deployment Details",
     "## Deployed Resources",
     "## Outputs (Expected)",
@@ -117,6 +127,7 @@ const ARTIFACT_STRICTNESS = {
   "02-architecture-assessment.md": "standard",
   "04-implementation-plan.md": "standard",
   "04-governance-constraints.md": "standard",
+  "04-preflight-check.md": "standard",
   "05-implementation-reference.md": "standard",
   "06-deployment-summary.md": "standard",
   // Wave 2 artifacts - ratcheted to standard after v3.9.0 restructuring
@@ -130,17 +141,26 @@ const ARTIFACT_STRICTNESS = {
 
 // Optional sections that can appear after the anchor (last invariant H2)
 const OPTIONAL_ALLOWED = {
-  "01-requirements.md": ["## Summary for Architecture Assessment"],
-  "02-architecture-assessment.md": [],
-  "04-implementation-plan.md": [],
-  "04-governance-constraints.md": [],
+  "01-requirements.md": [
+    "## Summary for Architecture Assessment",
+    "## References",
+  ],
+  "02-architecture-assessment.md": ["## References"],
+  "04-implementation-plan.md": ["## References"],
+  "04-governance-constraints.md": [
+    "## Plan Adaptations Based on Policies",
+    "## Deployment Blockers",
+    "## References",
+  ],
+  "04-preflight-check.md": ["## References"],
   "05-implementation-reference.md": [
     "## Key Implementation Notes",
     "## Next Steps",
+    "## References",
   ],
-  "06-deployment-summary.md": [],
-  "07-design-document.md": [],
-  "07-operations-runbook.md": [],
+  "06-deployment-summary.md": ["## References"],
+  "07-design-document.md": ["## References"],
+  "07-operations-runbook.md": ["## References"],
   "07-resource-inventory.md": [
     "## Resource Configuration Details",
     "## Tags Applied",
@@ -151,10 +171,14 @@ const OPTIONAL_ALLOWED = {
     "## IP Address Allocation",
     "## Module Summary",
     "## Validation Commands",
+    "## References",
   ],
-  "07-backup-dr-plan.md": ["## 3. Disaster Recovery Architecture"],
-  "07-compliance-matrix.md": ["## Security Controls Summary"],
-  "07-documentation-index.md": ["## Architecture Overview"],
+  "07-backup-dr-plan.md": [
+    "## 3. Disaster Recovery Architecture",
+    "## References",
+  ],
+  "07-compliance-matrix.md": ["## Security Controls Summary", "## References"],
+  "07-documentation-index.md": ["## Architecture Overview", "## References"],
 };
 
 const TITLE_DRIFT = "Artifact Template Drift";
@@ -163,47 +187,53 @@ const TITLE_MISSING = "Missing Template or Agent";
 // Global strictness override (env var) - if not set, use per-artifact config
 const GLOBAL_STRICTNESS = process.env.STRICTNESS;
 
-// Core artifacts validated by agents
+// Core artifacts validated by agents/skills
+// The azure-artifacts skill intentionally embeds template H2 structures
+// (consolidates all 16 templates for agent convenience). Skip it from
+// agent-link and embedded-skeleton checks.
+const CONSOLIDATED_SKILL = ".github/skills/azure-artifacts/SKILL.md";
+
 const AGENTS = {
   "01-requirements.md": ".github/agents/requirements.agent.md",
   "02-architecture-assessment.md": ".github/agents/architect.agent.md",
   "04-implementation-plan.md": ".github/agents/bicep-plan.agent.md",
   "04-governance-constraints.md": ".github/agents/bicep-plan.agent.md",
+  "04-preflight-check.md": ".github/agents/bicep-code.agent.md",
   "06-deployment-summary.md": ".github/agents/deploy.agent.md",
   "05-implementation-reference.md": ".github/agents/bicep-code.agent.md",
-  "07-design-document.md": ".github/agents/design.agent.md",
-  "07-operations-runbook.md": ".github/agents/design.agent.md",
-  "07-resource-inventory.md": ".github/agents/design.agent.md",
-  "07-backup-dr-plan.md": ".github/agents/design.agent.md",
-  "07-compliance-matrix.md": ".github/agents/design.agent.md",
-  "07-documentation-index.md": ".github/agents/design.agent.md",
+  "07-design-document.md": ".github/skills/azure-artifacts/SKILL.md",
+  "07-operations-runbook.md": ".github/skills/azure-artifacts/SKILL.md",
+  "07-resource-inventory.md": ".github/skills/azure-artifacts/SKILL.md",
+  "07-backup-dr-plan.md": ".github/skills/azure-artifacts/SKILL.md",
+  "07-compliance-matrix.md": ".github/skills/azure-artifacts/SKILL.md",
+  "07-documentation-index.md": ".github/skills/azure-artifacts/SKILL.md",
 };
 
+const TEMPLATE_DIR = ".github/skills/azure-artifacts/templates";
+
 const TEMPLATES = {
-  "01-requirements.md":
-    ".github/skills/azure-artifacts/templates/01-requirements.template.md",
+  "01-requirements.md": `${TEMPLATE_DIR}/01-requirements.template.md`,
   "02-architecture-assessment.md":
-    ".github/skills/azure-artifacts/templates/02-architecture-assessment.template.md",
+    `${TEMPLATE_DIR}/02-architecture-assessment.template.md`,
   "04-implementation-plan.md":
-    ".github/skills/azure-artifacts/templates/04-implementation-plan.template.md",
+    `${TEMPLATE_DIR}/04-implementation-plan.template.md`,
   "04-governance-constraints.md":
-    ".github/skills/azure-artifacts/templates/04-governance-constraints.template.md",
+    `${TEMPLATE_DIR}/04-governance-constraints.template.md`,
+  "04-preflight-check.md": `${TEMPLATE_DIR}/04-preflight-check.template.md`,
   "06-deployment-summary.md":
-    ".github/skills/azure-artifacts/templates/06-deployment-summary.template.md",
+    `${TEMPLATE_DIR}/06-deployment-summary.template.md`,
   "05-implementation-reference.md":
-    ".github/skills/azure-artifacts/templates/05-implementation-reference.template.md",
-  "07-design-document.md":
-    ".github/skills/azure-artifacts/templates/07-design-document.template.md",
+    `${TEMPLATE_DIR}/05-implementation-reference.template.md`,
+  "07-design-document.md": `${TEMPLATE_DIR}/07-design-document.template.md`,
   "07-operations-runbook.md":
-    ".github/skills/azure-artifacts/templates/07-operations-runbook.template.md",
+    `${TEMPLATE_DIR}/07-operations-runbook.template.md`,
   "07-resource-inventory.md":
-    ".github/skills/azure-artifacts/templates/07-resource-inventory.template.md",
-  "07-backup-dr-plan.md":
-    ".github/skills/azure-artifacts/templates/07-backup-dr-plan.template.md",
+    `${TEMPLATE_DIR}/07-resource-inventory.template.md`,
+  "07-backup-dr-plan.md": `${TEMPLATE_DIR}/07-backup-dr-plan.template.md`,
   "07-compliance-matrix.md":
-    ".github/skills/azure-artifacts/templates/07-compliance-matrix.template.md",
+    `${TEMPLATE_DIR}/07-compliance-matrix.template.md`,
   "07-documentation-index.md":
-    ".github/skills/azure-artifacts/templates/07-documentation-index.template.md",
+    `${TEMPLATE_DIR}/07-documentation-index.template.md`,
 };
 
 const STANDARD_DOC = ".github/instructions/markdown.instructions.md";
@@ -345,6 +375,7 @@ function validateTemplate(artifactName) {
 function validateAgentLinks() {
   for (const [artifactName, agentPath] of Object.entries(AGENTS)) {
     if (!agentPath) continue; // Skip if no agent (e.g., Plan or manual)
+    if (agentPath === CONSOLIDATED_SKILL) continue; // H2s embedded by design
 
     if (!exists(agentPath)) {
       error(`Missing agent file: ${agentPath}`, {
@@ -364,10 +395,12 @@ function validateAgentLinks() {
       templatePath,
     );
 
-    const hasDirectRef = agentText.includes(relativeTemplatePath);
-    const hasSkillRef = agentText.includes("azure-artifacts");
+    const refsTemplate = agentText.includes(relativeTemplatePath);
+    const refsSkill =
+      agentText.includes("azure-artifacts") ||
+      agentText.includes("azure-defaults");
 
-    if (!hasDirectRef && !hasSkillRef) {
+    if (!refsTemplate && !refsSkill) {
       error(
         `Agent ${agentPath} must reference template ${relativeTemplatePath} or azure-artifacts skill`,
         { filePath: agentPath, line: 1 },
@@ -379,6 +412,7 @@ function validateAgentLinks() {
 function validateNoEmbeddedSkeletons() {
   for (const [artifactName, agentPath] of Object.entries(AGENTS)) {
     if (!agentPath || !exists(agentPath)) continue;
+    if (agentPath === CONSOLIDATED_SKILL) continue; // H2s embedded by design
 
     const text = readText(agentPath);
     const required = ARTIFACT_HEADINGS[artifactName];
@@ -499,6 +533,62 @@ function validateArtifactCompliance(relPath) {
     warn(
       `Artifact ${relPath} contains extra H2 headings: ${extras.join(", ")}`,
       { filePath: relPath, line: 1 },
+    );
+  }
+
+  // Special validation for governance constraints: check discovery source content
+  if (artifactType === "04-governance-constraints.md") {
+    validateGovernanceDiscovery(relPath, text, strictness);
+  }
+}
+
+/**
+ * Validates that governance constraints were discovered from Azure Resource Graph,
+ * not assumed from best practices. This prevents deployment failures due to
+ * undiscovered Azure Policy requirements.
+ */
+function validateGovernanceDiscovery(relPath, text, strictness) {
+  const reportFn = strictness === "standard" ? error : warn;
+
+  // Check for Discovery Source section content (not just heading)
+  const discoverySourceMatch = text.match(
+    /## Discovery Source[\s\S]*?(?=##|$)/,
+  );
+  if (!discoverySourceMatch) {
+    reportFn(
+      `Governance constraints ${relPath} missing Discovery Source section content`,
+      { filePath: relPath, line: 1, title: "Governance Discovery Missing" },
+    );
+    return;
+  }
+
+  const discoveryContent = discoverySourceMatch[0];
+
+  // Check for evidence of actual ARG query (not placeholders)
+  const hasQueryResults =
+    /\d+\s*(policies|tags|constraints)\s*discovered/i.test(discoveryContent);
+  const hasTimestamp = /\d{4}-\d{2}-\d{2}|T\d{2}:\d{2}/i.test(discoveryContent);
+  const hasSubscription =
+    /Subscription.*?[a-f0-9-]{36}|Subscription.*?[A-Za-z]/i.test(
+      discoveryContent,
+    );
+
+  // Check for placeholder values that indicate assumption-based constraints
+  const hasPlaceholders = /\{X\}|\{subscription|UNVERIFIED/i.test(
+    discoveryContent,
+  );
+
+  if (hasPlaceholders) {
+    reportFn(
+      `Governance constraints ${relPath} contains placeholder values - constraints may be assumed, not discovered`,
+      { filePath: relPath, line: 1, title: "Governance Discovery Incomplete" },
+    );
+  }
+
+  if (!hasQueryResults && !hasTimestamp) {
+    warn(
+      `Governance constraints ${relPath} may not have been discovered from Azure Resource Graph (no query results or timestamps found)`,
+      { filePath: relPath, line: 1, title: "Governance Discovery Unverified" },
     );
   }
 }

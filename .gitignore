@@ -50,9 +50,6 @@ obj/
 dist/
 build/
 
-# Workflow generator output (regenerated locally)
-scripts/workflow-generator/output/
-
 # Node (if any demos use it)
 node_modules/
 
@@ -75,4 +72,3 @@ scratch/
 # Extracted sample apps (use .zip files instead to avoid Dependabot alerts)
 scenarios/S06-sbom-generator/sample-app/
 freshness-report.json
-SYNC-MANIFEST.md

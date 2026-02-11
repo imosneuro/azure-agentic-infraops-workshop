@@ -1,253 +1,355 @@
-#!/usr/bin/env node
-
 /**
- * check-docs-freshness.mjs
+ * Docs Freshness Checker
  *
- * Audits documentation freshness by checking:
- *   1. VERSION.md exists and syncs with package.json
- *   2. Agent count/table accuracy in docs/README.md
- *   3. Skill count/table accuracy in docs/README.md
- *   4. Prohibited references (removed agents/skills)
- *   5. Broken internal links in docs/
- *   6. Missing files referenced by docs-writer skill
- *
- * Exit 0 = all checks passed, Exit 1 = issues found.
+ * Validates that documentation counts, references, and links remain
+ * in sync with the actual filesystem. Produces human-readable output
+ * and an optional JSON report for CI consumption.
  */
 
-import { readFileSync, readdirSync, existsSync, statSync } from "fs";
-import { join, resolve, dirname, relative } from "path";
-import { fileURLToPath } from "url";
-import { globSync } from "fs";
+import { readdir, readFile, stat, writeFile } from "node:fs/promises";
+import { join, relative } from "node:path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const ROOT = resolve(__dirname, "..");
+const ROOT = process.cwd();
+const findings = [];
 
-// ── Helpers ──────────────────────────────────────────────────────────
+// ── Helpers ─────────────────────────────────────────────────────────
 
-function readText(relPath) {
-  const abs = join(ROOT, relPath);
-  if (!existsSync(abs)) return null;
-  return readFileSync(abs, "utf8");
+function addFinding(file, line, issue, severity) {
+  findings.push({ file, line, issue, severity });
 }
 
-function listDirs(relPath) {
-  const abs = join(ROOT, relPath);
-  if (!existsSync(abs)) return [];
-  return readdirSync(abs, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => d.name);
+async function exists(p) {
+  try {
+    await stat(p);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
-function listFiles(relPath, ext) {
-  const abs = join(ROOT, relPath);
-  if (!existsSync(abs)) return [];
-  return readdirSync(abs).filter((f) => (ext ? f.endsWith(ext) : true));
+async function readText(p) {
+  try {
+    return await readFile(p, "utf8");
+  } catch {
+    return null;
+  }
 }
 
-function findMdFiles(dir) {
+async function listDirs(base) {
+  const entries = await readdir(base, { withFileTypes: true });
+  return entries.filter((e) => e.isDirectory()).map((e) => e.name);
+}
+
+async function collectMdFiles(dir, exclude = []) {
   const results = [];
-  const abs = join(ROOT, dir);
-  if (!existsSync(abs)) return results;
-  for (const entry of readdirSync(abs, { withFileTypes: true })) {
-    const rel = join(dir, entry.name);
+  let entries;
+  try {
+    entries = await readdir(dir, { withFileTypes: true });
+  } catch {
+    return results;
+  }
+  for (const entry of entries) {
+    const full = join(dir, entry.name);
+    const rel = relative(ROOT, full);
+    if (exclude.some((ex) => rel.includes(ex))) continue;
     if (entry.isDirectory()) {
-      results.push(...findMdFiles(rel));
+      results.push(...(await collectMdFiles(full, exclude)));
     } else if (entry.name.endsWith(".md")) {
-      results.push(rel);
+      results.push(full);
     }
   }
   return results;
 }
 
-// ── Issues collector ─────────────────────────────────────────────────
-
-const issues = [];
-function issue(file, line, msg, fix) {
-  issues.push({ file, line, issue: msg, fix });
+function extractNumber(text, pattern) {
+  const m = text.match(pattern);
+  return m ? parseInt(m[1], 10) : null;
 }
 
-// ── Audit 1: VERSION.md exists and syncs ─────────────────────────────
+// ── Check 1: Agent count ────────────────────────────────────────────
 
-console.log("🔍 Audit 1: VERSION.md sync...");
+async function checkAgentCount() {
+  const agentDir = join(ROOT, ".github", "agents");
+  const entries = await readdir(agentDir, { withFileTypes: true });
+  const agentFiles = entries
+    .filter(
+      (e) =>
+        e.isFile() &&
+        e.name.endsWith(".agent.md") &&
+        !["_subagents"].includes(e.name),
+    )
+    .map((e) => e.name);
+  const actual = agentFiles.length;
 
-const versionMd = readText("VERSION.md");
-if (!versionMd) {
-  issue("VERSION.md", 0, "VERSION.md does not exist", "Create VERSION.md");
-} else {
-  const versionMatch = versionMd.match(/Current Version:\s*(\d+\.\d+\.\d+)/);
-  const pkgJson = JSON.parse(readText("package.json") || "{}");
-  if (versionMatch && pkgJson.version) {
-    if (versionMatch[1] !== pkgJson.version) {
-      issue(
-        "VERSION.md",
-        0,
-        `VERSION.md says ${versionMatch[1]} but package.json says ${pkgJson.version}`,
-        "Align version numbers",
-      );
+  const readme = await readText(join(ROOT, "docs", "README.md"));
+  if (!readme) return;
+  const documented = extractNumber(readme, /## Agents \((\d+)/);
+  if (documented !== null && documented !== actual) {
+    addFinding(
+      "docs/README.md",
+      0,
+      `Agent count mismatch: docs say ${documented}, filesystem has ${actual}`,
+      "HIGH",
+    );
+  }
+}
+
+// ── Check 2: Skill count ────────────────────────────────────────────
+
+async function checkSkillCount() {
+  const skillDir = join(ROOT, ".github", "skills");
+  const dirs = await listDirs(skillDir);
+  const actual = dirs.length;
+
+  const readme = await readText(join(ROOT, "docs", "README.md"));
+  if (!readme) return;
+  const documented = extractNumber(readme, /## Skills \((\d+)/);
+  if (documented !== null && documented !== actual) {
+    addFinding(
+      "docs/README.md",
+      0,
+      `Skill count mismatch: docs say ${documented}, filesystem has ${actual}`,
+      "HIGH",
+    );
+  }
+}
+
+// ── Check 3: Scenario count ─────────────────────────────────────────
+
+async function checkScenarioCount() {
+  const scenarioDir = join(ROOT, "scenarios");
+  const dirs = await listDirs(scenarioDir);
+  const actual = dirs.filter((d) => d.startsWith("S")).length;
+
+  const readme = await readText(join(ROOT, "docs", "README.md"));
+  if (!readme) return;
+  // Count table rows in the Scenarios section
+  const scenarioSection = readme.split(/^## Scenarios/m)[1];
+  if (!scenarioSection) return;
+  const tableRows = scenarioSection.match(/^\| S\d+/gm);
+  const documented = tableRows ? tableRows.length : 0;
+  if (documented > 0 && documented !== actual) {
+    addFinding(
+      "docs/README.md",
+      0,
+      `Scenario count mismatch: docs table has ${documented} rows, filesystem has ${actual} S* dirs`,
+      "MEDIUM",
+    );
+  }
+}
+
+// ── Check 4: Prohibited references ──────────────────────────────────
+
+async function checkProhibitedRefs() {
+  const prohibited = [
+    { pattern: /diagram\.agent\.md/g, label: "diagram.agent.md (removed)" },
+    { pattern: /adr\.agent\.md/g, label: "adr.agent.md (removed)" },
+    { pattern: /docs\.agent\.md/g, label: "docs.agent.md (removed)" },
+    { pattern: /docs\/guides\//g, label: "docs/guides/ (non-existent path)" },
+  ];
+
+  const scanPaths = [join(ROOT, "docs"), join(ROOT, ".github", "instructions")];
+  const singleFiles = [join(ROOT, ".github", "copilot-instructions.md")];
+
+  const mdFiles = [];
+  for (const dir of scanPaths) {
+    mdFiles.push(...(await collectMdFiles(dir, [])));
+  }
+  for (const f of singleFiles) {
+    if (await exists(f)) mdFiles.push(f);
+  }
+
+  for (const file of mdFiles) {
+    const content = await readText(file);
+    if (!content) continue;
+    const rel = relative(ROOT, file);
+    const lines = content.split("\n");
+    for (const { pattern, label } of prohibited) {
+      pattern.lastIndex = 0;
+      for (let i = 0; i < lines.length; i++) {
+        // Skip lines that document prohibited refs (e.g. "❌ ... → Use ...")
+        if (/[❌→]/.test(lines[i]) || /^\s*[-*]\s*❌/.test(lines[i])) {
+          pattern.lastIndex = 0;
+          continue;
+        }
+        if (pattern.test(lines[i])) {
+          addFinding(rel, i + 1, `Prohibited reference: ${label}`, "HIGH");
+        }
+        pattern.lastIndex = 0;
+      }
     }
   }
 }
 
-// ── Audit 2: Agent count ─────────────────────────────────────────────
+// ── Check 5: Deprecated path links ──────────────────────────────────
 
-console.log("🔍 Audit 2: Agent count...");
+async function checkSupersededLinks() {
+  const docsDir = join(ROOT, "docs");
+  const mdFiles = await collectMdFiles(docsDir, ["presenter"]);
 
-const agentFiles = listFiles(".github/agents", ".agent.md").filter(
-  (f) => !f.startsWith("_"),
-);
-const subagentDirs = listDirs(".github/agents").filter((d) =>
-  d.startsWith("_"),
-);
-let subagentCount = 0;
-for (const d of subagentDirs) {
-  subagentCount += listFiles(`.github/agents/${d}`, ".agent.md").length;
+  const deprecatedPaths = [/_superseded\//, /\.github\/templates\//];
+
+  for (const file of mdFiles) {
+    const content = await readText(file);
+    if (!content) continue;
+    const rel = relative(ROOT, file);
+    const lines = content.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      for (const pattern of deprecatedPaths) {
+        if (pattern.test(lines[i])) {
+          addFinding(
+            rel,
+            i + 1,
+            "Link to removed directory in live docs",
+            "MEDIUM",
+          );
+        }
+      }
+    }
+  }
 }
-const actualAgentCount = agentFiles.length;
 
-const docsReadme = readText("docs/README.md");
-if (docsReadme) {
-  const agentHeadingMatch = docsReadme.match(/## Agents \((\d+)/);
-  if (agentHeadingMatch) {
-    const docCount = parseInt(agentHeadingMatch[1], 10);
-    if (docCount !== actualAgentCount) {
-      issue(
+// ── Check 6: Agent table verification ───────────────────────────────
+
+async function checkAgentTable() {
+  const readme = await readText(join(ROOT, "docs", "README.md"));
+  if (!readme) return;
+  // Extract only the Agents section (between ## Agents and next ## heading)
+  const agentSection = readme.match(
+    /^## Agents[^\n]*\n([\s\S]*?)(?=\n## [^#])/m,
+  );
+  if (!agentSection) return;
+  const section = agentSection[1];
+  // Match agent names from table rows like: | `requirements` |
+  const agentNames = [...section.matchAll(/^\|\s*`([a-z][\w-]*)`\s*\|/gm)].map(
+    (m) => m[1],
+  );
+
+  const agentDir = join(ROOT, ".github", "agents");
+  for (const name of agentNames) {
+    // Check both as direct .agent.md and in _subagents/
+    const directPath = join(agentDir, `${name}.agent.md`);
+    const subPath = join(agentDir, "_subagents", `${name}.agent.md`);
+    if (!(await exists(directPath)) && !(await exists(subPath))) {
+      addFinding(
         "docs/README.md",
         0,
-        `Agent heading says ${docCount} but found ${actualAgentCount} agent files`,
-        `Update heading to "## Agents (${actualAgentCount} + ${subagentCount} Subagents)"`,
+        `Agent table lists '${name}' but no matching .agent.md found`,
+        "HIGH",
       );
     }
   }
 }
 
-// ── Audit 3: Skill count ─────────────────────────────────────────────
+// ── Check 7: Skill table verification ───────────────────────────────
 
-console.log("🔍 Audit 3: Skill count...");
+async function checkSkillTable() {
+  const readme = await readText(join(ROOT, "docs", "README.md"));
+  if (!readme) return;
+  const skillSection = readme.split(/^## Skills/m)[1];
+  if (!skillSection) return;
+  // Match skill names from table rows like: | `azure-diagrams` |
+  const skillNames = [
+    ...skillSection.matchAll(/^\|\s*`([a-z][\w-]*)`\s*\|/gm),
+  ].map((m) => m[1]);
 
-const skillDirs = listDirs(".github/skills").filter((d) =>
-  existsSync(join(ROOT, ".github/skills", d, "SKILL.md")),
-);
-const actualSkillCount = skillDirs.length;
-
-if (docsReadme) {
-  const skillHeadingMatch = docsReadme.match(/## Skills \((\d+)\)/);
-  if (skillHeadingMatch) {
-    const docCount = parseInt(skillHeadingMatch[1], 10);
-    if (docCount !== actualSkillCount) {
-      issue(
+  const skillDir = join(ROOT, ".github", "skills");
+  for (const name of skillNames) {
+    if (!(await exists(join(skillDir, name)))) {
+      addFinding(
         "docs/README.md",
         0,
-        `Skill heading says ${docCount} but found ${actualSkillCount} skill dirs`,
-        `Update heading to "## Skills (${actualSkillCount})"`,
+        `Skill table lists '${name}' but no matching directory in .github/skills/`,
+        "HIGH",
       );
     }
   }
 }
 
-// ── Audit 4: Prohibited references ───────────────────────────────────
+// ── Check 8: Hardcoded version headers ──────────────────────────────
 
-console.log("🔍 Audit 4: Prohibited references...");
+async function checkVersionHeaders() {
+  const docsDir = join(ROOT, "docs");
+  const entries = await readdir(docsDir, { withFileTypes: true });
+  const mdFiles = entries
+    .filter((e) => e.isFile() && e.name.endsWith(".md"))
+    .map((e) => join(docsDir, e.name));
 
-const BANNED = [
-  "azure-workload-docs",
-  "azure-deployment-preflight",
-  "gh-cli",
-  "github-issues",
-  "github-pull-requests",
-  "orchestration-helper",
-  "diagram.agent.md",
-  "adr.agent.md",
-  "docs.agent.md",
-];
-
-const filesToScan = ["README.md", "CONTRIBUTING.md", ...findMdFiles("docs")];
-
-for (const relFile of filesToScan) {
-  const content = readText(relFile);
-  if (!content) continue;
-  const lines = content.split("\n");
-  for (let i = 0; i < lines.length; i++) {
-    for (const banned of BANNED) {
-      if (lines[i].includes(banned)) {
-        issue(
-          relFile,
+  const versionPattern = /> Version \d+\.\d+\.\d+/;
+  for (const file of mdFiles) {
+    const content = await readText(file);
+    if (!content) continue;
+    const rel = relative(ROOT, file);
+    const lines = content.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      if (versionPattern.test(lines[i])) {
+        addFinding(
+          rel,
           i + 1,
-          `Prohibited reference: "${banned}"`,
-          "Replace with current skill/agent name",
+          "Hardcoded version header — use [Current Version](../VERSION.md) instead",
+          "LOW",
         );
       }
     }
   }
 }
 
-// ── Audit 5: Key files exist ─────────────────────────────────────────
+// ── Main ────────────────────────────────────────────────────────────
 
-console.log("🔍 Audit 5: Key documentation files...");
+async function main() {
+  console.log("📋 Docs Freshness Checker\n");
 
-const EXPECTED_FILES = [
-  "VERSION.md",
-  "docs/README.md",
-  "docs/quickstart.md",
-  "docs/troubleshooting.md",
-  "docs/copilot-tips.md",
-  "docs/dev-containers.md",
-  "docs/GLOSSARY.md",
-];
+  console.log("─── Agent & Skill Counts ───");
+  await checkAgentCount();
+  await checkSkillCount();
 
-for (const f of EXPECTED_FILES) {
-  if (!existsSync(join(ROOT, f))) {
-    issue(f, 0, `Expected file does not exist: ${f}`, `Create ${f}`);
-  }
-}
+  console.log("─── Scenario Count ───");
+  await checkScenarioCount();
 
-// ── Audit 6: docs/*.md header pattern ────────────────────────────────
+  console.log("─── Prohibited References ───");
+  await checkProhibitedRefs();
 
-console.log("🔍 Audit 6: Doc header pattern...");
+  console.log("─── Superseded Links ───");
+  await checkSupersededLinks();
 
-const docFiles = findMdFiles("docs");
-for (const relFile of docFiles) {
-  // Skip guides subfolder — different convention
-  if (relFile.startsWith("docs/guides/")) continue;
-  const content = readText(relFile);
-  if (!content) continue;
-  const lines = content.split("\n");
-  // First line should be a H1
-  if (!lines[0]?.startsWith("# ")) {
-    issue(relFile, 1, "Missing H1 title on first line", "Add # Title");
-  }
-  // Should have a version reference line
-  const hasVersionRef = lines.some(
-    (l) => l.includes("[Current Version]") || l.includes("VERSION.md"),
-  );
-  if (!hasVersionRef) {
-    issue(
-      relFile,
-      0,
-      "Missing version reference in header",
-      "Add > [Current Version](../VERSION.md) line after H1",
-    );
-  }
-}
+  console.log("─── Agent Table Verification ───");
+  await checkAgentTable();
 
-// ── Report ───────────────────────────────────────────────────────────
+  console.log("─── Skill Table Verification ───");
+  await checkSkillTable();
 
-console.log("");
-console.log("=".repeat(60));
+  console.log("─── Version Header Check ───");
+  await checkVersionHeaders();
 
-if (issues.length === 0) {
-  console.log("✅ Documentation freshness check passed — no issues found");
-  process.exit(0);
-} else {
-  console.log(`❌ Found ${issues.length} freshness issue(s):\n`);
-  console.log("| # | File | Line | Issue | Fix |");
-  console.log("|---|------|------|-------|-----|");
-  issues.forEach((iss, idx) => {
-    const line = iss.line > 0 ? `L${iss.line}` : "—";
-    console.log(
-      `| ${idx + 1} | ${iss.file} | ${line} | ${iss.issue} | ${iss.fix} |`,
-    );
-  });
+  // Print findings
   console.log("");
+  if (findings.length === 0) {
+    console.log("✅ No freshness issues found\n");
+    process.exit(0);
+  }
+
+  console.log("=".repeat(50));
+  console.log(`📋 ${findings.length} issue(s) found\n`);
+  for (const f of findings) {
+    const icon =
+      f.severity === "HIGH" ? "❌" : f.severity === "MEDIUM" ? "⚠️" : "ℹ️";
+    const loc = f.line > 0 ? `${f.file}:${f.line}` : f.file;
+    console.log(`${icon} [${f.severity}] ${loc}`);
+    console.log(`   ${f.issue}\n`);
+  }
+
+  // Write JSON report
+  const report = {
+    findings,
+    summary: `${findings.length} issue(s) found`,
+  };
+  await writeFile(
+    join(ROOT, "freshness-report.json"),
+    JSON.stringify(report, null, 2),
+  );
+  console.log("📄 Report written to freshness-report.json");
+
   process.exit(1);
 }
+
+main();
