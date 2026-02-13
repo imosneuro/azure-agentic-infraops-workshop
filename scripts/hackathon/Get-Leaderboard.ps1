@@ -73,9 +73,11 @@ switch ($OutputFormat) {
                 Req   = "$($_.Requirements)/20"
                 Arch  = "$($_.Architecture)/25"
                 Impl  = "$($_.Implementation)/25"
-                Dep   = "$($_.Deployment)/20"
-                Docs  = "$($_.Documentation)/10"
+                Dep   = "$($_.Deployment)/10"
+                Docs  = "$($_.Documentation)/5"
                 Load  = "$($_.LoadTesting)/5"
+                Diag  = "$($_.Diagnostics)/5"
+                Show  = "$($_.Showcase)/10"
                 Bonus = "+$($_.Bonus)"
                 Total = "$($_.Total)/130"
             }
@@ -98,8 +100,8 @@ switch ($OutputFormat) {
     'Markdown' {
         Write-Output "# Hackathon Leaderboard"
         Write-Output ""
-        Write-Output "| Rank | Team | Req | Arch | Impl | Dep | Docs | Load | Bonus | Total |"
-        Write-Output "|------|------|-----|------|------|-----|------|------|-------|-------|"
+        Write-Output "| Rank | Team | Req | Arch | Impl | Dep | Docs | Load | Diag | Show | Bonus | Total |"
+        Write-Output "|------|------|-----|------|------|-----|------|------|------|------|-------|-------|"
         
         foreach ($Team in $Ranked) {
             $Medal = switch ($Team.Rank) {
@@ -108,7 +110,7 @@ switch ($OutputFormat) {
                 3 { "🥉" }
                 default { "" }
             }
-            Write-Output "| $Medal $($Team.Rank) | $($Team.Team) | $($Team.Requirements) | $($Team.Architecture) | $($Team.Implementation) | $($Team.Deployment) | $($Team.Documentation) | $($Team.LoadTesting) | +$($Team.Bonus) | **$($Team.Total)** |"
+            Write-Output "| $Medal $($Team.Rank) | $($Team.Team) | $($Team.Requirements) | $($Team.Architecture) | $($Team.Implementation) | $($Team.Deployment) | $($Team.Documentation) | $($Team.LoadTesting) | $($Team.Diagnostics) | $($Team.Showcase) | +$($Team.Bonus) | **$($Team.Total)** |"
         }
     }
     

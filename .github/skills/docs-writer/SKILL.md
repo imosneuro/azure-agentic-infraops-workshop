@@ -1,21 +1,12 @@
 ---
 name: docs-writer
 # yamllint disable-line rule:line-length
-description: >
-  Repo-aware documentation writer and maintainer for azure-agentic-infraops.
-  Understands the full agent/skill architecture, scenario structure, naming
-  conventions, and template system. Use when asked to "update the docs",
-  "add documentation for a new agent/skill/scenario", "check docs for
-  staleness", "proofread the docs", "explain how this repo works", or
-  "generate a changelog entry". Covers all markdown except agent-output/
-  (which has its own validators).
+description: Repo-aware documentation writer and maintainer for azure-agentic-infraops. Understands the full agent/skill architecture, scenario structure, naming conventions, and template system. Use when asked to "update the docs", "add documentation for a new agent/skill/scenario", "check docs for staleness", "proofread the docs", "explain how this repo works", or "generate a changelog entry". Covers all markdown except agent-output/ (which has its own validators).
 license: MIT
-compatibility: >
-  Works with GitHub Copilot, VS Code, and any Agent Skills compatible tool.
-  No external dependencies required.
+compatibility: Works with GitHub Copilot, VS Code, and any Agent Skills compatible tool. No external dependencies required.
 metadata:
   author: jonathan-vella
-  version: '1.0'
+  version: "1.1"
   category: documentation
 ---
 
@@ -28,14 +19,14 @@ all user-facing documentation to be accurate, current, and consistent.
 
 ## When to Use This Skill
 
-| Trigger Phrase | Workflow |
-| --- | --- |
-| "Update the docs" | Update existing documentation |
-| "Add docs for new agent/skill/scenario" | Add entity documentation |
-| "Check docs for staleness" | Freshness audit with auto-fix |
-| "Explain how this repo works" | Architectural Q&A |
-| "Proofread the docs" | Language, tone, and accuracy review |
-| "Generate a changelog entry" | Changelog from git history |
+| Trigger Phrase                          | Workflow                            |
+| --------------------------------------- | ----------------------------------- |
+| "Update the docs"                       | Update existing documentation       |
+| "Add docs for new agent/skill/scenario" | Add entity documentation            |
+| "Check docs for staleness"              | Freshness audit with auto-fix       |
+| "Explain how this repo works"           | Architectural Q&A                   |
+| "Proofread the docs"                    | Language, tone, and accuracy review |
+| "Generate a changelog entry"            | Changelog from git history          |
 
 ## Prerequisites
 
@@ -56,12 +47,12 @@ All markdown documentation **except** `agent-output/**/*.md`:
 
 ### Out of Scope (Has Own Validators)
 
-| Path | Governed By |
-| --- | --- |
-| `agent-output/**/*.md` | `artifact-h2-reference.instructions.md` + validators |
-| `.github/agents/*.agent.md` | `agents-definitions.instructions.md` |
-| `.github/skills/azure-artifacts/templates/` | Read-only reference (do not modify) |
-| `**/*.bicep` | `bicep-code-best-practices.instructions.md` |
+| Path                                        | Governed By                                          |
+| ------------------------------------------- | ---------------------------------------------------- |
+| `agent-output/**/*.md`                      | `artifact-h2-reference.instructions.md` + validators |
+| `.github/agents/*.agent.md`                 | `agents-definitions.instructions.md`                 |
+| `.github/skills/azure-artifacts/templates/` | Read-only reference (do not modify)                  |
+| `**/*.bicep`                                | `bicep-code-best-practices.instructions.md`          |
 
 ## Step-by-Step Workflows
 
@@ -76,7 +67,8 @@ All markdown documentation **except** `agent-output/**/*.md`:
    - File header: `# {Title}` + `> Version {X.Y.Z} | {description}`
    - Version number from `VERSION.md` (single source of truth)
 5. **Verify links**: Check all relative links resolve to existing files.
-6. **Run validation**: Offer to run `npm run lint:md` and `npm run lint:links`.
+6. **Run validation**: Offer to run `npm run lint:md`, `npm run lint:links:docs`,
+   and `npm run lint:docs-freshness`.
 
 ### Workflow 2: Add Documentation for New Entity
 
@@ -186,11 +178,11 @@ technical accuracy.
 5. **Report findings**: Present a table per file:
 
    ```markdown
-   | # | Line | Layer | Issue | Suggestion |
-   |---|------|-------|-------|------------|
-   | 1 | 12 | Language | Passive voice | Rewrite actively |
-   | 2 | 34 | Terminology | "IaC tool" not in glossary | Use "Bicep" |
-   | 3 | 56 | Accuracy | Says 6 agents, actual is 8 | Update count |
+   | #   | Line | Layer       | Issue                      | Suggestion       |
+   | --- | ---- | ----------- | -------------------------- | ---------------- |
+   | 1   | 12   | Language    | Passive voice              | Rewrite actively |
+   | 2   | 34   | Terminology | "IaC tool" not in glossary | Use "Bicep"      |
+   | 3   | 56   | Accuracy    | Says 6 agents, actual is 8 | Update count     |
    ```
 
 6. **Apply fixes**: After user review, apply corrections. For
@@ -208,6 +200,24 @@ issue with `docs-freshness` label
 3. Run `npm run lint:docs-freshness` to verify 0 findings remain
 4. Summarize changes made
 
+### Workflow 8: Hackathon Consistency Audit
+
+Use this workflow for `hackathon/**/*.md` updates.
+
+1. **Set canonical precedence**:
+   - Event timing source of truth: `hackathon/AGENDA.md`
+   - Scoring policy source of truth: `hackathon/facilitator/scoring-rubric.md`
+2. **Validate critical consistency points**:
+   - Curveball time is consistent in all participant and facilitator docs
+   - Team-size policy is consistent across invitation, README, agenda, and facilitator guide
+   - Presentation format is consistent between challenge and facilitator docs
+   - Deliverable filenames match challenge and facilitator references
+3. **Scoring authority check**:
+   - If scoring rubric changes, verify `scripts/hackathon/Score-Team.ps1` and
+     `scripts/hackathon/Get-Leaderboard.ps1` still reflect scoring weights and fields.
+4. **Finalize with an issue table**:
+   - File path, mismatch type, canonical value, and exact fix applied.
+
 ## Guardrails
 
 - **Never modify** files in `agent-output/`, `.github/agents/`,
@@ -216,15 +226,17 @@ issue with `docs-freshness` label
 - **Always verify** line length ≤ 120 characters after edits
 - **Preserve** existing Mermaid diagram theme directives
 - **Use** `VERSION.md` as the single source of truth for version numbers
+- **Treat** `hackathon/AGENDA.md` as timing source of truth for hackathon docs
+- **Treat** `hackathon/facilitator/scoring-rubric.md` as scoring source of truth
 
 ## Troubleshooting
 
-| Issue | Solution |
-| --- | --- |
-| Lint fails on line length | Break lines at 120 chars after punctuation |
-| Link validation fails | Check relative paths resolve; use `[text](file.md)` format |
-| Version mismatch | Read `VERSION.md` and propagate to all docs |
-| Count mismatch | List `.github/agents/` and `.github/skills/` directories |
+| Issue                     | Solution                                                   |
+| ------------------------- | ---------------------------------------------------------- |
+| Lint fails on line length | Break lines at 120 chars after punctuation                 |
+| Link validation fails     | Check relative paths resolve; use `[text](file.md)` format |
+| Version mismatch          | Read `VERSION.md` and propagate to all docs                |
+| Count mismatch            | List `.github/agents/` and `.github/skills/` directories   |
 
 ## References
 

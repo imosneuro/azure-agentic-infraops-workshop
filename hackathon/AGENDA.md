@@ -8,8 +8,8 @@
 
 | Aspect          | Details                  |
 | --------------- | ------------------------ |
-| Team Size       | Up to 5 members per team |
-| Number of Teams | Maximum 4 teams          |
+| Team Size       | 3-6 members per team     |
+| Number of Teams | Flexible based on cohort |
 
 ---
 
@@ -110,14 +110,14 @@
 
 ### Block 6: Challenges 5-7 (14:30 - 15:15)
 
-| Time  | Activity                                   |
-| ----- | ------------------------------------------ |
-| 14:30 | **Challenge 5: Load Testing**              |
-| 14:40 | Run k6 load tests                          |
-| 14:50 | **Challenge 6: Documentation**             |
+| Time  | Activity                                     |
+| ----- | -------------------------------------------- |
+| 14:30 | **Challenge 5: Load Testing**                |
+| 14:40 | Run k6 load tests                            |
+| 14:50 | **Challenge 6: Documentation**               |
 | 15:00 | Generate workload docs with **design** agent |
-| 15:10 | **Challenge 7: Diagnostics**               |
-| 15:15 | Prep begins                                |
+| 15:10 | **Challenge 7: Diagnostics**                 |
+| 15:15 | Prep begins                                  |
 
 ### 🎯 Presentation Prep (15:15 - 15:25)
 

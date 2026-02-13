@@ -13,6 +13,7 @@ when delivering Azure solutions professionally.
 ## The Setup
 
 ```mermaid
+%%{init: {'theme':'neutral'}}%%
 graph TB
     subgraph Room[Presentation Room]
         P[👥 Presenting Team<br/>Team A<br/>Partner Role]
@@ -51,25 +52,26 @@ The coach will pair teams:
 
 ## Presentation Format
 
-**Time per team**: ~7 minutes
+**Time per team**: ~6.5 minutes
 
 | Segment       | Duration | Content                      |
 | ------------- | -------- | ---------------------------- |
-| Partner Pitch | 5 min    | Present your solution        |
+| Partner Pitch | 4 min    | Present your solution        |
 | Customer Q&A  | 2 min    | Customer team asks questions |
+| Transition    | 30 sec   | Switch presenters            |
 
 ---
 
 ## Presentation Schedule
 
-| Time  | Activity                 |
-| ----- | ------------------------ |
-| 15:25 | Intro & pairings         |
-| 15:27 | Team 1 presents (~7 min) |
-| 15:34 | Team 2 presents (~7 min) |
-| 15:41 | Team 3 presents (~7 min) |
-| 15:48 | Team 4 presents (~7 min) |
-| 15:55 | Wrap-up begins           |
+| Time  | Activity                   |
+| ----- | -------------------------- |
+| 15:25 | Intro & pairings           |
+| 15:27 | Team 1 presents (~6.5 min) |
+| 15:34 | Team 2 presents (~6.5 min) |
+| 15:41 | Team 3 presents (~6.5 min) |
+| 15:48 | Team 4 presents (~6.5 min) |
+| 15:55 | Wrap-up begins             |
 
 ---
 

@@ -96,7 +96,7 @@ By the end, you'll have:
 
 ## Questions?
 
-Reach out to [Your Name] at [your.email@domain.com]
+Reach out to the workshop team at [hackathon@contoso.com](mailto:hackathon@contoso.com)
 
 ---
 

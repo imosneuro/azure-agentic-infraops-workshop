@@ -3,7 +3,7 @@
     Scores a hackathon team's submission based on WAF-aligned criteria.
 
 .DESCRIPTION
-    Evaluates team artifacts against the scoring rubric (100 base + 25 bonus points).
+    Evaluates team artifacts against the scoring rubric (105 base + 25 bonus points).
     Checks requirements, architecture, Bicep implementation, deployment, and documentation.
     Can optionally verify Azure deployment.
 
@@ -16,11 +16,17 @@
 .PARAMETER SkipAzureCheck
     Skip Azure deployment verification if not deployed.
 
+.PARAMETER ShowcaseScore
+    Manual facilitator score for Challenge 8 (0-10 points).
+
 .EXAMPLE
     .\Score-Team.ps1 -TeamName "freshconnect"
 
 .EXAMPLE
     .\Score-Team.ps1 -TeamName "freshconnect" -ResourceGroupName "rg-freshconnect-dev-swc"
+
+.EXAMPLE
+    .\Score-Team.ps1 -TeamName "freshconnect" -SkipAzureCheck -ShowcaseScore 8
 #>
 [CmdletBinding(SupportsShouldProcess)]
 param(
@@ -31,7 +37,11 @@ param(
     [string]$ResourceGroupName,
 
     [Parameter()]
-    [switch]$SkipAzureCheck
+    [switch]$SkipAzureCheck,
+
+    [Parameter()]
+    [ValidateRange(0, 10)]
+    [int]$ShowcaseScore = 0
 )
 
 $ErrorActionPreference = 'Stop'
@@ -49,7 +59,9 @@ $Score = [PSCustomObject]@{
     Implementation  = 0
     Deployment      = 0
     Documentation   = 0
+    Diagnostics     = 0
     LoadTesting     = 0
+    Showcase        = 0
     Bonus           = 0
     Total           = 0
     Details         = @()
@@ -168,19 +180,19 @@ if (Test-Path $MainBicep) {
 }
 
 # 4. DEPLOYMENT (20 pts)
-Write-Host "`n🚀 Deployment (20 pts)" -ForegroundColor Yellow
+Write-Host "`n🚀 Deployment (10 pts)" -ForegroundColor Yellow
 if (-not $SkipAzureCheck -and $ResourceGroupName) {
     try {
         $RG = az group show --name $ResourceGroupName 2>&1 | ConvertFrom-Json
         if ($RG) {
-            Add-Score -Category 'Deployment' -Points 4 -Reason "Resource group exists"
+            Add-Score -Category 'Deployment' -Points 2 -Reason "Resource group exists"
             
             $Resources = az resource list --resource-group $ResourceGroupName 2>&1 | ConvertFrom-Json
             if ($Resources.Count -gt 0) {
-                Add-Score -Category 'Deployment' -Points 8 -Reason "Resources deployed ($($Resources.Count) resources)"
+                Add-Score -Category 'Deployment' -Points 4 -Reason "Resources deployed ($($Resources.Count) resources)"
                 
                 if ($Resources | Where-Object { $_.type -like '*sites*' }) {
-                    Add-Score -Category 'Deployment' -Points 4 -Reason "App Service running"
+                    Add-Score -Category 'Deployment' -Points 2 -Reason "App Service running"
                 }
             }
         }
@@ -191,26 +203,30 @@ if (-not $SkipAzureCheck -and $ResourceGroupName) {
     # Check for deployment summary
     $DeploySummary = Join-Path $ArtifactPath "06-deployment-summary.md"
     if (Test-Path $DeploySummary) {
-        Add-Score -Category 'Deployment' -Points 4 -Reason "Deployment summary documented"
+        Add-Score -Category 'Deployment' -Points 2 -Reason "Deployment summary documented"
         
         $DeployContent = Get-Content $DeploySummary -Raw
         if ($DeployContent -match 'what.?if|preview') {
-            Add-Score -Category 'Deployment' -Points 4 -Reason "What-If executed"
+            Add-Score -Category 'Deployment' -Points 2 -Reason "What-If executed"
         }
         if ($DeployContent -match 'success|completed|provisioned') {
-            Add-Score -Category 'Deployment' -Points 8 -Reason "Deployment succeeded"
+            Add-Score -Category 'Deployment' -Points 4 -Reason "Deployment succeeded"
         }
     }
     
     # Check for deploy script
     $DeployScript = Join-Path $BicepPath "deploy.ps1"
     if (Test-Path $DeployScript) {
-        Add-Score -Category 'Deployment' -Points 4 -Reason "Deploy script present"
+        Add-Score -Category 'Deployment' -Points 2 -Reason "Deploy script present"
     }
 }
 
-# 5. DOCUMENTATION (10 pts)
-Write-Host "`n📚 Documentation (10 pts)" -ForegroundColor Yellow
+if ($Score.Deployment -gt 10) {
+    $Score.Deployment = 10
+}
+
+# 5. DOCUMENTATION (5 pts)
+Write-Host "`n📚 Documentation (5 pts)" -ForegroundColor Yellow
 $AllArtifacts = @(
     "01-requirements.md",
     "02-architecture-assessment.md",
@@ -223,20 +239,24 @@ foreach ($Artifact in $AllArtifacts) {
     }
 }
 if ($Present -eq $AllArtifacts.Count) {
-    Add-Score -Category 'Documentation' -Points 4 -Reason "All core artifacts present"
+    Add-Score -Category 'Documentation' -Points 2 -Reason "All core artifacts present"
 } elseif ($Present -gt 0) {
-    Add-Score -Category 'Documentation' -Points 2 -Reason "$Present of $($AllArtifacts.Count) artifacts present"
+    Add-Score -Category 'Documentation' -Points 1 -Reason "$Present of $($AllArtifacts.Count) artifacts present"
 }
 
 # Design artifacts
 $DesignArtifacts = Get-ChildItem -Path $ArtifactPath -Filter "03-des-*.md" -ErrorAction SilentlyContinue
 if ($DesignArtifacts.Count -gt 0) {
-    Add-Score -Category 'Documentation' -Points 3 -Reason "Design artifacts created"
+    Add-Score -Category 'Documentation' -Points 2 -Reason "Design artifacts created"
 }
 
 # Formatting check (sample)
 if ((Test-Path $ReqFile) -and (Get-Content $ReqFile -Raw) -match '^#\s') {
-    Add-Score -Category 'Documentation' -Points 3 -Reason "Clear markdown formatting"
+    Add-Score -Category 'Documentation' -Points 1 -Reason "Clear markdown formatting"
+}
+
+if ($Score.Documentation -gt 5) {
+    $Score.Documentation = 5
 }
 
 # 6. LOAD TESTING (+5 pts)
@@ -256,7 +276,44 @@ if (Test-Path $LoadTestFile) {
     Write-Host "  ℹ️ No load test results found" -ForegroundColor DarkGray
 }
 
-# 7. BONUS POINTS (+25 max)
+# 7. DIAGNOSTICS (+5 pts)
+Write-Host "`n🩺 Diagnostics (+5 pts)" -ForegroundColor Yellow
+$DiagCandidates = @(
+    (Join-Path $ArtifactPath "07-ab-diagnostics-runbook.md"),
+    (Join-Path $ArtifactPath "07-diagnostics-quick-card.md")
+)
+$DiagFile = $DiagCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+
+if ($DiagFile) {
+    $DiagContent = Get-Content $DiagFile -Raw
+    if ($DiagContent -match 'health\s*check|first\s*60\s*seconds|triage') {
+        Add-Score -Category 'Diagnostics' -Points 2 -Reason "Top health checks documented"
+    }
+    if ($DiagContent -match 'symptom|action|decision\s*tree|if\s+.*then') {
+        Add-Score -Category 'Diagnostics' -Points 2 -Reason "Symptom-to-action flows documented"
+    }
+    if ($DiagContent -match 'escalat|on-call|page|severity') {
+        Add-Score -Category 'Diagnostics' -Points 1 -Reason "Escalation criteria documented"
+    }
+} else {
+    Write-Host "  ℹ️ No diagnostics artifact found" -ForegroundColor DarkGray
+}
+
+# 8. PARTNER SHOWCASE (+10 pts)
+Write-Host "`n🎤 Partner Showcase (+10 pts)" -ForegroundColor Yellow
+$Score.Showcase = $ShowcaseScore
+if ($ShowcaseScore -gt 0) {
+    $Score.Details += [PSCustomObject]@{
+        Category = 'Showcase'
+        Points   = $ShowcaseScore
+        Reason   = 'Facilitator manual score'
+    }
+    Write-Host "  Manual showcase score applied: $ShowcaseScore/10" -ForegroundColor DarkGray
+} else {
+    Write-Host "  Manual showcase score not provided (default 0/10)" -ForegroundColor DarkGray
+}
+
+# 9. BONUS POINTS (+25 max)
 Write-Host "`n🌟 Bonus Points (+25 max)" -ForegroundColor Yellow
 if (Test-Path $MainBicep) {
     $BicepContent = Get-Content $MainBicep -Raw
@@ -284,7 +341,8 @@ if (Test-Path $MainBicep) {
 
 # Calculate Total
 $Score.Total = $Score.Requirements + $Score.Architecture + $Score.Implementation +
-               $Score.Deployment + $Score.Documentation + $Score.LoadTesting + $Score.Bonus
+               $Score.Deployment + $Score.Documentation + $Score.LoadTesting +
+               $Score.Diagnostics + $Score.Showcase + $Score.Bonus
 
 # Display Results
 Write-Host "`n" + "=" * 50
@@ -293,9 +351,11 @@ Write-Host "=" * 50
 Write-Host "  Requirements:    $($Score.Requirements)/20"
 Write-Host "  Architecture:    $($Score.Architecture)/25"
 Write-Host "  Implementation:  $($Score.Implementation)/25"
-Write-Host "  Deployment:      $($Score.Deployment)/20"
-Write-Host "  Documentation:   $($Score.Documentation)/10"
+Write-Host "  Deployment:      $($Score.Deployment)/10"
+Write-Host "  Documentation:   $($Score.Documentation)/5"
 Write-Host "  Load Testing:    $($Score.LoadTesting)/5"
+Write-Host "  Diagnostics:     $($Score.Diagnostics)/5"
+Write-Host "  Showcase:        $($Score.Showcase)/10"
 Write-Host "  Bonus:           $($Score.Bonus)/25"
 Write-Host ""
 

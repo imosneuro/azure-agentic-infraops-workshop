@@ -7,8 +7,8 @@
 | Aspect      | Details                               |
 | ----------- | ------------------------------------- |
 | Duration    | 6 hours (10:00 - 16:00)               |
-| Team Size   | Up to 5 members per team              |
-| Teams       | Maximum 4 teams                       |
+| Team Size   | 3-6 members per team                  |
+| Teams       | Flexible based on cohort              |
 | Format      | Challenge-based, full 7-step workflow |
 | Skill Level | Azure portal familiar, new to IaC     |
 
@@ -226,10 +226,10 @@ Stand up, get everyone's attention:
 
 **Common Issues:**
 
-| Issue                  | Solution                         |
-| ---------------------- | -------------------------------- |
+| Issue                    | Solution                         |
+| ------------------------ | -------------------------------- |
 | Design agent too verbose | Prompt: "Create concise runbook" |
-| Missing monitoring     | Use Application Insights logs    |
+| Missing monitoring       | Use Application Insights logs    |
 
 ---
 
@@ -285,12 +285,12 @@ After each presentation, briefly comment on:
 | **WAF Alignment**   | Reliability, security, cost, operations covered? |
 | **Professionalism** | How would this land with a real customer?        |
 
-### Wrap-up (14:55 - 15:00)
+### Wrap-up (15:55 - 16:00)
 
 ```powershell
 # Score all teams
 Get-ChildItem .\agent-output -Directory | ForEach-Object {
-    .\scripts\hackathon\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck
+    .\scripts\hackathon\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck -ShowcaseScore 0
 }
 
 # Display leaderboard
@@ -313,7 +313,7 @@ Get-ChildItem .\agent-output -Directory | ForEach-Object {
 
 # All teams
 Get-ChildItem .\agent-output -Directory | Where-Object { $_.Name -ne ".gitkeep" } | ForEach-Object {
-    .\scripts\hackathon\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck
+    .\scripts\hackathon\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck -ShowcaseScore 0
 }
 
 # Leaderboard
@@ -370,7 +370,7 @@ Get-ChildItem .\agent-output -Directory | Where-Object { $_.Name -ne ".gitkeep" 
 
 Legend: ⬜ Not started | 🔄 In progress | ✅ Complete
 
-> **Note**: C8 (Partner Showcase) is not scored — track completion only.
+> **Note**: C8 (Partner Showcase) is facilitator-scored (0-10) via `-ShowcaseScore`.
 
 ---
 

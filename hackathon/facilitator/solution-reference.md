@@ -10,13 +10,14 @@ agent-output/freshconnect/
 ├── 02-architecture-assessment.md
 ├── 03-des-architecture-diagram.md
 ├── 03-des-deployment-workflow.md (Mermaid)
-├── 03-des-adr-disaster-recovery.md (Challenge 4)
+├── 04-adr-ha-dr-strategy.md (Challenge 4)
 ├── 04-implementation-plan.md
 ├── 05-load-test-results.md
 ├── 06-deployment-summary.md
 ├── 07-ab-operations-guide.md (Challenge 6)
 ├── 07-ab-architecture-documentation.md (Challenge 6)
-└── 07-ab-diagnostics-runbook.md (Challenge 7)
+├── 07-diagnostics-quick-card.md (Challenge 7 required)
+└── 07-ab-diagnostics-runbook.md (Challenge 7 optional bonus depth)
 
 infra/bicep/freshconnect/
 ├── main.bicep

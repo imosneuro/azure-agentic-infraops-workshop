@@ -20,6 +20,11 @@ You open your laptop. Where do you start? What do you check first?
 
 Create a **quick-reference troubleshooting card** — a one-page guide for the on-call engineer.
 
+Save as: `agent-output/freshconnect/07-diagnostics-quick-card.md`
+
+Optional bonus depth: add `agent-output/freshconnect/07-ab-diagnostics-runbook.md` with expanded
+KQL and incident workflows.
+
 ### Required Elements
 
 Your troubleshooting card must include:

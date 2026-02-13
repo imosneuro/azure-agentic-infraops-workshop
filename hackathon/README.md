@@ -39,13 +39,13 @@ By the end of this hackathon, you will:
 | [Challenge 7: Diagnostics](challenges/challenge-7-diagnostics.md)           | Run diagnostic analysis                         |
 | [Challenge 8: Partner Showcase](challenges/challenge-8-partner-showcase.md) | Team presentations                              |
 | **Participant Materials**                                                   |                                                 |
-| [Know Before You Go](../docs/know-before-you-go.md)                        | Setup + what to expect                          |
-| [Scenario Brief](../docs/scenario-brief.md)                                | Nordic Fresh Foods business challenge           |
-| [Copilot Guide](../docs/copilot-guide.md)                                  | VS Code, agents, skills, prompting tips         |
-| [Hints & Tips](../docs/hints-and-tips.md)                                  | Architecture and cost hints                     |
-| [Quick Reference Card](../docs/quick-reference-card.md)                    | Printable one-page cheat sheet                  |
-| [Team Role Cards](../docs/team-role-cards.md)                              | Driver, Navigator, Architect, Documenter        |
-| [Quota Requirements](../docs/quota-requirements.md)                        | Azure resource quota per team                   |
+| [Know Before You Go](../docs/know-before-you-go.md)                         | Setup + what to expect                          |
+| [Scenario Brief](../docs/scenario-brief.md)                                 | Nordic Fresh Foods business challenge           |
+| [Copilot Guide](../docs/copilot-guide.md)                                   | VS Code, agents, skills, prompting tips         |
+| [Hints & Tips](../docs/hints-and-tips.md)                                   | Architecture and cost hints                     |
+| [Quick Reference Card](../docs/quick-reference-card.md)                     | Printable one-page cheat sheet                  |
+| [Team Role Cards](../docs/team-role-cards.md)                               | Driver, Navigator, Architect, Documenter        |
+| [Quota Requirements](../docs/quota-requirements.md)                         | Azure resource quota per team                   |
 | **Facilitator Materials**                                                   |                                                 |
 | [Facilitator Guide](facilitator/facilitator-guide.md)                       | Detailed schedule and coaching tips             |
 | [Scoring Rubric](facilitator/scoring-rubric.md)                             | WAF-aligned evaluation criteria                 |
@@ -55,8 +55,8 @@ By the end of this hackathon, you will:
 
 | Aspect          | Details                  |
 | --------------- | ------------------------ |
-| Team Size       | Up to 5 members per team |
-| Number of Teams | Maximum 4 teams          |
+| Team Size       | 3-6 members per team     |
+| Number of Teams | Flexible based on cohort |
 
 **Suggested Roles:**
 
@@ -79,7 +79,7 @@ By the end of this hackathon, you will:
 | 12:40-13:50 | 70 min   | **[Challenge 3](challenges/challenge-3-implementation.md)**   | Bicep planning, code generation & deployment          |
 | 13:50-14:30 | 40 min   | **[Challenge 4](challenges/challenge-4-dr-curveball.md)**     | DR architecture & deployment (announced at 13:50)     |
 | 14:30-14:50 | 20 min   | **[Challenge 5](challenges/challenge-5-load-testing.md)**     | Load testing                                          |
-| 14:50-15:10 | 20 min   | **[Challenge 6](challenges/challenge-6-documentation.md)**    | Generate workload documentation with **docs** agent   |
+| 14:50-15:10 | 20 min   | **[Challenge 6](challenges/challenge-6-documentation.md)**    | Generate workload documentation with **design** agent |
 | 15:10-15:15 | 5 min    | **[Challenge 7](challenges/challenge-7-diagnostics.md)**      | Run diagnostic analysis with **diagnose** agent       |
 | 15:15-15:25 | 10 min   | 🎯 **Prep**                                                   | Presentation preparation                              |
 | 15:25-15:55 | 30 min   | **[Challenge 8](challenges/challenge-8-partner-showcase.md)** | Partner Showcase 🎤                                   |
@@ -98,7 +98,7 @@ See [Scenario Brief](../docs/scenario-brief.md) for the full business challenge.
 2. Design a WAF-aligned architecture
 3. Generate Bicep templates
 4. Deploy to Azure
-5. **NEW at 13:20**: Adapt to multi-region DR requirements (the curveball!)
+5. **NEW at 13:50**: Adapt to multi-region DR requirements (the curveball!)
 6. Run load tests to validate infrastructure
 7. Document the solution
 
@@ -114,11 +114,16 @@ See [Scenario Brief](../docs/scenario-brief.md) for the full business challenge.
 Teams are evaluated on a **105-point scale** aligned with WAF pillars.
 See [Scoring Rubric](facilitator/scoring-rubric.md) for full criteria.
 
+Challenge 8 (Partner Showcase) is facilitator-scored. Include `-ShowcaseScore` when finalizing
+team scores.
+
 **🤖 Automated Scoring**: Facilitators run the scoring script:
 
 ```powershell
 # Score your team's submission
-.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" -ResourceGroupName "rg-freshconnect-dev-swc"
+.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" \
+    -ResourceGroupName "rg-freshconnect-dev-swc" \
+    -ShowcaseScore 8
 
 # Display leaderboard
 .\scripts\hackathon\Get-Leaderboard.ps1

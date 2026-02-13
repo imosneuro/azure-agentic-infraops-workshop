@@ -1,18 +1,20 @@
 # Scoring Rubric
 
-> **105-point base + 25 bonus** | WAF-aligned | 🤖 Automated via `Score-Team.ps1`
+> **105-point base + 25 bonus** | WAF-aligned | 🤖 Script-assisted + facilitator scoring
 
-> **Note**: Challenge 8 (Partner Showcase) is **not scored** — it focuses on professional
-> communication and soft skills development.
+> **Note**: Challenge 8 (Partner Showcase) is scored manually by facilitators (0-10)
+> using the `-ShowcaseScore` parameter.
 
 ## Automated Scoring
 
 ```powershell
 # Score team
-.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" -ResourceGroupName "rg-freshconnect-dev-swc"
+.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" \
+  -ResourceGroupName "rg-freshconnect-dev-swc" \
+  -ShowcaseScore 8
 
 # Score without Azure verification
-.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" -SkipAzureCheck
+.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" -SkipAzureCheck -ShowcaseScore 8
 
 # Leaderboard
 .\scripts\hackathon\Get-Leaderboard.ps1
@@ -29,10 +31,11 @@ Results saved to `agent-output/{team}/score-results.json`.
 | Requirements & Planning | 20      | ✅         |
 | Architecture Design     | 25      | ✅         |
 | Implementation Quality  | 25      | ✅         |
-| Deployment Success      | 20      | ✅         |
+| Deployment Success      | 10      | ✅         |
 | Load Testing            | 5       | ✅         |
 | Documentation           | 5       | ✅         |
 | Diagnostics             | 5       | ✅         |
+| Partner Showcase        | 10      | 🧑‍⚖️ Manual  |
 | **Base Total**          | **105** |            |
 | **Bonus Points**        | +25     | ✅         |
 | **Max Total**           | **130** |            |
@@ -77,16 +80,16 @@ Results saved to `agent-output/{team}/score-results.json`.
 | Security hardened  | 5      |
 | Modular structure  | 5      |
 
-### 4. Deployment (20 pts)
+### 4. Deployment (10 pts)
 
 **Verification**: Azure Portal / CLI
 
 | Criterion              | Points |
 | ---------------------- | ------ |
-| What-If executed       | 4      |
-| Deployment succeeded   | 8      |
-| Core resources running | 4      |
-| Summary documented     | 4      |
+| What-If executed       | 2      |
+| Deployment succeeded   | 4      |
+| Core resources running | 2      |
+| Summary documented     | 2      |
 
 ### 5. Load Testing (5 pts)
 
@@ -118,6 +121,18 @@ Results saved to `agent-output/{team}/score-results.json`.
 | Monitoring queries included  | 2      |
 | Incident response documented | 1      |
 
+### 8. Partner Showcase (10 pts)
+
+**Scoring method**: Facilitator manually assigns 0-10 and passes via `-ShowcaseScore`
+
+| Criterion               | Points |
+| ----------------------- | ------ |
+| Technical communication | 3      |
+| Customer engagement     | 2      |
+| Solution justification  | 2      |
+| Team collaboration      | 2      |
+| Active listening        | 1      |
+
 ---
 
 ## Bonus Points (+25 max)
@@ -133,12 +148,12 @@ Results saved to `agent-output/{team}/score-results.json`.
 
 ## Score Sheet
 
-| Team | Req | Arch | Impl | Deploy | Load | Docs | Diag | Bonus | Total |
-| ---- | --- | ---- | ---- | ------ | ---- | ---- | ---- | ----- | ----- |
-| 1    | /20 | /25  | /25  | /20    | /5   | /5   | /5   |       | /105  |
-| 2    | /20 | /25  | /25  | /20    | /5   | /5   | /5   |       | /105  |
-| 3    | /20 | /25  | /25  | /20    | /5   | /5   | /5   |       | /105  |
-| 4    | /20 | /25  | /25  | /20    | /5   | /5   | /5   |       | /105  |
+| Team | Req | Arch | Impl | Deploy | Load | Docs | Diag | Show | Bonus | Total |
+| ---- | --- | ---- | ---- | ------ | ---- | ---- | ---- | ---- | ----- | ----- |
+| 1    | /20 | /25  | /25  | /10    | /5   | /5   | /5   | /10  |       | /105  |
+| 2    | /20 | /25  | /25  | /10    | /5   | /5   | /5   | /10  |       | /105  |
+| 3    | /20 | /25  | /25  | /10    | /5   | /5   | /5   | /10  |       | /105  |
+| 4    | /20 | /25  | /25  | /10    | /5   | /5   | /5   | /10  |       | /105  |
 
 ---
 

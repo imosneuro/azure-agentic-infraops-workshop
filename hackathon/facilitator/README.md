@@ -14,11 +14,11 @@
 
 ```powershell
 # Score individual team
-.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect"
+.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" -ShowcaseScore 8
 
 # Score all teams
 Get-ChildItem .\agent-output -Directory | ForEach-Object {
-    .\scripts\hackathon\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck
+    .\scripts\hackathon\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck -ShowcaseScore 0
 }
 
 # Display leaderboard
@@ -27,7 +27,7 @@ Get-ChildItem .\agent-output -Directory | ForEach-Object {
 
 ### Curveball Timing
 
-⚡ **13:20** — Announce the multi-region DR requirement (see [facilitator-guide.md](facilitator-guide.md) for script)
+⚡ **13:50** — Announce the multi-region DR requirement (see [facilitator-guide.md](facilitator-guide.md) for script)
 
 ### Emergency Contacts
 
