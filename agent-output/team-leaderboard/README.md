@@ -8,6 +8,8 @@
 ![Step](https://img.shields.io/badge/Step-6%20of%207-blue?style=for-the-badge)
 ![Cost](https://img.shields.io/badge/Est.%20Cost-$9.05%2Fmo-purple?style=for-the-badge)
 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjonathan-vella%2Fazure-agentic-infraops-workshop%2Fmain%2Finfra%2Fbicep%2Fteam-leaderboard%2Fazuredeploy.json)
+
 # 🏗️ team-leaderboard
 
 **Serverless hackathon scoring dashboard using Azure Static Web Apps with managed Functions and Azure Table Storage.**
@@ -23,7 +25,7 @@
 | Property           | Value                      |
 | ------------------ | -------------------------- |
 | **Created**        | 2026-02-12                 |
-| **Last Updated**   | 2026-02-13 (Step 6)       |
+| **Last Updated**   | 2026-02-13 (Step 6)        |
 | **Region**         | westeurope (all resources) |
 | **Environment**    | prod                       |
 | **Estimated Cost** | ~$9.05/month               |
@@ -115,6 +117,15 @@
 - Deployment: `team-leaderboard-20260213171523` — **Succeeded** (57s)
 - Resource Group: `rg-team-leaderboard-prod` (westeurope)
 - SWA URL: `https://purple-bush-029df9903.4.azurestaticapps.net`
+
+### App Handoff Artifacts
+
+- [app-prd.md](./app-prd.md) — Product Requirements Document (features, data model, roles)
+- [app-handoff-checklist.md](./app-handoff-checklist.md) — Step-by-step wiring guide for the app repo
+- [api-spec.md](./api-spec.md) — Full API specification (endpoints, schemas, errors)
+- [app-scaffold.md](./app-scaffold.md) — Recommended folder structure and starter code
+- [staticwebapp.config.json](./staticwebapp.config.json) — Auth, routes, and security headers
+- [`azuredeploy.json`](../../infra/bicep/team-leaderboard/azuredeploy.json) — ARM template for Deploy to Azure button
 
 ---
 
