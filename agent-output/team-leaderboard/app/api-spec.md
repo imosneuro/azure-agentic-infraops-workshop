@@ -26,7 +26,7 @@ function getClientPrincipal(req) {
 //   "identityProvider": "github",
 //   "userId": "<unique-id>",
 //   "userDetails": "<github-username>",
-//   "userRoles": ["authenticated", "writer"]
+//   "userRoles": ["authenticated", "member"]
 // }
 ```
 
@@ -40,7 +40,7 @@ Retrieve all teams.
 
 | Property   | Value                             |
 | ---------- | --------------------------------- |
-| **Auth**   | `authenticated` (reader + writer) |
+| **Auth**   | `authenticated` (`admin` + `member`) |
 | **Method** | GET                               |
 
 **Response `200 OK`:**
@@ -63,7 +63,7 @@ Create a new team.
 
 | Property   | Value         |
 | ---------- | ------------- |
-| **Auth**   | `writer` only |
+| **Auth**   | `admin` only |
 | **Method** | POST          |
 
 **Request Body:**
@@ -100,7 +100,7 @@ Update an existing team.
 
 | Property   | Value         |
 | ---------- | ------------- |
-| **Auth**   | `writer` only |
+| **Auth**   | `admin` only |
 | **Method** | PUT           |
 
 **Request Body:**
@@ -122,7 +122,7 @@ Delete a team and all associated scores.
 
 | Property   | Value         |
 | ---------- | ------------- |
-| **Auth**   | `writer` only |
+| **Auth**   | `admin` only |
 | **Method** | DELETE        |
 
 **Request Body:**
@@ -143,7 +143,7 @@ Retrieve scores. Supports optional query parameters for filtering.
 
 | Property   | Value                             |
 | ---------- | --------------------------------- |
-| **Auth**   | `authenticated` (reader + writer) |
+| **Auth**   | `authenticated` (`admin` + `member`) |
 | **Method** | GET                               |
 
 **Query Parameters:**
@@ -193,11 +193,11 @@ Retrieve scores. Supports optional query parameters for filtering.
 
 ### `POST /api/scores`
 
-Submit scores for a team. Upserts individual criterion scores.
+Admin-only manual score override for a team. Upserts individual criterion scores.
 
 | Property   | Value         |
 | ---------- | ------------- |
-| **Auth**   | `writer` only |
+| **Auth**   | `admin` only  |
 | **Method** | POST          |
 
 **Request Body:**
@@ -205,6 +205,7 @@ Submit scores for a team. Upserts individual criterion scores.
 ```json
 {
   "teamName": "team-alpha",
+  "overrideReason": "Manual correction after review",
   "scores": [
     {
       "category": "Requirements",
@@ -255,13 +256,93 @@ Submit scores for a team. Upserts individual criterion scores.
 
 ---
 
+### `GET /api/submissions`
+
+Retrieve submission queue for admin review.
+
+| Property   | Value         |
+| ---------- | ------------- |
+| **Auth**   | `admin` only  |
+| **Method** | GET           |
+
+**Query Parameters:**
+
+| Parameter | Type   | Description                               |
+| --------- | ------ | ----------------------------------------- |
+| `status`  | string | `Pending`, `Approved`, `Rejected`         |
+| `team`    | string | Optional team filter                      |
+
+**Response `200 OK`:**
+
+```json
+[
+  {
+    "submissionId": "f833513e-7a56-4295-b3dc-58ba6ff8d5a9",
+    "teamName": "team-alpha",
+    "submittedBy": "user1",
+    "submittedAt": "2026-02-13T14:30:00Z",
+    "status": "Pending",
+    "calculatedTotal": 113
+  }
+]
+```
+
+---
+
+### `POST /api/submissions/validate`
+
+Approve or reject a pending submission.
+
+| Property   | Value         |
+| ---------- | ------------- |
+| **Auth**   | `admin` only  |
+| **Method** | POST          |
+
+**Request Body:**
+
+```json
+{
+  "submissionId": "f833513e-7a56-4295-b3dc-58ba6ff8d5a9",
+  "action": "approve",
+  "reason": ""
+}
+```
+
+**Rules:**
+
+- `action` must be `approve` or `reject`
+- `reason` is required when `action` is `reject`
+- `approve` normalizes the submitted payload into the `Scores` table
+
+**Response `200 OK`:**
+
+```json
+{
+  "submissionId": "f833513e-7a56-4295-b3dc-58ba6ff8d5a9",
+  "teamName": "team-alpha",
+  "status": "Approved",
+  "reviewedBy": "admin-user",
+  "reviewedAt": "2026-02-13T15:00:00Z"
+}
+```
+
+**Errors:**
+
+| Status | Condition                            |
+| ------ | ------------------------------------ |
+| `400`  | Invalid action                       |
+| `400`  | Reject action missing reason         |
+| `404`  | Submission not found                 |
+
+---
+
 ### `GET /api/awards`
 
 Retrieve all award assignments.
 
 | Property   | Value                             |
 | ---------- | --------------------------------- |
-| **Auth**   | `authenticated` (reader + writer) |
+| **Auth**   | `authenticated` (`admin` + `member`) |
 | **Method** | GET                               |
 
 **Response `200 OK`:**
@@ -285,7 +366,7 @@ Assign an award to a team. Upserts (one team per award category).
 
 | Property   | Value         |
 | ---------- | ------------- |
-| **Auth**   | `writer` only |
+| **Auth**   | `admin` only |
 | **Method** | POST          |
 
 **Request Body:**
@@ -318,11 +399,11 @@ Assign an award to a team. Upserts (one team per award category).
 
 ### `GET /api/attendees`
 
-Retrieve all attendee registrations. **Writer only** for full list.
+Retrieve all attendee registrations. **Admin only** for full list.
 
 | Property   | Value         |
 | ---------- | ------------- |
-| **Auth**   | `writer` only |
+| **Auth**   | `admin` only |
 | **Method** | GET           |
 
 **Response `200 OK`:**
@@ -348,7 +429,7 @@ Retrieve the current user's own registration.
 
 | Property   | Value                             |
 | ---------- | --------------------------------- |
-| **Auth**   | `authenticated` (reader + writer) |
+| **Auth**   | `authenticated` (`admin` + `member`) |
 | **Method** | GET                               |
 
 **Response `200 OK`:** Single attendee object.
@@ -363,7 +444,7 @@ Register or update the current user's profile.
 
 | Property   | Value                             |
 | ---------- | --------------------------------- |
-| **Auth**   | `authenticated` (reader + writer) |
+| **Auth**   | `authenticated` (`admin` + `member`) |
 | **Method** | POST                              |
 
 **Request Body:**
@@ -389,11 +470,11 @@ Register or update the current user's profile.
 
 ### `POST /api/upload`
 
-Bulk import scores from a `score-results.json` file (output of `Score-Team.ps1`).
+Submit a `score-results.json` payload for admin validation.
 
 | Property         | Value              |
 | ---------------- | ------------------ |
-| **Auth**         | `writer` only      |
+| **Auth**         | `member` only      |
 | **Method**       | POST               |
 | **Content-Type** | `application/json` |
 
@@ -445,15 +526,21 @@ Bulk import scores from a `score-results.json` file (output of `Score-Team.ps1`)
 }
 ```
 
-**Response `200 OK`:**
+**Behavior:**
+
+- Caller team is resolved from `Attendees` profile
+- `TeamName` in payload must match caller team
+- API stores payload in `Submissions` with `Pending` status
+- No writes to `Scores` happen until admin approval
+
+**Response `202 Accepted`:**
 
 ```json
 {
+  "submissionId": "f833513e-7a56-4295-b3dc-58ba6ff8d5a9",
   "teamName": "team-alpha",
-  "scoresImported": 10,
-  "bonusImported": 4,
-  "totalScore": 113,
-  "grade": "OUTSTANDING"
+  "status": "Pending",
+  "message": "Submission received and queued for admin validation"
 }
 ```
 
@@ -463,6 +550,7 @@ Bulk import scores from a `score-results.json` file (output of `Score-Team.ps1`)
 | ------ | ---------------------------------- |
 | `400`  | Invalid JSON structure             |
 | `400`  | Missing `TeamName` field           |
+| `403`  | Payload team does not match caller team |
 | `400`  | Score values exceed max points     |
 | `404`  | Team not found (create team first) |
 
@@ -470,18 +558,20 @@ Bulk import scores from a `score-results.json` file (output of `Score-Team.ps1`)
 
 ## Table Storage Key Design
 
-| Table     | PartitionKey    | RowKey                     | Access Pattern                           |
-| --------- | --------------- | -------------------------- | ---------------------------------------- |
-| Teams     | `"team"`        | Team name                  | All teams in one partition for fast list |
-| Attendees | GitHub username | `"profile"`                | Direct lookup by username                |
-| Scores    | Team name       | `"{Category}_{Criterion}"` | All scores for a team in one partition   |
-| Awards    | `"award"`       | Award category             | All awards in one partition              |
+| Table       | PartitionKey    | RowKey                     | Access Pattern                           |
+| ----------- | --------------- | -------------------------- | ---------------------------------------- |
+| Teams       | `"team"`        | Team name                  | All teams in one partition for fast list |
+| Attendees   | GitHub username | `"profile"`                | Direct lookup by username                |
+| Scores      | Team name       | `"{Category}_{Criterion}"` | All scores for a team in one partition   |
+| Submissions | Team name       | Submission GUID            | Queue and audit trail by team            |
+| Awards      | `"award"`       | Award category             | All awards in one partition              |
 
 ### Why This Design
 
 - **Teams**: Fixed PK allows efficient `PartitionKey eq 'team'` query for leaderboard
 - **Attendees**: Username as PK enables O(1) lookup for `/.auth/me` → profile resolution
 - **Scores**: Team as PK groups all scores together; RK pattern enables category filtering
+- **Submissions**: Keeps pending and reviewed payloads with reviewer audit metadata
 - **Awards**: Fixed PK with 5 known RKs — always a point query
 
 ---
@@ -509,6 +599,8 @@ All error responses follow a consistent JSON structure:
 | `INVALID_CATEGORY`  | 400         | Unknown scoring category            |
 | `INVALID_AWARD`     | 400         | Unknown award category              |
 | `SCORE_EXCEEDS_MAX` | 400         | Points exceed maximum for criterion |
+| `TEAM_SCOPE_VIOLATION` | 403      | Member attempted cross-team submit  |
+| `SUBMISSION_NOT_FOUND` | 404      | Submission ID does not exist        |
 | `UNAUTHORIZED`      | 401         | Missing or invalid auth context     |
 | `FORBIDDEN`         | 403         | Insufficient role for operation     |
 

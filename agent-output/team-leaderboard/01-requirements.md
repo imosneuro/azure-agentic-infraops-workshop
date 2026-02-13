@@ -44,7 +44,7 @@ The hackathon scoring system currently exists as a static Markdown file ([scorin
 
 The scoring rubric defines:
 
-- **7 scored categories** (105 base points): Requirements (20), Architecture (25), Implementation (25), Deployment (20), Load Testing (5), Documentation (5), Diagnostics (5)
+- **8 scored categories** (105 base points): Requirements (20), Architecture (25), Implementation (25), Deployment (10), Load Testing (5), Documentation (5), Diagnostics (5), Partner Showcase (10)
 - **4 bonus categories** (+25 max): Zone Redundancy (+5), Private Endpoints (+5), Multi-Region DR (+10), Managed Identities (+5)
 - **Grading scale**: Outstanding (≥90%), Excellent (≥80%), Good (≥70%), Satisfactory (≥60%), Needs Improvement (<60%)
 - **5 award categories**: Best Overall, Security Champion, Cost Optimizer, Best Architecture, Speed Demon
@@ -71,20 +71,21 @@ flowchart LR
 
 | #   | Feature               | Priority  | Description                                                                                                                                                                                                                                                                                              |
 | --- | --------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| F1  | Score entry form      | Must-Have | Facilitators enter scores per team across all 7 categories + 4 bonus items. Each criterion within a category has individual point entry.                                                                                                                                                                 |
+| F1  | Score entry form      | Must-Have | Facilitators enter scores per team across all 8 categories + 4 bonus items. Each criterion within a category has individual point entry.                                                                                                                                                                 |
 | F2  | Live leaderboard      | Must-Have | Real-time ranking of all teams by total score, visible to all users. Auto-updates when new scores are submitted.                                                                                                                                                                                         |
 | F3  | Grading display       | Must-Have | Each team shows calculated grade (Outstanding/Excellent/Good/Satisfactory/Needs Improvement) based on percentage of 105 base points.                                                                                                                                                                     |
 | F4  | Award categories      | Must-Have | Display special award winners: Best Overall, Security Champion, Cost Optimizer, Best Architecture, Speed Demon. Facilitators can assign awards.                                                                                                                                                          |
 | F5  | Authentication        | Must-Have | GitHub authentication is **mandatory for all users** — no anonymous or public access. All views (leaderboard, scores, registration) require GitHub login via Azure Static Web Apps built-in auth.                                                                                                        |
-| F6  | JSON score upload     | Must-Have | Writers can drag-and-drop or browse to upload a `score-results.json` file (the output format of `Score-Team.ps1`). The app parses the JSON and populates/updates all scores for the specified team in one action. Validates the JSON structure before importing and shows a preview with confirm/cancel. |
-| F7  | Attendee registration | Must-Have | Authenticated users can register their profile: first name, surname, and team number. Registration data stored in Table Storage. Writers can view/manage all attendee records; readers can only update their own profile.                                                                                |
+| F6  | JSON score upload     | Must-Have | Admins can drag-and-drop or browse to upload a `score-results.json` file (the output format of `Score-Team.ps1`). The app parses the JSON and populates/updates all scores for the specified team in one action. Validates the JSON structure before importing and shows a preview with confirm/cancel. |
+| F7  | Attendee registration | Must-Have | Authenticated users can register their profile: first name, surname, and team number. Registration data stored in Table Storage. Admins can view/manage all attendee records; members can only update their own profile.                                                                                |
+| F8  | Admin validation & manual override | Must-Have | Admins review team submissions before scores are published to the leaderboard. Admins can approve, reject (with reason), or manually override published scores for any team.                                                                                                        |
 
 ### User Roles
 
 | Role          | SWA Role Name | Permissions                                                                                                          |
 | ------------- | ------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Writer**    | `writer`      | Create/edit/delete team scores, assign awards, manage teams, view/manage all attendee records, upload JSON scores    |
-| **Reader**    | `reader`      | View leaderboard, view own team score breakdown, register/update own attendee profile (read-only for all other data) |
+| **Admin**     | `admin`       | Create/edit/delete team scores, assign awards, manage teams, view/manage all attendee records, upload JSON scores    |
+| **Member**    | `member`      | View leaderboard, view own team score breakdown, register/update own attendee profile (read-only for all other data) |
 | **Anonymous** | `anonymous`   | **No access** — all routes require authentication. Anonymous users are redirected to GitHub login.                   |
 
 > [!IMPORTANT]
@@ -98,6 +99,7 @@ flowchart LR
 | **Attendee**   | gitHubUsername (PartitionKey), firstName, surname, teamNumber, registeredAt, updatedAt |
 | **Score**      | teamName, category, criterion, points, maxPoints, scoredBy, timestamp                  |
 | **BonusScore** | teamName, enhancement, points, verified, timestamp                                     |
+| **Submission** | teamName, submittedBy, payload (JSON), status (Pending/Approved/Rejected), reviewedBy, reviewedAt, reason, timestamp |
 | **Award**      | category, teamName, assignedBy, timestamp                                              |
 
 ## Non-Functional Requirements (NFRs)
@@ -132,7 +134,7 @@ flowchart LR
 | Control                | Implementation                                                                                          |
 | ---------------------- | ------------------------------------------------------------------------------------------------------- |
 | **Authentication**     | GitHub OAuth via Azure Static Web Apps built-in auth — **mandatory for all users, no anonymous access** |
-| **Authorization**      | Role-based: writers (full CRUD), readers (view-only + own profile)                                      |
+| **Authorization**      | Role-based: admins (full CRUD), members (view-only + own profile)                                      |
 | **Transport Security** | HTTPS-only (SWA default), TLS 1.2 minimum                                                               |
 | **Data Protection**    | Azure Table Storage encryption at rest (default)                                                        |
 | **API Security**       | Azure Functions with SWA authentication context                                                         |
@@ -257,11 +259,11 @@ The repository README must include a **Deploy to Azure** button that links to th
 
 The app must faithfully implement the scoring structure from [scoring-rubric.md](../../hackathon/facilitator/scoring-rubric.md):
 
-- 7 categories with weighted point values (105 base total)
+- 8 categories with weighted point values (105 base total)
 - Individual criteria within each category (e.g., Requirements has 5 criteria × 4 pts each)
 - 4 bonus enhancements with verification flags (+25 max)
 - Percentage-based grading (5 tiers)
-- 5 award categories assignable by writers
+- 5 award categories assignable by admins
 - Per-team score sheet with category subtotals and grand total
 - Attendee registration (name, surname, team number) for all authenticated users
 

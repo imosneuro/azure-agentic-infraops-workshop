@@ -28,7 +28,7 @@
 
 | Category                    | Status      | Notes                                                         |
 | --------------------------- | ----------- | ------------------------------------------------------------- |
-| **Functional Requirements** | ✅ Complete | 7 features (F1–F7), roles (writer/reader), data model defined |
+| **Functional Requirements** | ✅ Complete | 8 features (F1–F8), roles (admin/member), data model defined |
 | **NFRs**                    | ✅ Complete | SLA 99.9%, RTO 4h, RPO 1h, <2s response, 50 users             |
 | **Compliance**              | ✅ Complete | GDPR minimal PII, 6 security controls                         |
 | **Budget**                  | ✅ Complete | $50+/mo budget, ~$10/mo estimated                             |
@@ -70,7 +70,7 @@ flowchart TB
     Storage --> Scores["📊 Scores Table"]
     Storage --> Awards["🏆 Awards Table"]
     SWA --> Auth["🔑 GitHub OAuth\nBuilt-in Auth\n⛔ No anonymous access"]
-    Auth --> Roles["👥 Roles: writer / reader"]
+    Auth --> Roles["👥 Roles: admin / member"]
 
     subgraph Security
         Auth
@@ -88,7 +88,7 @@ flowchart TB
 
 1. **Cheapest viable option** — SWA Standard at $9/mo includes managed Functions, custom auth, free SSL, and global CDN. No separate App Service Plan, Function App, or API Management needed.
 2. **Zero-server operations** — fully managed PaaS; no VMs, no patching, no scaling configuration.
-3. **GitHub auth built-in** — SWA natively supports GitHub OAuth with role assignments via `staticwebapp.config.json`. All users must authenticate — no anonymous access. Two roles: `writer` (full CRUD) and `reader` (view-only + own profile).
+3. **GitHub auth built-in** — SWA natively supports GitHub OAuth with role assignments via `staticwebapp.config.json`. All users must authenticate — no anonymous access. Two roles: `admin` (full CRUD) and `member` (view-only + own profile).
 4. **Table Storage for simplicity** — scoring and attendee data is simple key-value with known partition keys (team names, GitHub usernames). No relational joins needed. At <1 GB and <10K transactions/month, cost is effectively $0.
 
 ## WAF Pillar Assessment
@@ -97,7 +97,7 @@ flowchart TB
 
 | Area                   | Assessment                                                                                                                                                                                         | Score |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| **Identity**           | GitHub OAuth via SWA built-in auth — **mandatory for all users, no anonymous access**. Role-based access (`writer` vs `reader`) via `staticwebapp.config.json`. All routes require authentication. | 9/10  |
+| **Identity**           | GitHub OAuth via SWA built-in auth — **mandatory for all users, no anonymous access**. Role-based access (`admin` vs `member`) via `staticwebapp.config.json`. All routes require authentication. | 9/10  |
 | **Network**            | HTTPS-only by default (SWA enforced). TLS 1.2 minimum. No public API endpoints outside SWA — Functions are only accessible via the SWA reverse proxy.                                              | 7/10  |
 | **Data Protection**    | Azure Table Storage encryption at rest (SSE, AES-256, Microsoft-managed keys). No sensitive PII stored — only GitHub usernames and team names.                                                     | 7/10  |
 | **Threat Detection**   | No WAF, DDoS Standard, or Defender enabled. Acceptable for a low-risk, event-scoped tool. SWA has basic DDoS protection via Azure infrastructure.                                                  | 5/10  |

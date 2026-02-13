@@ -183,6 +183,11 @@ This challenge tests your ability to:
 **Remember**: There's no single "right answer" - the quality of your decision-making process
 matters more than the specific option you choose.
 
+> [!NOTE]
+> Final scoring uses the criteria in the
+> [Scoring Rubric](../facilitator/scoring-rubric.md),
+> which is the single source of truth for all point values.
+
 ## Next Step
 
 After completing your ADR and Bicep updates:

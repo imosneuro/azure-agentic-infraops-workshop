@@ -104,7 +104,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Team role cards for Requirements Lead, Architect, Developer, Ops Engineer
 - **Facilitator materials** - Comprehensive coaching and scoring guides
   - Detailed facilitator guide with timing and troubleshooting
-  - WAF-aligned scoring rubric (100 base + 25 bonus points)
+  - WAF-aligned scoring rubric (105 base + 25 bonus points)
   - Solution reference with expected outputs and patterns
   - PowerShell scoring scripts for automated evaluation
 - **Hackathon invitation** - Marketing material for participant recruitment

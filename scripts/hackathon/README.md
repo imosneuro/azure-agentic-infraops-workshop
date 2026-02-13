@@ -72,7 +72,7 @@ pwsh -File scripts/hackathon/Get-GovernanceStatus.ps1 \
 
 #### Score-Team.ps1
 
-Score a team's submission based on WAF-aligned criteria (100 base + 25 bonus points).
+Score a team's submission based on WAF-aligned criteria (105 base + 25 bonus points).
 
 ```bash
 # Score without Azure deployment verification
@@ -155,6 +155,9 @@ pwsh -File scripts/hackathon/Cleanup-HackathonResources.ps1 -Force
 | Check policies      | `pwsh -File scripts/hackathon/Get-GovernanceStatus.ps1 -SubscriptionId "..." -HackathonOnly`                                                  |
 | Score all teams     | `Get-ChildItem ./agent-output -Directory \| ForEach-Object { pwsh -File scripts/hackathon/Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck }` |
 | Show leaderboard    | `pwsh -File scripts/hackathon/Get-Leaderboard.ps1`                                                                                            |
+
+> [!TIP]
+> For live events, the **Team Leaderboard web app** provides a browser-based alternative to these scripts. See [`agent-output/team-leaderboard/app/app-prd.md`](../../agent-output/team-leaderboard/app/app-prd.md).
 
 ---
 

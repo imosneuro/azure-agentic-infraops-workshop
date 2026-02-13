@@ -24,13 +24,19 @@ team-leaderboard-app/
 │   │   └── index.js                 # GET/POST/PUT/DELETE /api/teams
 │   ├── scores/
 │   │   ├── function.json
-│   │   └── index.js                 # GET/POST/PUT /api/scores
+│   │   └── index.js                 # GET/POST /api/scores (admin override writes)
+│   ├── submissions/
+│   │   ├── function.json
+│   │   └── index.js                 # GET /api/submissions (admin queue)
+│   ├── submissions-validate/
+│   │   ├── function.json
+│   │   └── index.js                 # POST /api/submissions/validate
 │   ├── awards/
 │   │   ├── function.json
 │   │   └── index.js                 # GET/POST/PUT /api/awards
 │   ├── attendees/
 │   │   ├── function.json
-│   │   └── index.js                 # GET /api/attendees (writer), GET/POST /api/attendees/me
+│   │   └── index.js                 # GET /api/attendees (admin), GET/POST /api/attendees/me
 │   ├── upload/
 │   │   ├── function.json
 │   │   └── index.js                 # POST /api/upload (JSON score import)
@@ -44,11 +50,14 @@ team-leaderboard-app/
 │   │   └── main.css
 │   ├── components/
 │   │   ├── Leaderboard.js           # F2: Ranked team table
-│   │   ├── ScoreEntry.js            # F1: Score entry form (writer)
+│   │   ├── ScoreSubmission.js       # F1: Team score submission form (member)
 │   │   ├── TeamDetail.js            # Score breakdown per team
-│   │   ├── Awards.js                # F4: Award display + assignment
+│   │   ├── SubmissionStatus.js      # Member submission status and history
+│   │   ├── AdminReviewQueue.js      # F8: Admin approval/rejection queue
+│   │   ├── ManualOverride.js        # F8: Admin manual score correction
+│   │   ├── Awards.js                # F4: Award display + assignment (admin write)
 │   │   ├── Registration.js          # F7: Attendee profile form
-│   │   ├── UploadScores.js          # F6: JSON drag-drop upload
+│   │   ├── UploadScores.js          # F6: Own-team JSON upload
 │   │   └── Navigation.js            # Nav bar with role-aware links
 │   ├── services/
 │   │   ├── api.js                   # fetch() wrappers for /api/* endpoints
@@ -264,6 +273,15 @@ Adjust the `output_location` in your GitHub Actions workflow and SWA config acco
 
 ---
 
+## Role and Scope Enforcement
+
+Implement API authorization and validation with these invariants:
+
+- `member` role can submit uploads only for their own team.
+- Team identity is resolved server-side from attendee profile (`/.auth/me` + `Attendees`).
+- `admin` role validates/rejects submissions and can manually override scores.
+- Leaderboard totals read from approved score records only.
+
 ## Starter `README.md` for the App Repo
 
 ```markdown
@@ -285,9 +303,9 @@ Pushes to `main` trigger automatic deployment via GitHub Actions.
 
 ## Documentation
 
-- [Product Requirements](link-to-infra-repo/agent-output/team-leaderboard/app/app-prd.md)
-- [API Specification](link-to-infra-repo/agent-output/team-leaderboard/app/api-spec.md)
-- [Handoff Checklist](link-to-infra-repo/agent-output/team-leaderboard/app/app-handoff-checklist.md)
+- [Product Requirements](../../agent-output/team-leaderboard/app/app-prd.md)
+- [API Specification](../../agent-output/team-leaderboard/app/api-spec.md)
+- [Handoff Checklist](../../agent-output/team-leaderboard/app/app-handoff-checklist.md)
 ```
 
 ---

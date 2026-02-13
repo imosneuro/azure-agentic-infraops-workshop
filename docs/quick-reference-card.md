@@ -23,6 +23,15 @@
 
 **Total Points**: 105 base + 25 bonus
 
+## Scoring & Leaderboard
+
+| Method              | How                                                                                             |
+| ------------------- | ----------------------------------------------------------------------------------------------- |
+| **Script scoring**  | `pwsh scripts/hackathon/Score-Team.ps1 -TeamName "<team>" -SkipAzureCheck -ShowcaseScore 0`     |
+| **Leaderboard CLI** | `pwsh scripts/hackathon/Get-Leaderboard.ps1`                                                    |
+| **Web app**         | Open the Team Leaderboard app URL — submit scores via browser and view live standings            |
+| **Rubric**          | [Scoring Rubric](../hackathon/facilitator/scoring-rubric.md) — single source of truth for points |
+
 ---
 
 ## Keyboard Shortcuts

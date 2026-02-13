@@ -45,7 +45,7 @@ SKY = "#7DD3FC"
 # ============================================================
 # Step 1: Facilitator logs in
 # ============================================================
-dot.node("facilitator", "👩‍💻 Writer\nlogs in with\nGitHub",
+dot.node("facilitator", "👩‍💻 Admin\nlogs in with\nGitHub",
          shape="box", style="filled,rounded,bold", fillcolor=PINK, color="#E11D48",
          fontcolor="white", width="1.8", height="1.2")
 

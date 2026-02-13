@@ -143,3 +143,45 @@ pwsh scripts/hackathon/Get-GovernanceStatus.ps1
 1. Ensure resources are deployed in the correct resource group
 2. Check that required tags (`Environment`, `ManagedBy`, `Project`, `Owner`) are applied
 3. Run the script with `-Verbose` for detailed output
+
+## Leaderboard App
+
+### SWA authentication redirect loop
+
+**Symptoms**: Browser keeps redirecting between the app and GitHub login.
+
+**Fixes**:
+
+1. Clear browser cookies for `*.azurestaticapps.net`
+2. Verify `staticwebapp.config.json` routes are correctly configured
+3. Ensure the GitHub OAuth app callback URL matches the SWA hostname
+
+### API returns 403 Forbidden
+
+**Symptoms**: API calls fail with `403` even after login.
+
+**Fixes**:
+
+1. Confirm the user has been assigned the correct role (`admin` or `member`) via SWA role invitations
+2. Check `staticwebapp.config.json` — the route may require a role the user doesn’t have
+3. Use `/.auth/me` to inspect the current user’s roles in the browser
+
+### Missing Submissions table
+
+**Symptoms**: Score submissions fail with a storage error referencing “Submissions”.
+
+**Fix**: The Submissions table must be created manually after infrastructure deployment:
+
+```bash
+az storage table create --name Submissions \
+  --account-name "<your-storage-account>" \
+  --auth-mode login
+```
+
+### Upload rejected — team mismatch
+
+**Symptoms**: JSON upload returns “Team mismatch” error.
+
+**Fix**: The `teamName` in the uploaded `score-results.json` must match the
+team the signed-in user is registered to. Verify the user’s attendee profile
+has the correct `teamNumber`.

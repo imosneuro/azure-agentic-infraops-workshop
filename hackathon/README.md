@@ -88,6 +88,11 @@ By the end of this hackathon, you will:
 > ⚠️ **Curveball Challenge**: At 13:50, facilitators announce new business requirements
 > (multi-region DR). This simulates real-world requirement changes!
 
+> 📊 **Scoring**: Teams can be scored via PowerShell scripts
+> (`Score-Team.ps1`, `Get-Leaderboard.ps1`) or the **Team Leaderboard web app**
+> for a live browser-based experience.
+> See the [Scoring Rubric](facilitator/scoring-rubric.md) for point values.
+
 ## The Challenge: Nordic Fresh Foods
 
 See [Scenario Brief](../docs/scenario-brief.md) for the full business challenge.

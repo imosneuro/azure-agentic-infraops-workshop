@@ -66,9 +66,9 @@
 
 ### Key Design Decisions
 
-- **Mandatory GitHub OAuth** — No anonymous access, writer/reader roles
+- **Mandatory GitHub OAuth** — No anonymous access, admin/member roles
 - **Single region** — All resources in `westeurope` to eliminate latency
-- **4 storage tables** — Teams, Attendees, Scores, Awards
+- **5 storage tables** — Teams, Attendees, Scores, Awards, Submissions
 - **9 required tags** — Azure Policy Deny enforces on resource group
 - **Shared key disabled** — MCAPSGov Modify policy; use managed identity
 

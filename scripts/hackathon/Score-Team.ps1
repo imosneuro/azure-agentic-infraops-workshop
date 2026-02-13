@@ -179,7 +179,7 @@ if (Test-Path $MainBicep) {
     Write-Host "  ⚠️ main.bicep not found at $BicepPath" -ForegroundColor Red
 }
 
-# 4. DEPLOYMENT (20 pts)
+# 4. DEPLOYMENT (10 pts)
 Write-Host "`n🚀 Deployment (10 pts)" -ForegroundColor Yellow
 if (-not $SkipAzureCheck -and $ResourceGroupName) {
     try {
@@ -359,8 +359,9 @@ Write-Host "  Showcase:        $($Score.Showcase)/10"
 Write-Host "  Bonus:           $($Score.Bonus)/25"
 Write-Host ""
 
-# Grade
-$Percentage = [math]::Round(($Score.Total / 130) * 100, 1)
+# Grade on base score only (105 pts) — bonus is additive but does not affect grade tier
+$BaseScore = $Score.Total - $Score.Bonus
+$Percentage = [math]::Round(($BaseScore / 105) * 100, 1)
 $Grade = switch ($Percentage) {
     { $_ -ge 90 } { "🏆 OUTSTANDING" }
     { $_ -ge 80 } { "🥇 EXCELLENT" }

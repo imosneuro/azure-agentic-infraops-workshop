@@ -1,14 +1,25 @@
 # App Handoff Checklist — Team Leaderboard
 
 ![Type](https://img.shields.io/badge/Type-Handoff-blue)
-![Status](https://img.shields.io/badge/Status-Draft-yellow)
+![Status](https://img.shields.io/badge/Status-Ready-brightgreen)
 ![Audience](https://img.shields.io/badge/Audience-Dev%20%2B%20Platform%20Team-green)
 
 > Step-by-step instructions to wire a new application repository to the deployed Azure Static Web Apps infrastructure.
 
+## Problem, Users, Value
+
+| Item        | Summary |
+| ----------- | ------- |
+| **Problem** | Manual JSON handling and script-only scoring are hard to operate consistently during a live hackathon. |
+| **Users**   | **Team members** submit only their own team scores. **Admins** validate submissions and can manually adjust published scores. |
+| **Value**   | This handoff ensures the deployed app enforces role-safe submission and review, reducing facilitator overhead while keeping score changes auditable. |
+
 ---
 
 ## Prerequisites
+
+> [!NOTE]
+> Subscription IDs, storage account names, and SWA hostnames below are **deployment-specific examples**. Replace them with values from your own deployment (see `06-deployment-summary.md`).
 
 - [ ] Azure CLI installed and authenticated (`az login`)
 - [ ] GitHub CLI installed and authenticated (`gh auth login`)
@@ -142,7 +153,7 @@ The [staticwebapp.config.json](./staticwebapp.config.json) file in this folder d
 
 - GitHub as the only auth provider (Google/Twitter disabled)
 - All routes require authentication (no anonymous access)
-- Role-based route guards (writer vs reader)
+- Role-based route guards (admin vs member)
 - SPA navigation fallback
 - Custom error pages
 
@@ -153,28 +164,28 @@ Place this file at the **root** of your app repo (same level as `package.json`).
 In the Azure Portal:
 
 1. Navigate to `stapp-team-leaderboard-prod` → **Role management**
-2. Invite facilitators with the `writer` role
-3. Invite participants with the `reader` role
+2. Invite facilitators with the `admin` role
+3. Invite participants with the `member` role
 
 Or via CLI:
 
 ```bash
-# Invite a writer
+# Invite an admin
 az staticwebapp users invite \
   --name "stapp-team-leaderboard-prod" \
   --resource-group "rg-team-leaderboard-prod" \
   --authentication-provider "github" \
   --user-details "<github-username>" \
-  --role "writer" \
+  --role "admin" \
   --domain "purple-bush-029df9903.4.azurestaticapps.net"
 
-# Invite a reader
+# Invite a member
 az staticwebapp users invite \
   --name "stapp-team-leaderboard-prod" \
   --resource-group "rg-team-leaderboard-prod" \
   --authentication-provider "github" \
   --user-details "<github-username>" \
-  --role "reader" \
+  --role "member" \
   --domain "purple-bush-029df9903.4.azurestaticapps.net"
 ```
 
@@ -234,6 +245,10 @@ az storage table create --name Scores \
 az storage table create --name Awards \
   --account-name "stteamleadpromn2ksi" \
   --auth-mode login
+
+az storage table create --name Submissions \
+  --account-name "stteamleadpromn2ksi" \
+  --auth-mode login
 ```
 
 ---
@@ -276,16 +291,18 @@ az staticwebapp appsettings list \
 ### 6.2 — API Endpoints
 
 - [ ] `GET /api/teams` returns 200 (empty array initially)
-- [ ] `POST /api/teams` creates a team (writer role)
+- [ ] `POST /api/teams` creates a team (admin role)
 - [ ] `GET /api/scores` returns 200
-- [ ] `POST /api/scores` creates scores (writer role)
+- [ ] `POST /api/scores` performs manual score override (admin role)
 - [ ] `GET /api/awards` returns 200
 - [ ] `GET /api/attendees` returns 200
-- [ ] `POST /api/upload` accepts JSON file (writer role)
+- [ ] `POST /api/upload` accepts JSON file for own team (member role)
+- [ ] `GET /api/submissions?status=Pending` returns queue (admin role)
+- [ ] `POST /api/submissions/validate` approves or rejects (admin role)
 
 ### 6.3 — Role Enforcement
 
-- [ ] Reader cannot access writer-only endpoints (returns 401/403)
+- [ ] Member cannot access admin-only endpoints (returns 401/403)
 - [ ] Anonymous user is redirected to login (never sees content)
 
 ### 6.4 — Resource Health
@@ -331,7 +348,7 @@ Requires a CNAME record pointing `leaderboard.yourdomain.com` → `purple-bush-0
 | 2   | SWA deployment token stored as GitHub secret | Dev team      | ⬜     |
 | 3   | GitHub Actions workflow created              | Dev team      | ⬜     |
 | 4   | `staticwebapp.config.json` deployed          | Dev team      | ⬜     |
-| 5   | User roles assigned (writer/reader)          | Platform team | ⬜     |
+| 5   | User roles assigned (admin/member)           | Platform team | ⬜     |
 | 6   | Managed identity RBAC configured             | Platform team | ⬜     |
 | 7   | Table Storage tables created                 | Platform team | ⬜     |
 | 8   | App settings configured                      | Platform team | ⬜     |

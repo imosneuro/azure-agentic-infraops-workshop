@@ -157,6 +157,11 @@ After generating documentation:
 - **Operational Maturity**: Professional infrastructure requires professional documentation
 - **Agent Capabilities**: How AI agents can accelerate documentation while maintaining quality
 
+> [!NOTE]
+> Final scoring uses the criteria in the
+> [Scoring Rubric](../facilitator/scoring-rubric.md),
+> which is the single source of truth for all point values.
+
 ## Next Step
 
 Move to [Challenge 7: Troubleshooting & Diagnostics](challenge-7-diagnostics.md) to create incident response runbooks.

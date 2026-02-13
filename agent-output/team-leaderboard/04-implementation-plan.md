@@ -44,7 +44,7 @@ Implement a serverless hackathon scoring dashboard using Azure Static Web Apps (
 | Storage Account         | `Microsoft.Storage/storageAccounts`        | Standard_LRS | ✅ `br/public:avm/res/storage/storage-account`        | 0.31.0  | Resource Group | ⬜ Todo |
 
 > [!NOTE]
-> Storage Account includes Table Service with 4 tables: Teams, Attendees, Scores, Awards.
+> Storage Account includes Table Service with 5 tables: Teams, Attendees, Scores, Awards, Submissions.
 > | Application Insights | `Microsoft.Insights/components` | N/A | ✅ `br/public:avm/res/insights/component` | 0.7.1 | Log Analytics | ⬜ Todo |
 > | Static Web App | `Microsoft.Web/staticSites` | Standard | ✅ `br/public:avm/res/web/static-site` | 0.9.3 | Resource Group | ⬜ Todo |
 
@@ -150,7 +150,7 @@ infra/bicep/team-leaderboard/
 **Resources**:
 
 - Storage Account via AVM `storage/storage-account:0.31.0`
-- Table Service + 4 Tables (Teams, Attendees, Scores, Awards)
+- Table Service + 5 Tables (Teams, Attendees, Scores, Awards, Submissions)
 
 **Key Configuration**:
 
@@ -229,7 +229,7 @@ infra/bicep/team-leaderboard/
 > [!NOTE]
 > SWA Standard includes managed Functions (no separate Function App needed).
 > GitHub OAuth is configured via `staticwebapp.config.json` in the app repo, not in Bicep.
-> **All routes require authentication** — no anonymous access. Roles: `writer` and `reader`.
+> **All routes require authentication** — no anonymous access. Roles: `admin` and `member`.
 
 **Outputs**:
 
@@ -263,7 +263,7 @@ infra/bicep/team-leaderboard/
 | ----- | ------------------- | ---------------------------- | ------------------------------------------------------- |
 | 0     | deploy.ps1          | Resource Group (with 9 tags) | `az group show` — verify tags present                   |
 | 1     | log-analytics.bicep | Log Analytics Workspace      | Workspace provisioned, collecting data                  |
-| 2     | storage.bicep       | Storage Account + 4 Tables   | Account created, tables accessible, shared key disabled |
+| 2     | storage.bicep       | Storage Account + 5 Tables   | Account created, tables accessible, shared key disabled |
 
 **Approval Gate**: Verify foundation resources exist and are correctly configured before deploying application layer.
 
@@ -295,7 +295,7 @@ infra/bicep/team-leaderboard/
 %%{init: {'theme':'neutral'}}%%
 graph TD
     RG["📦 Resource Group\n(9 required tags)"] --> LOG["📊 Log Analytics\nlog-team-leaderboard-prod"]
-    RG --> ST["💾 Storage Account\nstteamlbrdprod{suffix}\n4 Tables: Teams, Attendees, Scores, Awards"]
+    RG --> ST["💾 Storage Account\nstteamlbrdprod{suffix}\n5 Tables: Teams, Attendees, Scores, Awards, Submissions"]
     RG --> SWA["💻 Static Web App\nstapp-team-leaderboard-prod\nGitHub Auth (mandatory)"]
     LOG --> APPI["📈 Application Insights\nappi-team-leaderboard-prod"]
     APPI -.-> SWA
@@ -376,7 +376,7 @@ sequenceDiagram
 | Storage Account      | Encryption                 | SSE with Microsoft-managed keys (AES-256)                                          |
 | Static Web App       | HTTPS                      | Enforced by default (SWA platform)                                                 |
 | Static Web App       | Authentication             | GitHub OAuth via SWA built-in auth — **mandatory, no anonymous access**            |
-| Static Web App       | Roles                      | `writer` (full CRUD), `reader` (view + own profile) via `staticwebapp.config.json` |
+| Static Web App       | Roles                      | `admin` (full CRUD), `member` (view + own profile) via `staticwebapp.config.json` |
 | Static Web App       | API Access                 | Functions accessible only through SWA reverse proxy                                |
 | Application Insights | Connection                 | Uses connection string (not deprecated instrumentation key)                        |
 | Log Analytics        | Data Retention             | 30 days (cost-optimized)                                                           |

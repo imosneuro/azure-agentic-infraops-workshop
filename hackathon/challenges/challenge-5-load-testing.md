@@ -183,6 +183,11 @@ Context:
 💡 **5 minutes**: Analyze results and identify patterns
 💡 **10 minutes**: Use `design` agent to generate professional documentation
 
+> [!NOTE]
+> Final scoring uses the criteria in the
+> [Scoring Rubric](../facilitator/scoring-rubric.md),
+> which is the single source of truth for all point values.
+
 ## Next Steps
 
 After validating performance, proceed to [Challenge 6: Documentation](challenge-6-documentation.md)

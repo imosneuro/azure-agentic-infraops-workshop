@@ -239,3 +239,8 @@ Use any extra time to:
 - Explore alternative architectures
 - Practice explaining your workflow diagram
 - Prepare for the DR curveball
+
+> [!NOTE]
+> Final scoring uses the criteria in the
+> [Scoring Rubric](../facilitator/scoring-rubric.md),
+> which is the single source of truth for all point values.

@@ -320,6 +320,11 @@ Get-ChildItem .\agent-output -Directory | Where-Object { $_.Name -ne ".gitkeep" 
 .\scripts\hackathon\Get-Leaderboard.ps1
 ```
 
+> [!TIP]
+> Scores can also be submitted and reviewed via the **Team Leaderboard web app**
+> for a browser-based experience during live events.
+> See the [app PRD](../../agent-output/team-leaderboard/app/app-prd.md) for setup details.
+
 ### Manual Verification (Bonus Points)
 
 | Bonus              | How to Verify                              |

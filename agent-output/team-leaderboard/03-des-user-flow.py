@@ -48,7 +48,7 @@ DISPLAY = {"shape": "box", "style": "filled,rounded", "fillcolor": "#E0F7FA", "c
 # ============================================================
 with dot.subgraph(name="cluster_facilitator") as fac:
     fac.attr(
-        label="👤 Writer (Authenticated via GitHub)",
+        label="👤 Admin (Authenticated via GitHub)",
         style="filled",
         fillcolor="#F3E5F5",
         color="#9C27B0",
@@ -145,7 +145,7 @@ with dot.subgraph(name="cluster_participant") as part:
 # Facilitator login flow
 dot.edge("start", "login", label="1. Begin")
 dot.edge("login", "auth_check", label="GitHub OAuth")
-dot.edge("auth_check", "create_teams", label="Role: writer")
+dot.edge("auth_check", "create_teams", label="Role: admin")
 dot.edge("create_teams", "store_teams", label="POST /api/teams", style="dashed", color="#FF5722")
 dot.edge("create_teams", "choose_method", label="2. Start scoring")
 

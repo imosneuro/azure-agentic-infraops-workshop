@@ -35,7 +35,7 @@ infra/bicep/team-leaderboard/
 ├── deploy.ps1              # PowerShell deployment script with phased deployment
 └── modules/
     ├── log-analytics.bicep # AVM: operational-insights/workspace:0.15.0
-    ├── storage.bicep       # AVM: storage/storage-account:0.31.0 (4 tables)
+    ├── storage.bicep       # AVM: storage/storage-account:0.31.0 (5 tables)
     ├── app-insights.bicep  # AVM: insights/component:0.7.1
     └── static-web-app.bicep # AVM: web/static-site:0.9.3 (Standard SKU)
 ```
@@ -56,7 +56,7 @@ infra/bicep/team-leaderboard/
 | Resource                   | Bicep Type                                 | Module               | AVM Version |
 | -------------------------- | ------------------------------------------ | -------------------- | ----------- |
 | Log Analytics Workspace    | `Microsoft.OperationalInsights/workspaces` | log-analytics.bicep  | 0.15.0      |
-| Storage Account + 4 Tables | `Microsoft.Storage/storageAccounts`        | storage.bicep        | 0.31.0      |
+| Storage Account + 5 Tables | `Microsoft.Storage/storageAccounts`        | storage.bicep        | 0.31.0      |
 | Application Insights       | `Microsoft.Insights/components`            | app-insights.bicep   | 0.7.1       |
 | Static Web App (Standard)  | `Microsoft.Web/staticSites`                | static-web-app.bicep | 0.9.3       |
 
@@ -68,7 +68,7 @@ graph TD
     MAIN --> APPI["app-insights.bicep"]
     MAIN --> SWA["static-web-app.bicep"]
     LOG --> R1["📊 Log Analytics\nlog-team-leaderboard-prod"]
-    ST --> R2["💾 Storage Account\nstteamlbrdprod{suffix}\n4 Tables: Teams, Attendees, Scores, Awards"]
+    ST --> R2["💾 Storage Account\nstteamlbrdprod{suffix}\n5 Tables: Teams, Attendees, Scores, Awards, Submissions"]
     APPI --> R3["📈 App Insights\nappi-team-leaderboard-prod"]
     SWA --> R4["💻 Static Web App\nstapp-team-leaderboard-prod"]
 

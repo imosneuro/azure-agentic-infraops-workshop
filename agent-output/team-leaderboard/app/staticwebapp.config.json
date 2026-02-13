@@ -16,27 +16,37 @@
     {
       "route": "/api/scores",
       "methods": ["POST", "PUT", "DELETE"],
-      "allowedRoles": ["writer"]
+      "allowedRoles": ["admin"]
     },
     {
       "route": "/api/awards",
       "methods": ["POST", "PUT", "DELETE"],
-      "allowedRoles": ["writer"]
+      "allowedRoles": ["admin"]
     },
     {
       "route": "/api/teams",
       "methods": ["POST", "PUT", "DELETE"],
-      "allowedRoles": ["writer"]
+      "allowedRoles": ["admin"]
     },
     {
       "route": "/api/upload",
       "methods": ["POST"],
-      "allowedRoles": ["writer"]
+      "allowedRoles": ["member"]
+    },
+    {
+      "route": "/api/submissions",
+      "methods": ["GET"],
+      "allowedRoles": ["admin"]
+    },
+    {
+      "route": "/api/submissions/validate",
+      "methods": ["POST"],
+      "allowedRoles": ["admin"]
     },
     {
       "route": "/api/attendees",
       "methods": ["GET"],
-      "allowedRoles": ["writer"]
+      "allowedRoles": ["admin"]
     },
     {
       "route": "/api/attendees/me",

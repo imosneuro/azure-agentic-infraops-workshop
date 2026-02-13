@@ -1,7 +1,7 @@
 # Product Requirements Document — Team Leaderboard App
 
 ![Type](https://img.shields.io/badge/Type-PRD-blue)
-![Status](https://img.shields.io/badge/Status-Draft-yellow)
+![Status](https://img.shields.io/badge/Status-Ready-brightgreen)
 ![Audience](https://img.shields.io/badge/Audience-App%20Dev%20Team-green)
 
 > **Audience**: Application development team building the frontend + API for the hackathon leaderboard.
@@ -13,13 +13,23 @@
 
 ### Purpose
 
-A live, interactive web application for hackathon facilitators to score teams and for participants to view a real-time leaderboard. Replaces the existing static Markdown rubric + PowerShell scripts with a browser-based scoring dashboard.
+A live, interactive web application where each team submits its own scores and admin reviewers
+validate them before leaderboard publication. Replaces manual JSON handling and script-only
+scoring with a browser-based submission and review workflow.
+
+### Problem, Users, Value
+
+| Item        | Summary |
+| ----------- | ------- |
+| **Problem** | Scoring currently depends on manual JSON preparation and facilitator-side script execution, which slows leaderboard updates and creates avoidable data-entry errors. |
+| **Users**   | **Team members** submit only their own team scores and uploads. **Admins** review, approve or reject submissions, and can manually override published scores when needed. |
+| **Value**   | Reduces scoring turnaround, removes direct JSON file editing from normal operations, and keeps leaderboard updates traceable through an approval workflow. |
 
 ### Success Criteria
 
 | Criteria                       | Target                               |
 | ------------------------------ | ------------------------------------ |
-| All 7 features functional      | F1–F7 as listed below                |
+| All 8 features functional      | F1–F8 as listed below                |
 | GitHub authentication enforced | No anonymous access                  |
 | Response time                  | < 2 seconds for any page load        |
 | Concurrent users               | Up to 50                             |
@@ -44,7 +54,7 @@ The app runs on **Azure Static Web Apps (Standard)** with **managed Azure Functi
                          ┌─────────▼──────────┐
                          │  Azure Table        │
                          │  Storage             │
-                         │  4 tables            │
+                         │  5 tables            │
                          └────────────────────┘
 ```
 
@@ -52,24 +62,24 @@ The app runs on **Azure Static Web Apps (Standard)** with **managed Azure Functi
 
 ## Features
 
-### F1 — Score Entry Form
+### F1 — Team Score Submission Form
 
 | Attribute       | Detail                                                                                 |
 | --------------- | -------------------------------------------------------------------------------------- |
 | **Priority**    | Must-Have                                                                              |
-| **Role**        | Writer only                                                                            |
-| **Description** | Form for facilitators to enter scores per team across all 8 categories + 4 bonus items |
+| **Role**        | Team member only                                                                       |
+| **Description** | Form for team members to submit scores for their own team across all 8 categories + 4 bonus items |
 
 **Acceptance Criteria:**
 
-1. Writer selects a team from a dropdown (populated from Teams table)
+1. Team is derived from the signed-in user profile (no cross-team selector)
 2. Form displays all 8 scored categories with individual criterion fields
 3. Each criterion has a numeric input constrained to its max points
 4. Bonus items are toggleable checkboxes with point values auto-calculated
 5. Partner Showcase (category 8) has a manual 0–10 input
 6. Form validates totals before submission (category subtotals ≤ max)
-7. On submit, scores are upserted to the Scores table via `/api/scores`
-8. Success/error toast notification after submission
+7. On submit, payload is saved as a pending submission via `/api/upload`
+8. Success notification confirms the submission requires admin validation
 
 **Scoring Structure:**
 
@@ -99,7 +109,7 @@ The app runs on **Azure Static Web Apps (Standard)** with **managed Azure Functi
 | Attribute       | Detail                                        |
 | --------------- | --------------------------------------------- |
 | **Priority**    | Must-Have                                     |
-| **Role**        | Reader + Writer                               |
+| **Role**        | Admin + Team member                           |
 | **Description** | Real-time ranking of all teams by total score |
 
 **Acceptance Criteria:**
@@ -126,7 +136,7 @@ The app runs on **Azure Static Web Apps (Standard)** with **managed Azure Functi
 | Attribute       | Detail                                                                  |
 | --------------- | ----------------------------------------------------------------------- |
 | **Priority**    | Must-Have                                                               |
-| **Role**        | Reader + Writer                                                         |
+| **Role**        | Admin + Team member                                                     |
 | **Description** | Each team shows calculated grade based on percentage of 105 base points |
 
 **Acceptance Criteria:**
@@ -141,7 +151,7 @@ The app runs on **Azure Static Web Apps (Standard)** with **managed Azure Functi
 | Attribute       | Detail                                   |
 | --------------- | ---------------------------------------- |
 | **Priority**    | Must-Have                                |
-| **Role**        | Writer (assign), Reader + Writer (view)  |
+| **Role**        | Admin (assign), Admin + Team member (view) |
 | **Description** | Display and assign special award winners |
 
 **Acceptance Criteria:**
@@ -152,7 +162,7 @@ The app runs on **Azure Static Web Apps (Standard)** with **managed Azure Functi
    - 💰 Cost Optimizer — Best cost efficiency
    - 📐 Best Architecture — Most WAF-aligned design
    - 🚀 Speed Demon — First team to deploy successfully
-2. Writers can assign each award to a team via dropdown
+2. Admins can assign each award to a team via dropdown
 3. Awards are persisted to the Awards table via `/api/awards`
 4. Award badges displayed on the leaderboard next to winning teams
 
@@ -169,9 +179,9 @@ The app runs on **Azure Static Web Apps (Standard)** with **managed Azure Functi
 1. All routes require authentication (enforced via `staticwebapp.config.json`)
 2. Unauthenticated users are redirected to `/.auth/login/github`
 3. After login, SWA provides `/.auth/me` with user claims (GitHub username, roles)
-4. Role-based UI: writers see score entry + management controls; readers see view-only
+4. Role-based UI: admins see validation and management controls; members see own-team submit flows
 5. Logout via `/.auth/logout`
-6. Roles (`writer`, `reader`) assigned via SWA role invitations in Azure Portal
+6. Roles (`admin`, `member`) assigned via SWA role invitations in Azure Portal
 
 **SWA Auth Flow:**
 
@@ -184,17 +194,19 @@ User → SWA → /.auth/login/github → GitHub OAuth → callback → /.auth/me
 | Attribute       | Detail                                                                    |
 | --------------- | ------------------------------------------------------------------------- |
 | **Priority**    | Must-Have                                                                 |
-| **Role**        | Writer only                                                               |
-| **Description** | Bulk import scores from `score-results.json` (output of `Score-Team.ps1`) |
+| **Role**        | Team member only                                                          |
+| **Description** | Upload `score-results.json` for the signed-in member's own team only     |
 
 **Acceptance Criteria:**
 
 1. Drag-and-drop or file browse to upload a `score-results.json` file
 2. App validates the JSON structure matches the expected schema
-3. Preview table shows parsed scores before import
-4. Confirm/cancel dialog before writing to Table Storage
-5. On confirm, upserts all scores for the specified team
-6. Error handling for malformed JSON or missing required fields
+3. Team name in uploaded JSON must match the member's assigned team
+4. Preview table shows parsed scores before submit
+5. Confirm/cancel dialog before creating a pending submission
+6. Submitted payload is stored with `Pending` status and not yet in leaderboard totals
+7. Admin approves/rejects submission; only approved payloads are written to Scores table
+8. Error handling for malformed JSON or missing required fields
 
 **Expected JSON Structure (from `Score-Team.ps1`):**
 
@@ -221,7 +233,7 @@ User → SWA → /.auth/login/github → GitHub OAuth → callback → /.auth/me
 | Attribute       | Detail                                                      |
 | --------------- | ----------------------------------------------------------- |
 | **Priority**    | Must-Have                                                   |
-| **Role**        | All authenticated users (own profile); Writers (manage all) |
+| **Role**        | All authenticated users (own profile); Admins (manage all) |
 | **Description** | Authenticated users register their profile linked to a team |
 
 **Acceptance Criteria:**
@@ -229,24 +241,43 @@ User → SWA → /.auth/login/github → GitHub OAuth → callback → /.auth/me
 1. After first login, users are prompted to register (first name, surname, team number)
 2. Registration form pre-fills GitHub username from `/.auth/me`
 3. Data stored in Attendees table with `gitHubUsername` as PartitionKey
-4. Readers can update only their own profile
-5. Writers can view and manage all attendee records
+4. Members can update only their own profile
+5. Admins can view and manage all attendee records
 6. Team number links to the Teams table for team roster display
+
+### F8 — Admin Validation & Manual Override
+
+| Attribute       | Detail                                                                 |
+| --------------- | ---------------------------------------------------------------------- |
+| **Priority**    | Must-Have                                                              |
+| **Role**        | Admin only                                                             |
+| **Description** | Admin validates team submissions, can reject with reason, and can override scores manually |
+
+**Acceptance Criteria:**
+
+1. Admin queue shows pending submissions with team, submitter, timestamp, and parsed totals
+2. Approve action writes normalized criterion records into Scores table
+3. Reject action requires a reason and stores review metadata
+4. Admin can manually update approved scores via `/api/scores` override flow
+5. Reviewer identity and timestamps are stored for auditability
+6. Leaderboard only reflects approved or manually overridden scores
 
 ---
 
 ## User Roles & Permissions Matrix
 
-| Action             | Writer | Reader             | Anonymous  |
-| ------------------ | ------ | ------------------ | ---------- |
-| View leaderboard   | ✅     | ✅                 | ❌ Blocked |
-| View team detail   | ✅     | ✅ (own team only) | ❌         |
-| Enter/edit scores  | ✅     | ❌                 | ❌         |
-| Upload JSON scores | ✅     | ❌                 | ❌         |
-| Assign awards      | ✅     | ❌                 | ❌         |
-| Manage teams       | ✅     | ❌                 | ❌         |
-| Register profile   | ✅     | ✅ (own only)      | ❌         |
-| View all attendees | ✅     | ❌                 | ❌         |
+| Action                      | Admin | Team member        | Anonymous  |
+| --------------------------- | ----- | ------------------ | ---------- |
+| View leaderboard            | ✅    | ✅                 | ❌ Blocked |
+| View team detail            | ✅    | ✅ (own team only) | ❌         |
+| Submit own team scores      | ❌    | ✅                 | ❌         |
+| Upload own team JSON        | ❌    | ✅                 | ❌         |
+| Validate/reject submissions | ✅    | ❌                 | ❌         |
+| Manual score override       | ✅    | ❌                 | ❌         |
+| Assign awards               | ✅    | ❌                 | ❌         |
+| Manage teams                | ✅    | ❌                 | ❌         |
+| Register profile            | ✅    | ✅ (own only)      | ❌         |
+| View all attendees          | ✅    | ❌                 | ❌         |
 
 ---
 
@@ -291,6 +322,21 @@ All data persists in Azure Table Storage (`stteamleadpromn2ksi`). Shared key acc
 | `scoredBy`     | string   |     | GitHub username of scorer                                          |
 | `timestamp`    | datetime |     | When scored                                                        |
 
+#### Submissions Table
+
+| Field             | Type     | Key | Description                                |
+| ----------------- | -------- | --- | ------------------------------------------ |
+| `PartitionKey`    | string   | PK  | Team name                                  |
+| `RowKey`          | string   | RK  | Submission ID (GUID)                       |
+| `submittedBy`     | string   |     | GitHub username of submitter               |
+| `submittedAt`     | datetime |     | Submission timestamp                       |
+| `status`          | string   |     | `Pending`, `Approved`, or `Rejected`       |
+| `reviewedBy`      | string   |     | Admin username who validated               |
+| `reviewedAt`      | datetime |     | Review timestamp                           |
+| `reviewReason`    | string   |     | Required when rejected                     |
+| `payloadJson`     | string   |     | Original JSON payload for audit and replay |
+| `calculatedTotal` | int32    |     | Parsed grand total for queue sorting       |
+
 #### Awards Table
 
 | Field          | Type     | Key | Description                            |
@@ -307,13 +353,15 @@ All data persists in Azure Table Storage (`stteamleadpromn2ksi`). Shared key acc
 
 All endpoints are under `/api/` and require authentication. See [api-spec.md](./api-spec.md) for full request/response schemas.
 
-| Endpoint         | Methods                | Role                                       | Purpose                   |
-| ---------------- | ---------------------- | ------------------------------------------ | ------------------------- |
-| `/api/teams`     | GET, POST, PUT, DELETE | GET: all; POST/PUT/DELETE: writer          | Team CRUD                 |
-| `/api/attendees` | GET, POST, PUT         | GET (all): writer; GET (own)/POST/PUT: all | Attendee registration     |
-| `/api/scores`    | GET, POST, PUT         | GET: all; POST/PUT: writer                 | Score entry and retrieval |
-| `/api/awards`    | GET, POST, PUT         | GET: all; POST/PUT: writer                 | Award assignment          |
-| `/api/upload`    | POST                   | writer                                     | Bulk JSON score import    |
+| Endpoint                    | Methods                | Role                                                | Purpose                              |
+| --------------------------- | ---------------------- | --------------------------------------------------- | ------------------------------------ |
+| `/api/teams`                | GET, POST, PUT, DELETE | GET: authenticated; POST/PUT/DELETE: admin          | Team CRUD                            |
+| `/api/attendees`            | GET, POST, PUT         | GET (all): admin; GET (own)/POST/PUT: authenticated | Attendee registration                |
+| `/api/scores`               | GET, POST            | GET: authenticated; POST: admin                     | Approved score retrieval + override  |
+| `/api/awards`               | GET, POST, PUT         | GET: authenticated; POST/PUT: admin                 | Award assignment                     |
+| `/api/upload`               | POST                   | member                                              | Own-team JSON submission             |
+| `/api/submissions`          | GET                    | admin                                               | Pending submission queue             |
+| `/api/submissions/validate` | POST                   | admin                                               | Approve/reject submission            |
 
 ---
 
@@ -337,13 +385,13 @@ All endpoints are under `/api/` and require authentication. See [api-spec.md](./
 └─────────────────────────────────────────────────┘
 ```
 
-### Score Entry Form (Writer Only)
+### Score Submission Form (Team Member)
 
 ```
 ┌─────────────────────────────────────────────────┐
 │  📝 Score Entry                                   │
 │                                                   │
-│  Team: [▾ Select Team]                            │
+│  Team: My Team (auto-resolved)                      │
 │                                                   │
 │  Requirements (20 pts)                            │
 │    Project context:    [__] / 4                    │
@@ -388,9 +436,10 @@ the requirements in this PRD (`app-prd.md`) and the API contract in `api-spec.md
 Build a production-ready, responsive SPA that:
 
 - Matches the visual structure of the reference leaderboard view
-- Implements functional requirements F1-F7 in this PRD
-- Supports role-based UI (`writer`, `reader`) with GitHub auth context
-- Integrates with `/api/teams`, `/api/scores`, `/api/awards`, `/api/attendees`, `/api/upload`
+- Implements functional requirements F1-F8 in this PRD
+- Supports role-based UI (`admin`, `member`) with GitHub auth context
+- Integrates with `/api/teams`, `/api/scores`, `/api/awards`, `/api/attendees`, `/api/upload`,
+  `/api/submissions`, and `/api/submissions/validate`
 - Is accessible (WCAG 2.1 AA), reusable, and backend-integration ready
 
 Do not implement pixel-perfect hacks. Use scalable layout primitives.
@@ -416,10 +465,11 @@ Implement the following surfaces first:
 
 Then add the required workflow surfaces from PRD features:
 
-- F1 Score Entry Form (writer only)
-- F4 Awards management section (writer assign, all view)
-- F6 JSON score upload with schema validation and preview
+- F1 Team score submission form (member only)
+- F4 Awards management section (admin assign, all view)
+- F6 JSON score upload with own-team enforcement and preview
 - F7 Attendee registration/profile view
+- F8 Admin validation queue and manual score override
 
 ### Data and Behavior Requirements
 
@@ -427,8 +477,8 @@ Then add the required workflow surfaces from PRD features:
 - Compute and render grade badges exactly per PRD grading thresholds
 - Refresh leaderboard data every 30 seconds (or equivalent polling strategy)
 - Enforce role-based rendering:
-  - `writer`: full scoring/upload/award/admin interactions
-  - `reader`: leaderboard + own profile; no mutation actions
+  - `member`: submit own team, upload own JSON, leaderboard, own profile
+  - `admin`: validate submissions, override scores, assign awards, manage teams
 - Handle loading, empty, and error states for every data surface
 - Add optimistic UI only where rollback behavior is explicit
 
@@ -490,14 +540,14 @@ Then add the required workflow surfaces from PRD features:
 
 1. Responsive leaderboard page matching reference visual hierarchy
 2. Theme system (light/dark) with persisted preference
-3. Feature-complete UI for F1, F2, F3, F4, F6, F7
+3. Feature-complete UI for F1, F2, F3, F4, F6, F7, F8
 4. API integration scaffolding aligned to `api-spec.md`
 5. Local mock data mode for offline UI development
 6. Run instructions for local development and test verification
 
 ### Constraints
 
-- Do not change the scoring model, grading scale, or role semantics from this PRD
+- Do not change the scoring model or grading scale from this PRD
 - Do not hardcode production credentials, endpoints, or identities
 - Do not introduce external component frameworks
 

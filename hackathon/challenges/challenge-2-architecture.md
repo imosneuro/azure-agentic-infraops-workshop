@@ -183,6 +183,11 @@ After completing this challenge:
 - 💡 Don't gold-plate the MVP — focus on essential features
 - 💡 Document assumptions and constraints
 
+> [!NOTE]
+> Final scoring uses the criteria in the
+> [Scoring Rubric](../facilitator/scoring-rubric.md),
+> which is the single source of truth for all point values.
+
 ## Required: Architecture Diagram ⭐ MANDATORY
 
 Before proceeding to Challenge 3, generate an architecture diagram:

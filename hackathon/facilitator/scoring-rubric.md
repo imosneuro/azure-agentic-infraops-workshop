@@ -1,5 +1,11 @@
 # Scoring Rubric
 
+> [!IMPORTANT]
+> This file is the **single source of truth** for all scoring values.
+> The app PRD, challenge files, scripts, and all other docs MUST derive their
+> point values and grading rules from this rubric. If a conflict exists
+> elsewhere, this file wins.
+
 > **105-point base + 25 bonus** | WAF-aligned | 🤖 Script-assisted + facilitator scoring
 
 > **Note**: Challenge 8 (Partner Showcase) is scored manually by facilitators (0-10)
@@ -19,6 +25,12 @@
 # Leaderboard
 .\scripts\hackathon\Get-Leaderboard.ps1
 ```
+
+> [!TIP]
+> For live events, the **Team Leaderboard web app** provides a browser-based
+> alternative to script-based scoring.
+> See [`agent-output/team-leaderboard/app/app-prd.md`](../../agent-output/team-leaderboard/app/app-prd.md)
+> for details.
 
 Results saved to `agent-output/{team}/score-results.json`.
 
@@ -158,6 +170,9 @@ Results saved to `agent-output/{team}/score-results.json`.
 ---
 
 ## Grading Scale
+
+Percentage is calculated from the 105-point base score.
+Bonus points are additive to the total but do not affect the grade tier.
 
 | Percentage | Grade                |
 | ---------- | -------------------- |
