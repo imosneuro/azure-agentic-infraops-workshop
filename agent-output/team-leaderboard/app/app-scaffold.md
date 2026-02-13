@@ -285,9 +285,9 @@ Pushes to `main` trigger automatic deployment via GitHub Actions.
 
 ## Documentation
 
-- [Product Requirements](link-to-infra-repo/agent-output/team-leaderboard/app-prd.md)
-- [API Specification](link-to-infra-repo/agent-output/team-leaderboard/api-spec.md)
-- [Handoff Checklist](link-to-infra-repo/agent-output/team-leaderboard/app-handoff-checklist.md)
+- [Product Requirements](link-to-infra-repo/agent-output/team-leaderboard/app/app-prd.md)
+- [API Specification](link-to-infra-repo/agent-output/team-leaderboard/app/api-spec.md)
+- [Handoff Checklist](link-to-infra-repo/agent-output/team-leaderboard/app/app-handoff-checklist.md)
 ```
 
 ---

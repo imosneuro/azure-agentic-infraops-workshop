@@ -60,7 +60,7 @@ See [app-scaffold.md](./app-scaffold.md) for the recommended folder layout. At m
 Copy from this repo into the new app repo:
 
 ```bash
-cp agent-output/team-leaderboard/staticwebapp.config.json <app-repo>/staticwebapp.config.json
+cp agent-output/team-leaderboard/app/staticwebapp.config.json <app-repo>/staticwebapp.config.json
 ```
 
 ---

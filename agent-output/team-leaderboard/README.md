@@ -120,11 +120,12 @@
 
 ### App Handoff Artifacts
 
-- [app-prd.md](./app-prd.md) — Product Requirements Document (features, data model, roles)
-- [app-handoff-checklist.md](./app-handoff-checklist.md) — Step-by-step wiring guide for the app repo
-- [api-spec.md](./api-spec.md) — Full API specification (endpoints, schemas, errors)
-- [app-scaffold.md](./app-scaffold.md) — Recommended folder structure and starter code
-- [staticwebapp.config.json](./staticwebapp.config.json) — Auth, routes, and security headers
+- [app/app-prd.md](./app/app-prd.md) — Product Requirements Document (features, data model, roles)
+- [app/app-design.md](./app/app-design.md) — Dedicated UI/UX design specification for the app
+- [app/app-handoff-checklist.md](./app/app-handoff-checklist.md) — Step-by-step wiring guide for the app repo
+- [app/api-spec.md](./app/api-spec.md) — Full API specification (endpoints, schemas, errors)
+- [app/app-scaffold.md](./app/app-scaffold.md) — Recommended folder structure and starter code
+- [app/staticwebapp.config.json](./app/staticwebapp.config.json) — Auth, routes, and security headers
 - [`azuredeploy.json`](../../infra/bicep/team-leaderboard/azuredeploy.json) — ARM template for Deploy to Azure button
 
 ---

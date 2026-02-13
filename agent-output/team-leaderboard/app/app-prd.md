@@ -370,6 +370,139 @@ All endpoints are under `/api/` and require authentication. See [api-spec.md](./
 
 ---
 
+## Coding Agent Prompt (Adapted for Team Leaderboard)
+
+Use this prompt when implementing the leaderboard UI so the generated app matches both the
+target visual style and this project's functional scope.
+
+### Prompt
+
+You are a senior frontend engineer building the Team Leaderboard app for this repository.
+
+Use the supplied reference screenshot as visual direction for layout, hierarchy, spacing,
+and card/table composition. Recreate the same modern leaderboard feel, but implement against
+the requirements in this PRD (`app-prd.md`) and the API contract in `api-spec.md`.
+
+### Objective
+
+Build a production-ready, responsive SPA that:
+
+- Matches the visual structure of the reference leaderboard view
+- Implements functional requirements F1-F7 in this PRD
+- Supports role-based UI (`writer`, `reader`) with GitHub auth context
+- Integrates with `/api/teams`, `/api/scores`, `/api/awards`, `/api/attendees`, `/api/upload`
+- Is accessible (WCAG 2.1 AA), reusable, and backend-integration ready
+
+Do not implement pixel-perfect hacks. Use scalable layout primitives.
+
+### Tech Stack
+
+- React (latest stable)
+- TypeScript
+- Tailwind CSS (dark mode via `class` strategy)
+- Headless UI only when needed (tabs/dropdowns/dialog)
+- Lucide or Heroicons for icons
+- Context API for theme and auth/session state
+- No external UI component frameworks
+
+### UI Scope and Mapping to PRD
+
+Implement the following surfaces first:
+
+1. Top navigation with search, filter tabs, notifications, theme toggle, user menu
+2. Champions spotlight (top 3 teams) powered by leaderboard totals
+3. Metric highlight cards (tips/activity/streak/rank deltas)
+4. Main leaderboard table with expandable row details
+
+Then add the required workflow surfaces from PRD features:
+
+- F1 Score Entry Form (writer only)
+- F4 Awards management section (writer assign, all view)
+- F6 JSON score upload with schema validation and preview
+- F7 Attendee registration/profile view
+
+### Data and Behavior Requirements
+
+- Drive leaderboard ranking from API totals (`baseScore`, `bonusScore`, `totalScore`, `grade`)
+- Compute and render grade badges exactly per PRD grading thresholds
+- Refresh leaderboard data every 30 seconds (or equivalent polling strategy)
+- Enforce role-based rendering:
+  - `writer`: full scoring/upload/award/admin interactions
+  - `reader`: leaderboard + own profile; no mutation actions
+- Handle loading, empty, and error states for every data surface
+- Add optimistic UI only where rollback behavior is explicit
+
+### Theming
+
+- Light mode default: neutral background, white cards, subtle elevation
+- Dark mode: slate surfaces, soft borders, equivalent contrast
+- Theme toggle in navbar
+- Persist theme preference to localStorage
+- Ensure contrast meets WCAG AA
+
+### Responsive and Accessibility
+
+- Breakpoints: `sm`, `md`, `lg`, `xl`
+- Mobile behavior:
+  - navbar collapses cleanly
+  - leaderboard table supports horizontal scroll
+  - row-card fallback for dense data on small screens
+- Keyboard operable controls, visible focus states, semantic landmarks
+- ARIA labels for icon-only actions and alt text for avatars
+
+### Suggested Frontend Structure
+
+```text
+/components
+  Navbar.tsx
+  ThemeToggle.tsx
+  ChampionCard.tsx
+  StatCard.tsx
+  LeaderboardTable.tsx
+  ScoreEntryForm.tsx
+  AwardsPanel.tsx
+  JsonUploadPanel.tsx
+  AttendeeProfileForm.tsx
+
+/context
+  ThemeContext.tsx
+  AuthContext.tsx
+
+/services
+  apiClient.ts
+  leaderboardService.ts
+
+/pages
+  Dashboard.tsx
+
+/data
+  leaderboard.mock.ts
+```
+
+### Performance and Code Quality
+
+- Prevent unnecessary re-renders with memoization where beneficial
+- Keep components presentational when possible; isolate data-fetch logic
+- Use strict TypeScript types for API payloads
+- Prefer composable utilities over repeated formatting logic
+
+### Deliverables
+
+1. Responsive leaderboard page matching reference visual hierarchy
+2. Theme system (light/dark) with persisted preference
+3. Feature-complete UI for F1, F2, F3, F4, F6, F7
+4. API integration scaffolding aligned to `api-spec.md`
+5. Local mock data mode for offline UI development
+6. Run instructions for local development and test verification
+
+### Constraints
+
+- Do not change the scoring model, grading scale, or role semantics from this PRD
+- Do not hardcode production credentials, endpoints, or identities
+- Do not introduce external component frameworks
+
+---
+
 ## Non-Functional Requirements
 
 | Requirement      | Target                    | Notes                              |
@@ -395,10 +528,10 @@ All endpoints are under `/api/` and require authentication. See [api-spec.md](./
 
 ## References
 
-- [Scoring Rubric Source](../../hackathon/facilitator/scoring-rubric.md) — Definitive scoring criteria
-- [01-requirements.md](./01-requirements.md) — Infrastructure requirements (source material)
-- [02-architecture-assessment.md](./02-architecture-assessment.md) — Architecture decisions
-- [06-deployment-summary.md](./06-deployment-summary.md) — Deployed resource details
+- [Scoring Rubric Source](../../../hackathon/facilitator/scoring-rubric.md) — Definitive scoring criteria
+- [01-requirements.md](../01-requirements.md) — Infrastructure requirements (source material)
+- [02-architecture-assessment.md](../02-architecture-assessment.md) — Architecture decisions
+- [06-deployment-summary.md](../06-deployment-summary.md) — Deployed resource details
 - [api-spec.md](./api-spec.md) — Full API specification
 - [staticwebapp.config.json](./staticwebapp.config.json) — Auth and route configuration
 - [app-handoff-checklist.md](./app-handoff-checklist.md) — Infrastructure wiring instructions
