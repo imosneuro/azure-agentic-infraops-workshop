@@ -282,6 +282,10 @@ infra/bicep/team-leaderboard/
 
 ## Dependency Graph
 
+![Dependency Diagram](./04-dependency-diagram.png)
+
+[Dependency diagram source](./04-dependency-diagram.py)
+
 ```mermaid
 %%{init: {'theme':'neutral'}}%%
 graph TD
@@ -309,6 +313,32 @@ graph TD
 ```
 
 > Solid arrows = hard dependencies (must deploy first). Dashed arrows = configuration references (connection strings passed as app settings).
+
+---
+
+## Runtime Flow Diagram
+
+![Runtime Flow Diagram](./04-runtime-diagram.png)
+
+[Runtime flow source](./04-runtime-diagram.py)
+
+```mermaid
+%%{init: {'theme':'neutral'}}%%
+sequenceDiagram
+    participant Browser
+    participant SWA as Static Web App
+    participant API as Managed Functions API
+    participant ST as Table Storage
+    participant APPI as App Insights
+
+    Browser->>SWA: Load leaderboard page
+    SWA->>API: GET /scores
+    API->>ST: Query Teams/Scores/Awards tables
+    ST-->>API: Score payload
+    API->>APPI: Track request + dependency telemetry
+    API-->>SWA: JSON response
+    SWA-->>Browser: Render rankings
+```
 
 ---
 

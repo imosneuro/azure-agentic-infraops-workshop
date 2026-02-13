@@ -1,6 +1,6 @@
 ---
 description: "MANDATORY research-before-implementation requirements for all agents"
-applyTo: "**"
+applyTo: "*"
 ---
 
 # Agent Research Requirements

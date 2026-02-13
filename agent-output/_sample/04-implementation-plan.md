@@ -168,7 +168,20 @@ properties: {
 
 ---
 
+## Deployment Phases
+
+| Phase | Modules | Outcome |
+| --- | --- | --- |
+| Phase 1 - Foundation | `monitoring.bicep`, `sql-server.bicep`, `sql-database.bicep` | Observability and data tier deployed |
+| Phase 2 - Application | `static-web-app.bicep` | Frontend/API deployed and configured |
+
+---
+
 ## Dependency Graph
+
+![Dependency Diagram](./04-dependency-diagram.png)
+
+[Dependency diagram source](./04-dependency-diagram.py)
 
 ```mermaid
 %%{init: {'theme':'neutral'}}%%
@@ -184,6 +197,30 @@ graph TD
     style SQL fill:#e8f5e9
     style SQLDB fill:#e8f5e9
     style SWA fill:#fce4ec
+```
+
+---
+
+## Runtime Flow Diagram
+
+![Runtime Flow Diagram](./04-runtime-diagram.png)
+
+[Runtime flow source](./04-runtime-diagram.py)
+
+```mermaid
+%%{init: {'theme':'neutral'}}%%
+sequenceDiagram
+  participant User
+  participant SWA as Static Web App
+  participant API as Functions API
+  participant SQL as Azure SQL
+
+  User->>SWA: Open leaderboard
+  SWA->>API: Request scores
+  API->>SQL: Query/update score data
+  SQL-->>API: Result set
+  API-->>SWA: JSON response
+  SWA-->>User: Render updated view
 ```
 
 ---

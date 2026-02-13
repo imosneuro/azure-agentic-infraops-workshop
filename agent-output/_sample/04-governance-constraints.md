@@ -24,6 +24,22 @@ that must be addressed in the Bicep implementation.
 | Security       | SQL Azure AD-only auth           | Must use Azure AD auth, no SQL auth     |
 | Data Residency | Allowed locations: swedencentral | Set location parameter to swedencentral |
 
+## Plan Adaptations Based on Policies
+
+| Policy Signal | Adaptation in Implementation Plan |
+| --- | --- |
+| Azure AD-only SQL auth | Configure SQL server administrators with `azureADOnlyAuthentication: true` |
+| Required resource tags | Enforce full tag object in `main.bicep` and pass tags to all modules |
+| Region restriction | Keep `location` defaults pinned to `swedencentral` |
+
+## Deployment Blockers
+
+| Blocker | Impact | Mitigation |
+| --- | --- | --- |
+| Missing Azure AD admin object ID | SQL deployment fails | Require `sqlAdminObjectId` parameter before deploy |
+| Missing required tags | Policy deny at deployment time | Validate tag payload in `deploy.ps1` preflight |
+| Non-compliant region | Policy deny for unsupported location | Fail fast if region differs from policy-allowed list |
+
 ## Required Tags
 
 All resources must include the following tags:
