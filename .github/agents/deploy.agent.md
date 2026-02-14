@@ -103,13 +103,7 @@ tools:
     bicep/list_avm_metadata,
     bicep/list_az_resource_types_for_provider,
     todo,
-    ms-azuretools.vscode-azure-github-copilot/azure_get_azure_verified_module,
-    ms-azuretools.vscode-azure-github-copilot/azure_recommend_custom_modes,
-    ms-azuretools.vscode-azure-github-copilot/azure_query_azure_resource_graph,
-    ms-azuretools.vscode-azure-github-copilot/azure_get_auth_context,
-    ms-azuretools.vscode-azure-github-copilot/azure_set_auth_context,
-    ms-azuretools.vscode-azure-github-copilot/azure_get_dotnet_template_tags,
-    ms-azuretools.vscode-azure-github-copilot/azure_get_dotnet_templates_for_tag,
+    vscode.mermaid-chat-features/renderMermaidDiagram,
     ms-azuretools.vscode-azureresourcegroups/azureActivityLog,
   ]
 handoffs:
