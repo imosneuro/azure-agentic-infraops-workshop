@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     Provisions Azure Static Web App, Table Storage, Log Analytics, and Application
-    Insights for the hackathon team leaderboard. Supports phased deployment with
+    Insights for the microhack team leaderboard. Supports phased deployment with
     approval gates between foundation and application layers.
 
 .PARAMETER ResourceGroupName
@@ -35,13 +35,13 @@
     Run what-if preview without deploying.
 
 .EXAMPLE
-    ./deploy.ps1 -CostCenter "hackathon" -TechnicalContact "team@contoso.com"
+    ./deploy.ps1 -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 
 .EXAMPLE
-    ./deploy.ps1 -Phase foundation -CostCenter "hackathon" -TechnicalContact "team@contoso.com"
+    ./deploy.ps1 -Phase foundation -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 
 .EXAMPLE
-    ./deploy.ps1 -WhatIf -CostCenter "hackathon" -TechnicalContact "team@contoso.com"
+    ./deploy.ps1 -WhatIf -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 #>
 
 [CmdletBinding(SupportsShouldProcess)]

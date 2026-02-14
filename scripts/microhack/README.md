@@ -1,6 +1,6 @@
-# Hackathon Scripts
+# Microhack Scripts
 
-> **For facilitators only** — Scripts to manage governance, scoring, and cleanup during the hackathon.
+> **For facilitators only** — Scripts to manage governance, scoring, and cleanup during the microhack.
 
 ## Running Scripts in Dev Container (Linux)
 
@@ -8,10 +8,10 @@ Since the dev container runs on Linux, use `pwsh` to execute PowerShell scripts:
 
 ```bash
 # From the repository root
-pwsh -File scripts/hackathon/<script-name>.ps1 [parameters]
+pwsh -File scripts/microhack/<script-name>.ps1 [parameters]
 
 # Or navigate to the folder first
-cd scripts/hackathon
+cd scripts/microhack
 pwsh -File ./<script-name>.ps1 [parameters]
 ```
 
@@ -27,12 +27,12 @@ Deploys Azure Policies that force teams to handle real compliance constraints.
 
 ```bash
 # Preview what will be deployed (recommended first)
-pwsh -File scripts/hackathon/Setup-GovernancePolicies.ps1 \
+pwsh -File scripts/microhack/Setup-GovernancePolicies.ps1 \
   -SubscriptionId "<subscription-id>" \
   -WhatIf
 
 # Deploy policies
-pwsh -File scripts/hackathon/Setup-GovernancePolicies.ps1 \
+pwsh -File scripts/microhack/Setup-GovernancePolicies.ps1 \
   -SubscriptionId "<subscription-id>"
 ```
 
@@ -57,18 +57,18 @@ Check current policy assignments and compliance status.
 
 ```bash
 # Check all policies
-pwsh -File scripts/hackathon/Get-GovernanceStatus.ps1 \
+pwsh -File scripts/microhack/Get-GovernanceStatus.ps1 \
   -SubscriptionId "<subscription-id>"
 
-# Check only hackathon policies
-pwsh -File scripts/hackathon/Get-GovernanceStatus.ps1 \
+# Check only microhack policies
+pwsh -File scripts/microhack/Get-GovernanceStatus.ps1 \
   -SubscriptionId "<subscription-id>" \
-  -HackathonOnly
+  -MicrohackOnly
 ```
 
 ---
 
-### During the Hackathon
+### During the Microhack
 
 #### Score-Team.ps1
 
@@ -76,12 +76,12 @@ Score a team's submission based on WAF-aligned criteria (105 base + 25 bonus poi
 
 ```bash
 # Score without Azure deployment verification
-pwsh -File scripts/hackathon/Score-Team.ps1 \
+pwsh -File scripts/microhack/Score-Team.ps1 \
   -TeamName "freshconnect" \
   -SkipAzureCheck
 
 # Score with Azure deployment verification
-pwsh -File scripts/hackathon/Score-Team.ps1 \
+pwsh -File scripts/microhack/Score-Team.ps1 \
   -TeamName "freshconnect" \
   -ResourceGroupName "rg-freshconnect-dev-swc"
 ```
@@ -92,17 +92,17 @@ pwsh -File scripts/hackathon/Score-Team.ps1 \
 
 #### Get-Leaderboard.ps1
 
-Display the hackathon leaderboard based on team scores.
+Display the microhack leaderboard based on team scores.
 
 ```bash
 # Table format (default)
-pwsh -File scripts/hackathon/Get-Leaderboard.ps1
+pwsh -File scripts/microhack/Get-Leaderboard.ps1
 
 # Markdown format
-pwsh -File scripts/hackathon/Get-Leaderboard.ps1 -OutputFormat Markdown
+pwsh -File scripts/microhack/Get-Leaderboard.ps1 -OutputFormat Markdown
 
 # JSON format
-pwsh -File scripts/hackathon/Get-Leaderboard.ps1 -OutputFormat Json
+pwsh -File scripts/microhack/Get-Leaderboard.ps1 -OutputFormat Json
 ```
 
 ---
@@ -111,38 +111,38 @@ pwsh -File scripts/hackathon/Get-Leaderboard.ps1 -OutputFormat Json
 
 #### Remove-GovernancePolicies.ps1
 
-Remove hackathon policy assignments.
+Remove microhack policy assignments.
 
 ```bash
 # Preview what will be removed
-pwsh -File scripts/hackathon/Remove-GovernancePolicies.ps1 \
+pwsh -File scripts/microhack/Remove-GovernancePolicies.ps1 \
   -SubscriptionId "<subscription-id>" \
   -WhatIf
 
 # Remove policies
-pwsh -File scripts/hackathon/Remove-GovernancePolicies.ps1 \
+pwsh -File scripts/microhack/Remove-GovernancePolicies.ps1 \
   -SubscriptionId "<subscription-id>"
 ```
 
 ---
 
-#### Cleanup-HackathonResources.ps1
+#### Cleanup-MicrohackResources.ps1
 
-Delete resource groups created during the hackathon.
+Delete resource groups created during the microhack.
 
 ```bash
 # Preview all matching resource groups
-pwsh -File scripts/hackathon/Cleanup-HackathonResources.ps1 -WhatIf
+pwsh -File scripts/microhack/Cleanup-MicrohackResources.ps1 -WhatIf
 
 # Clean up a specific team
-pwsh -File scripts/hackathon/Cleanup-HackathonResources.ps1 \
+pwsh -File scripts/microhack/Cleanup-MicrohackResources.ps1 \
   -TeamName "freshconnect"
 
 # Clean up all teams (with confirmation)
-pwsh -File scripts/hackathon/Cleanup-HackathonResources.ps1
+pwsh -File scripts/microhack/Cleanup-MicrohackResources.ps1
 
 # Clean up all teams (no prompts)
-pwsh -File scripts/hackathon/Cleanup-HackathonResources.ps1 -Force
+pwsh -File scripts/microhack/Cleanup-MicrohackResources.ps1 -Force
 ```
 
 ---
@@ -152,9 +152,9 @@ pwsh -File scripts/hackathon/Cleanup-HackathonResources.ps1 -Force
 | Task                | Command                                                                                                                                       |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | Get subscription ID | `az account show --query id -o tsv`                                                                                                           |
-| Check policies      | `pwsh -File scripts/hackathon/Get-GovernanceStatus.ps1 -SubscriptionId "..." -HackathonOnly`                                                  |
-| Score all teams     | `Get-ChildItem ./agent-output -Directory \| ForEach-Object { pwsh -File scripts/hackathon/Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck }` |
-| Show leaderboard    | `pwsh -File scripts/hackathon/Get-Leaderboard.ps1`                                                                                            |
+| Check policies      | `pwsh -File scripts/microhack/Get-GovernanceStatus.ps1 -SubscriptionId "..." -MicrohackOnly`                                                  |
+| Score all teams     | `Get-ChildItem ./agent-output -Directory \| ForEach-Object { pwsh -File scripts/microhack/Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck }` |
+| Show leaderboard    | `pwsh -File scripts/microhack/Get-Leaderboard.ps1`                                                                                            |
 
 > [!TIP]
 > For live events, the **Team Leaderboard web app** provides a browser-based alternative to these scripts. See [`agent-output/team-leaderboard/app/app-prd.md`](../../agent-output/team-leaderboard/app/app-prd.md).

@@ -8,11 +8,11 @@ This workshop repository (`azure-agentic-infraops-workshop`) shares agents, skil
 instructions, devcontainer config, and validation scripts with its [upstream source][source-repo].
 When the source evolves — new agent capabilities, updated
 templates, improved validation — those changes need to flow downstream without
-overwriting workshop-specific content like hackathon materials and the customized
+overwriting workshop-specific content like microhack materials and the customized
 `docs-writer` skill.
 
 Both repos are owned by the same maintainer — see the [workshop repo][workshop-repo]
-for the full hackathon experience.
+for the full microhack experience.
 
 The upstream sync pipeline automates this entire process:
 
@@ -92,9 +92,9 @@ These files get copied but the sync-reviewer agent pays extra attention:
 | --- | --- |
 | Identity | `README.md`, `VERSION.md`, `CHANGELOG.md`, `CONTRIBUTORS.md`, `package.json` |
 | Docs-Writer Skill | `.github/skills/docs-writer/**` (customized for workshop) |
-| Hackathon | `hackathon/**` (challenges, facilitator, participant) |
+| Microhack | `microhack/**` (challenges, facilitator, participant) |
 | Workshop Docs | `docs/**` (Know Before You Go, Copilot Guide, etc.) |
-| Workshop Scripts | `scripts/hackathon/**` |
+| Workshop Scripts | `scripts/microhack/**` |
 | Infrastructure | `infra/**` |
 
 | Workflows | `.github/workflows/**` (workshop manages its own) |

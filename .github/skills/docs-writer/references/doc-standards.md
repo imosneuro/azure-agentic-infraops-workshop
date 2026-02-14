@@ -116,7 +116,7 @@ Also avoid references to removed paths:
 | **Current state**       | No historical context in main docs          |
 | **Action-oriented**     | Every section answers "how do I...?"        |
 | **Minimal**             | If it doesn't help users today, remove it   |
-| **Hackathon for depth** | Point to `hackathon/` for hands-on learning |
+| **Microhack for depth** | Point to `microhack/` for hands-on learning |
 
 ## Validation Commands
 
@@ -165,11 +165,11 @@ Personas use consistent emoji in `docs/README.md`:
 
 When adding a new agent, choose a unique emoji + persona name.
 
-## Hackathon Canonical Sources
+## Microhack Canonical Sources
 
-For `hackathon/**/*.md` consistency:
+For `microhack/**/*.md` consistency:
 
-- Timing source of truth: `hackathon/AGENDA.md`
-- Scoring source of truth: `hackathon/facilitator/scoring-rubric.md`
-- If scoring model changes, update `scripts/hackathon/Score-Team.ps1` and
-  `scripts/hackathon/Get-Leaderboard.ps1`.
+- Timing source of truth: `microhack/AGENDA.md`
+- Scoring source of truth: `microhack/facilitator/scoring-rubric.md`
+- If scoring model changes, update `scripts/microhack/Score-Team.ps1` and
+  `scripts/microhack/Get-Leaderboard.ps1`.

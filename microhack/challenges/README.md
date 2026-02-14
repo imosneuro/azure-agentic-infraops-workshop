@@ -1,6 +1,6 @@
 # Challenges
 
-This folder contains the eight hackathon challenges.
+This folder contains the eight microhack challenges.
 
 📅 **See [AGENDA.md](../AGENDA.md) for the full schedule with timing.**
 

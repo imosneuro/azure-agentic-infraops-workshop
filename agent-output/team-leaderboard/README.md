@@ -12,7 +12,7 @@
 
 # 🏗️ team-leaderboard
 
-**Serverless hackathon scoring dashboard using Azure Static Web Apps with managed Functions and Azure Table Storage.**
+**Serverless microhack scoring dashboard using Azure Static Web Apps with managed Functions and Azure Table Storage.**
 
 [View Architecture](#-architecture) · [View Artifacts](#-generated-artifacts) · [View Progress](#-workflow-progress)
 
@@ -134,7 +134,7 @@
 
 ```powershell
 cd infra/bicep/team-leaderboard
-./deploy.ps1 -CostCenter "hackathon" -TechnicalContact "team@contoso.com"
+./deploy.ps1 -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 ```
 
 See [05-implementation-reference.md](./05-implementation-reference.md) for full deployment options.

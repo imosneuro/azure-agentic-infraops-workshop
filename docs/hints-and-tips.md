@@ -10,7 +10,7 @@
 
 ### Templatized Agent Outputs
 
-The agents in this hackathon use **templates** to generate consistent, structured documentation.
+The agents in this microhack use **templates** to generate consistent, structured documentation.
 These templates are located in `.github/skills/azure-artifacts/templates/` and include:
 
 ```
@@ -626,5 +626,5 @@ Ask yourself: "What question would help me discover the answer?"
 
 If still blocked, raise your hand — facilitators are here to coach, not solve! 🙋
 
-**Remember**: This hackathon has 8 challenges total, not all will be completed by all teams.
+**Remember**: This microhack has 8 challenges total, not all will be completed by all teams.
 Focus on learning the workflow and prompt engineering skills!

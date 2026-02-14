@@ -15,15 +15,15 @@
 
 ```powershell
 # Score team
-.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" \
+.\scripts\microhack\Score-Team.ps1 -TeamName "freshconnect" \
   -ResourceGroupName "rg-freshconnect-dev-swc" \
   -ShowcaseScore 8
 
 # Score without Azure verification
-.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" -SkipAzureCheck -ShowcaseScore 8
+.\scripts\microhack\Score-Team.ps1 -TeamName "freshconnect" -SkipAzureCheck -ShowcaseScore 8
 
 # Leaderboard
-.\scripts\hackathon\Get-Leaderboard.ps1
+.\scripts\microhack\Get-Leaderboard.ps1
 ```
 
 > [!TIP]

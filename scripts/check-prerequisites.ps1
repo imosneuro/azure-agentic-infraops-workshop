@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-    Validates hackathon environment readiness in Dev Container or Codespaces.
+    Validates microhack environment readiness in Dev Container or Codespaces.
 
 .DESCRIPTION
     This script verifies Azure authentication and environment setup for the
-    Agentic InfraOps hackathon. Designed for Dev Container and GitHub Codespaces
+    Agentic InfraOps microhack. Designed for Dev Container and GitHub Codespaces
     environments where tools are pre-installed.
 
 .PARAMETER TeamName
@@ -21,7 +21,7 @@
 .NOTES
     Version: 4.0.0
     Environment: Dev Container / GitHub Codespaces only
-    Part of: Agentic InfraOps Hackathon
+    Part of: Agentic InfraOps Microhack
 #>
 
 [CmdletBinding()]
@@ -84,7 +84,7 @@ Write-Host @"
 ║    ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   ██║╚██████╗                    ║
 ║    ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝ ╚═════╝                    ║
 ║                                                                               ║
-║                    HACKATHON ENVIRONMENT CHECK                                ║
+║                    MICROHACK ENVIRONMENT CHECK                                ║
 ║                           Version 4.0.0                                       ║
 ║                                                                               ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
@@ -201,7 +201,7 @@ Write-Host "     Test by pressing Ctrl+Alt+I and selecting an agent from the dro
 if ($TeamName) {
     Write-CheckHeader "Team Configuration"
 
-    $rgName = "rg-hackathon-$TeamName"
+    $rgName = "rg-microhack-$TeamName"
     $rgExists = $false
     if ($azLoggedIn) {
         try {
@@ -235,7 +235,7 @@ Write-Host ""
 
 if ($passed -eq $total) {
     Write-Host "  🎉 " -NoNewline
-    Write-Host "Environment ready! You can start the hackathon." -ForegroundColor $PassColor
+    Write-Host "Environment ready! You can start the microhack." -ForegroundColor $PassColor
     $exitCode = 0
 } else {
     Write-Host "  ⚠️  " -NoNewline
@@ -244,8 +244,8 @@ if ($passed -eq $total) {
 }
 
 Write-Host ""
-Write-Host "  📋 Start here: hackathon/README.md" -ForegroundColor Gray
-Write-Host "  🎯 Challenge 1: hackathon/challenges/challenge-1-requirements.md" -ForegroundColor Gray
+Write-Host "  📋 Start here: microhack/README.md" -ForegroundColor Gray
+Write-Host "  🎯 Challenge 1: microhack/challenges/challenge-1-requirements.md" -ForegroundColor Gray
 Write-Host ""
 
 exit $exitCode

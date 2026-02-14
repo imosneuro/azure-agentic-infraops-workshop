@@ -121,7 +121,7 @@ For remaining issues, check `.markdownlint-cli2.jsonc` for the rule that fired.
 2. For external links: check if the URL is behind authentication or geo-blocked
 3. Add false positives to `.markdown-link-check.json` ignore patterns
 
-## Hackathon-Specific
+## Microhack-Specific
 
 ### Governance policies not applying
 
@@ -131,7 +131,7 @@ For remaining issues, check `.markdownlint-cli2.jsonc` for the rule that fired.
 Check status with:
 
 ```powershell
-pwsh scripts/hackathon/Get-GovernanceStatus.ps1
+pwsh scripts/microhack/Get-GovernanceStatus.ps1
 ```
 
 ### Scoring script returns zero

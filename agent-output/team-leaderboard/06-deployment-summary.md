@@ -136,16 +136,16 @@ BCP318 warnings are expected and harmless — they relate to the safe-dereferenc
 cd infra/bicep/team-leaderboard
 
 # Preview changes (what-if)
-./deploy.ps1 -CostCenter "hackathon" -TechnicalContact "team@contoso.com" -WhatIf
+./deploy.ps1 -CostCenter "microhack" -TechnicalContact "team@contoso.com" -WhatIf
 
 # Deploy all phases
-./deploy.ps1 -CostCenter "hackathon" -TechnicalContact "team@contoso.com"
+./deploy.ps1 -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 
 # Deploy foundation phase only
-./deploy.ps1 -CostCenter "hackathon" -TechnicalContact "team@contoso.com" -Phase foundation
+./deploy.ps1 -CostCenter "microhack" -TechnicalContact "team@contoso.com" -Phase foundation
 
 # Deploy application phase only
-./deploy.ps1 -CostCenter "hackathon" -TechnicalContact "team@contoso.com" -Phase application
+./deploy.ps1 -CostCenter "microhack" -TechnicalContact "team@contoso.com" -Phase application
 ```
 
 </details>
@@ -158,7 +158,7 @@ cd infra/bicep/team-leaderboard
 az group create \
   --name "rg-team-leaderboard-prod" \
   --location "westeurope" \
-  --tags environment=prod owner=agentic-infraops costcenter=hackathon \
+  --tags environment=prod owner=agentic-infraops costcenter=microhack \
         application=team-leaderboard workload=team-leaderboard sla=99.9% \
         backup-policy=none maint-window=sat-02-06-utc technical-contact=team@contoso.com
 
@@ -167,7 +167,7 @@ az deployment group create \
   --resource-group "rg-team-leaderboard-prod" \
   --template-file main.bicep \
   --parameters main.bicepparam \
-  --parameters costCenter="hackathon" technicalContact="team@contoso.com" \
+  --parameters costCenter="microhack" technicalContact="team@contoso.com" \
   --name "team-leaderboard-$(date +%Y%m%d%H%M%S)"
 ```
 

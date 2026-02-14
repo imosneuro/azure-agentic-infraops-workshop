@@ -1,7 +1,7 @@
 """
 Architecture Diagram: team-leaderboard
 =======================================
-Generates a PNG architecture diagram for the hackathon scoring leaderboard app.
+Generates a PNG architecture diagram for the microhack scoring leaderboard app.
 
 Architecture: Azure Static Web Apps (Standard) + Azure Table Storage
 

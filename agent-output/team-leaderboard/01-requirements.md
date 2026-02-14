@@ -32,13 +32,13 @@
 | Attribute              | Value                                                                                                                                                                     |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Industry**           | Education / Training                                                                                                                                                      |
-| **Company Size**       | Small team (hackathon facilitators)                                                                                                                                       |
+| **Company Size**       | Small team (microhack facilitators)                                                                                                                                       |
 | **Scenario**           | Greenfield — new web application                                                                                                                                          |
-| **System Description** | Transform the existing hackathon scoring rubric into a live, interactive web application for facilitators to score teams and participants to view a real-time leaderboard |
+| **System Description** | Transform the existing microhack scoring rubric into a live, interactive web application for facilitators to score teams and participants to view a real-time leaderboard |
 
 ### Problem Statement
 
-The hackathon scoring system currently exists as a static Markdown file ([scoring-rubric.md](../../hackathon/facilitator/scoring-rubric.md)) and PowerShell scripts (`Score-Team.ps1`, `Get-Leaderboard.ps1`). Facilitators must run scripts manually, and participants have no visibility into scores until results are announced. The goal is to create a lightweight web app that allows facilitators to enter scores via a form and displays a live leaderboard to all participants.
+The microhack scoring system currently exists as a static Markdown file ([scoring-rubric.md](../../microhack/facilitator/scoring-rubric.md)) and PowerShell scripts (`Score-Team.ps1`, `Get-Leaderboard.ps1`). Facilitators must run scripts manually, and participants have no visibility into scores until results are announced. The goal is to create a lightweight web app that allows facilitators to enter scores via a form and displays a live leaderboard to all participants.
 
 ### Source Material
 
@@ -108,10 +108,10 @@ flowchart LR
 | ---------------------- | --------------------------- | -------------------------------------------------------- |
 | **Availability (SLA)** | 99.9%                       | Standard SWA + Functions SLA is sufficient for event use |
 | **Response Time**      | < 2 seconds                 | Dashboard should load quickly during live events         |
-| **Concurrent Users**   | Up to 50                    | Small hackathon event (facilitators + participants)      |
+| **Concurrent Users**   | Up to 50                    | Small microhack event (facilitators + participants)      |
 | **RTO**                | 4 hours                     | Acceptable for a non-critical event tool                 |
 | **RPO**                | 1 hour                      | Score data should be recoverable within 1 hour           |
-| **Data Retention**     | Duration of event + 30 days | Scores needed during and shortly after hackathon         |
+| **Data Retention**     | Duration of event + 30 days | Scores needed during and shortly after microhack         |
 | **Scalability**        | No auto-scale needed        | Fixed small audience, single event                       |
 
 ## Compliance & Security Requirements
@@ -257,7 +257,7 @@ The repository README must include a **Deploy to Azure** button that links to th
 
 ### Scoring Rubric Integration
 
-The app must faithfully implement the scoring structure from [scoring-rubric.md](../../hackathon/facilitator/scoring-rubric.md):
+The app must faithfully implement the scoring structure from [scoring-rubric.md](../../microhack/facilitator/scoring-rubric.md):
 
 - 8 categories with weighted point values (105 base total)
 - Individual criteria within each category (e.g., Requirements has 5 criteria × 4 pts each)
@@ -274,7 +274,7 @@ The app must faithfully implement the scoring structure from [scoring-rubric.md]
 
 ## References
 
-- [Scoring Rubric Source](../../hackathon/facilitator/scoring-rubric.md)
+- [Scoring Rubric Source](../../microhack/facilitator/scoring-rubric.md)
 - [Azure Static Web Apps Documentation](https://learn.microsoft.com/azure/static-web-apps/)
 - [SWA Authentication & Authorization](https://learn.microsoft.com/azure/static-web-apps/authentication-authorization)
 - [Azure Table Storage Pricing](https://azure.microsoft.com/pricing/details/storage/tables/)

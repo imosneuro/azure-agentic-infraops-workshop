@@ -29,7 +29,7 @@
 
 ## Overview
 
-Implement a serverless hackathon scoring dashboard using Azure Static Web Apps (Standard) with managed Functions API and Azure Table Storage. All resources deploy to `westeurope` (single region) with optional Application Insights + Log Analytics for observability.
+Implement a serverless microhack scoring dashboard using Azure Static Web Apps (Standard) with managed Functions API and Azure Table Storage. All resources deploy to `westeurope` (single region) with optional Application Insights + Log Analytics for observability.
 
 **Key governance finding**: Resource groups require **9 tags** (not the standard 4) — enforced by `JV-Enforce Resource Group Tags v3` Deny policy. Additionally, `StorageAccountDisableLocalAuth` Modify policy will auto-disable shared key access, requiring managed identity or SAS-based auth for SWA→Storage communication.
 

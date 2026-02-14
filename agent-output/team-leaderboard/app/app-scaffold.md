@@ -306,7 +306,7 @@ Implement API authorization and validation with these invariants:
 ```markdown
 # Team Leaderboard App
 
-Hackathon scoring dashboard — Azure Static Web Apps + managed Functions + Table Storage.
+Microhack scoring dashboard — Azure Static Web Apps + managed Functions + Table Storage.
 
 ## Quick Start
 

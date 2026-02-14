@@ -90,7 +90,7 @@ graph TD
 
 ```powershell
 cd infra/bicep/team-leaderboard
-./deploy.ps1 -CostCenter "hackathon" -TechnicalContact "team@contoso.com"
+./deploy.ps1 -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 ```
 
 </details>
@@ -99,7 +99,7 @@ cd infra/bicep/team-leaderboard
 <summary><strong>🔍 Preview Changes (What-If)</strong></summary>
 
 ```powershell
-./deploy.ps1 -WhatIf -CostCenter "hackathon" -TechnicalContact "team@contoso.com"
+./deploy.ps1 -WhatIf -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 ```
 
 </details>
@@ -112,7 +112,7 @@ cd infra/bicep/team-leaderboard
     -ResourceGroupName "rg-team-leaderboard-dev" `
     -Location "westeurope" `
     -Environment "dev" `
-    -CostCenter "hackathon" `
+    -CostCenter "microhack" `
     -TechnicalContact "team@contoso.com"
 ```
 
@@ -123,7 +123,7 @@ cd infra/bicep/team-leaderboard
 
 ```bash
 az group create --name rg-team-leaderboard-prod --location westeurope \
-  --tags environment=prod owner=agentic-infraops costcenter=hackathon \
+  --tags environment=prod owner=agentic-infraops costcenter=microhack \
   application=team-leaderboard workload=team-leaderboard sla=99.9% \
   backup-policy=none maint-window=sat-02-06-utc technical-contact=team@contoso.com
 
@@ -140,12 +140,12 @@ az deployment group create \
 
 ```powershell
 # Phase 1: Foundation (Log Analytics + Storage)
-./deploy.ps1 -Phase foundation -CostCenter "hackathon" -TechnicalContact "team@contoso.com"
+./deploy.ps1 -Phase foundation -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 
 # Verify foundation resources, then:
 
 # Phase 2: Application (App Insights + Static Web App)
-./deploy.ps1 -Phase application -CostCenter "hackathon" -TechnicalContact "team@contoso.com"
+./deploy.ps1 -Phase application -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 ```
 
 </details>

@@ -1,6 +1,6 @@
-# Hackathon Agenda
+# Microhack Agenda
 
-> **Agentic InfraOps Hackathon** — 6 hours (10:00 - 16:00)
+> **Agentic InfraOps Microhack** — 6 hours (10:00 - 16:00)
 
 ---
 
@@ -59,7 +59,7 @@
 | Time  | Activity             |
 | ----- | -------------------- |
 | 10:00 | Welcome & logistics  |
-| 10:05 | Hackathon overview   |
+| 10:05 | Microhack overview   |
 | 10:12 | 7-step workflow demo |
 | 10:18 | Setup verification   |
 | 10:24 | Team formation       |
@@ -144,6 +144,6 @@ Teams prepare their Partner Showcase presentations (5-min pitch + 2-min Q&A form
 ## Quick Reference
 
 - **Repo**: [github.com/jonathan-vella/azure-agentic-infraops-workshop](https://github.com/jonathan-vella/azure-agentic-infraops-workshop)
-- **Challenges**: [hackathon/challenges/](challenges/)
-- **Facilitator Guide**: [hackathon/facilitator/facilitator-guide.md](facilitator/facilitator-guide.md)
+- **Challenges**: [microhack/challenges/](challenges/)
+- **Facilitator Guide**: [microhack/facilitator/facilitator-guide.md](facilitator/facilitator-guide.md)
 - **Pre-Work**: [docs/know-before-you-go.md](../docs/know-before-you-go.md)

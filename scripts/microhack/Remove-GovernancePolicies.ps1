@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-    Removes hackathon Azure Policy assignments.
+    Removes microhack Azure Policy assignments.
 
 .DESCRIPTION
-    Cleans up governance policies deployed for the hackathon.
-    Only removes policies with the 'hackathon-' prefix.
+    Cleans up governance policies deployed for the microhack.
+    Only removes policies with the 'microhack-' prefix.
 
 .PARAMETER SubscriptionId
     The Azure subscription ID to remove policies from.
@@ -32,7 +32,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-Write-Host "`n🧹 Hackathon Governance Policy Cleanup" -ForegroundColor Cyan
+Write-Host "`n🧹 Microhack Governance Policy Cleanup" -ForegroundColor Cyan
 Write-Host "=" * 50
 
 # Set subscription context
@@ -48,23 +48,23 @@ if ($ResourceGroupName) {
     $Scope = "/subscriptions/$SubscriptionId"
 }
 
-# Get hackathon policy assignments
-Write-Host "`nFinding hackathon policy assignments..." -ForegroundColor Yellow
+# Get microhack policy assignments
+Write-Host "`nFinding microhack policy assignments..." -ForegroundColor Yellow
 $Assignments = az policy assignment list --scope $Scope 2>$null | ConvertFrom-Json
-$HackathonPolicies = $Assignments | Where-Object { $_.name -like 'hackathon-*' }
+$MicrohackPolicies = $Assignments | Where-Object { $_.name -like 'microhack-*' }
 
-if ($HackathonPolicies.Count -eq 0) {
-    Write-Host "`n✅ No hackathon policies found." -ForegroundColor Green
+if ($MicrohackPolicies.Count -eq 0) {
+    Write-Host "`n✅ No microhack policies found." -ForegroundColor Green
     exit 0
 }
 
-Write-Host "  Found $($HackathonPolicies.Count) hackathon policy assignment(s)" -ForegroundColor Yellow
+Write-Host "  Found $($MicrohackPolicies.Count) microhack policy assignment(s)" -ForegroundColor Yellow
 
 # Remove policies
 $Removed = 0
 $Failed = 0
 
-foreach ($Policy in $HackathonPolicies) {
+foreach ($Policy in $MicrohackPolicies) {
     if ($PSCmdlet.ShouldProcess($Policy.name, "Delete policy assignment")) {
         try {
             Write-Host "  Removing: $($Policy.displayName)..." -NoNewline

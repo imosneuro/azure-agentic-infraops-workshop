@@ -1,10 +1,10 @@
-# Agentic InfraOps Hackathon
+# Agentic InfraOps Microhack
 
 > **6-Hour Challenge**: Transform business requirements into deployed Azure infrastructure using AI agents.
 
 ## Overview
 
-Welcome to the Agentic InfraOps Hackathon! Your team will use GitHub Copilot custom agents to
+Welcome to the Agentic InfraOps Microhack! Your team will use GitHub Copilot custom agents to
 design, plan, implement, and deploy Azure infrastructure — all guided by AI and aligned with the
 Azure Well-Architected Framework.
 
@@ -18,7 +18,7 @@ Azure Well-Architected Framework.
 
 ## Learning Objectives
 
-By the end of this hackathon, you will:
+By the end of this microhack, you will:
 
 1. ✅ **Understand agentic workflows** for Infrastructure as Code
 2. ✅ **Generate production-ready Bicep** using AI agents
@@ -126,12 +126,12 @@ team scores.
 
 ```powershell
 # Score your team's submission
-.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" \
+.\scripts\microhack\Score-Team.ps1 -TeamName "freshconnect" \
     -ResourceGroupName "rg-freshconnect-dev-swc" \
     -ShowcaseScore 8
 
 # Display leaderboard
-.\scripts\hackathon\Get-Leaderboard.ps1
+.\scripts\microhack\Get-Leaderboard.ps1
 ```
 
 ### Bonus Points (up to 25 extra)

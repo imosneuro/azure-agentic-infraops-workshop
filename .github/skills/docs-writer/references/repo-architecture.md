@@ -17,7 +17,7 @@ azure-agentic-infraops-workshop/
 ├── agent-output/{project}/  # Agent-generated artifacts (01-07)
 ├── docs/                    # User-facing documentation (15 files)
 │   └── guides/              # Workflow and versioning guides
-├── hackathon/               # 6-hour hands-on hackathon materials
+├── microhack/               # 6-hour hands-on microhack materials
 ├── infra/bicep/             # Bicep module library
 ├── mcp/azure-pricing-mcp/   # Azure Pricing MCP server
 └── scripts/                 # Validation and automation scripts
@@ -164,28 +164,28 @@ updating when agents or skills change:
 | `guides/development-workflow.md` | Branch, commit, and PR conventions |
 | `guides/automated-versioning.md` | Automated version bump guide |
 
-## hackathon/ Folder Contents
+## microhack/ Folder Contents
 
 | Path | Purpose |
 | --- | --- |
-| `hackathon/README.md` | Hackathon hub — overview, schedule, scoring |
-| `hackathon/AGENDA.md` | Detailed 6-hour schedule with block timing |
-| `hackathon/feedback-form.md` | Post-event participant feedback survey |
-| `hackathon/workshop-invitation.md` | Event invitation / marketing document |
-| `hackathon/challenges/README.md` | Challenge index with flow diagram |
-| `hackathon/challenges/challenge-1-requirements.md` | Requirements capture (requirements agent) |
-| `hackathon/challenges/challenge-2-architecture.md` | Architecture design (architect agent) |
-| `hackathon/challenges/challenge-3-implementation.md` | Bicep implementation (bicep-plan, bicep-code, deploy) |
-| `hackathon/challenges/challenge-4-dr-curveball.md` | DR curveball (mid-event surprise) |
-| `hackathon/challenges/challenge-5-load-testing.md` | Load testing with k6 |
-| `hackathon/challenges/challenge-6-documentation.md` | Workload documentation (design agent) |
-| `hackathon/challenges/challenge-7-diagnostics.md` | Troubleshooting card (diagnose agent) |
-| `hackathon/challenges/challenge-8-partner-showcase.md` | Partner presentation role-play |
-| `hackathon/participant/README.md` | Redirect — points all participant docs to `docs/` |
-| `hackathon/facilitator/README.md` | Facilitator materials index |
-| `hackathon/facilitator/facilitator-guide.md` | Schedule, curveball script, coaching tips |
-| `hackathon/facilitator/scoring-rubric.md` | WAF-aligned scoring (105+25 pts) |
-| `hackathon/facilitator/solution-reference.md` | Expected outputs, patterns, commands |
+| `microhack/README.md` | Microhack hub — overview, schedule, scoring |
+| `microhack/AGENDA.md` | Detailed 6-hour schedule with block timing |
+| `microhack/feedback-form.md` | Post-event participant feedback survey |
+| `microhack/workshop-invitation.md` | Event invitation / marketing document |
+| `microhack/challenges/README.md` | Challenge index with flow diagram |
+| `microhack/challenges/challenge-1-requirements.md` | Requirements capture (requirements agent) |
+| `microhack/challenges/challenge-2-architecture.md` | Architecture design (architect agent) |
+| `microhack/challenges/challenge-3-implementation.md` | Bicep implementation (bicep-plan, bicep-code, deploy) |
+| `microhack/challenges/challenge-4-dr-curveball.md` | DR curveball (mid-event surprise) |
+| `microhack/challenges/challenge-5-load-testing.md` | Load testing with k6 |
+| `microhack/challenges/challenge-6-documentation.md` | Workload documentation (design agent) |
+| `microhack/challenges/challenge-7-diagnostics.md` | Troubleshooting card (diagnose agent) |
+| `microhack/challenges/challenge-8-partner-showcase.md` | Partner presentation role-play |
+| `microhack/participant/README.md` | Redirect — points all participant docs to `docs/` |
+| `microhack/facilitator/README.md` | Facilitator materials index |
+| `microhack/facilitator/facilitator-guide.md` | Schedule, curveball script, coaching tips |
+| `microhack/facilitator/scoring-rubric.md` | WAF-aligned scoring (105+25 pts) |
+| `microhack/facilitator/solution-reference.md` | Expected outputs, patterns, commands |
 
 ## Skill Discovery & Auto-Invocation
 

@@ -57,7 +57,7 @@ with dot.subgraph(name="cluster_facilitator") as fac:
         margin="20",
     )
 
-    fac.node("start", "Hackathon\nStarts", **START_END)
+    fac.node("start", "Microhack\nStarts", **START_END)
     fac.node("login", "Login via\nGitHub OAuth", **USER_ACTION)
     fac.node("create_teams", "Create Teams\nin the App", **USER_ACTION)
     fac.node("choose_method", "How to\nscore?", **DECISION)
@@ -136,7 +136,7 @@ with dot.subgraph(name="cluster_participant") as part:
     part.node("view_scores", "View Own\nTeam Score\nBreakdown", **DISPLAY)
     part.node("view_grade", "See Grade\n🏆 Outstanding\n🥇 Excellent\n🥈 Good\n🥉 Satisfactory\n📚 Needs Improvement", **DISPLAY)
     part.node("view_awards", "See Award\nWinners 🏆", **DISPLAY)
-    part.node("end", "Hackathon\nEnds", **START_END)
+    part.node("end", "Microhack\nEnds", **START_END)
 
 # ============================================================
 # EDGES: Main Flow

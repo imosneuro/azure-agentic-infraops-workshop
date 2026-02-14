@@ -10,7 +10,7 @@
 
 | Item        | Summary |
 | ----------- | ------- |
-| **Problem** | Manual JSON handling and script-only scoring are hard to operate consistently during a live hackathon. |
+| **Problem** | Manual JSON handling and script-only scoring are hard to operate consistently during a live microhack. |
 | **Users**   | **Team members** submit only their own team scores. **Admins** validate submissions and can manually adjust published scores. |
 | **Value**   | This handoff ensures the deployed app enforces role-safe submission and review, reducing facilitator overhead while keeping score changes auditable. |
 

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Displays the hackathon leaderboard based on team scores.
+    Displays the microhack leaderboard based on team scores.
 
 .DESCRIPTION
     Reads score-results.json from each team folder and displays a ranked leaderboard.
@@ -20,7 +20,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-# Paths - go up 2 levels from scripts/hackathon/ to repo root
+# Paths - go up 2 levels from scripts/microhack/ to repo root
 $RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $AgentOutputPath = Join-Path $RepoRoot "agent-output"
 
@@ -54,7 +54,7 @@ $Ranked = $Ranked | ForEach-Object {
 # Output
 switch ($OutputFormat) {
     'Table' {
-        Write-Host "`n🏆 HACKATHON LEADERBOARD" -ForegroundColor Cyan
+        Write-Host "`n🏆 MICROHACK LEADERBOARD" -ForegroundColor Cyan
         Write-Host "=" * 70
         Write-Host ""
         
@@ -98,7 +98,7 @@ switch ($OutputFormat) {
     }
     
     'Markdown' {
-        Write-Output "# Hackathon Leaderboard"
+        Write-Output "# Microhack Leaderboard"
         Write-Output ""
         Write-Output "| Rank | Team | Req | Arch | Impl | Dep | Docs | Load | Diag | Show | Bonus | Total |"
         Write-Output "|------|------|-----|------|------|-----|------|------|------|------|-------|-------|"

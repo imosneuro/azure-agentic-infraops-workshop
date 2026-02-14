@@ -147,7 +147,7 @@ pie showData
 | Function executions        | 🟢 Low     | Consumption plan free grant: 1M executions  | Event usage ≈ few thousand executions         |
 | Forgotten resources        | 🟡 Medium  | Resources continue billing after event ends | Set calendar reminder to delete RG post-event |
 
-> **⚠️ Watch Item**: The biggest budget risk is forgetting to clean up resources after the hackathon ends. Set a $15/mo budget alert and document the cleanup procedure.
+> **⚠️ Watch Item**: The biggest budget risk is forgetting to clean up resources after the microhack ends. Set a $15/mo budget alert and document the cleanup procedure.
 
 ## 🎯 Quick Decision Matrix
 
@@ -179,7 +179,7 @@ _"If you need X, expect to pay Y more"_
 | Use SWA Free tier            | $9.00/mo          | 🟢 Low | Only if built-in auth providers sufficient     |
 | Skip Application Insights    | $0/mo             | 🟢 Low | Already excluded; free tier available if added |
 
-> **Note**: This architecture is already at near-minimum cost. The primary savings opportunity is resource cleanup after the hackathon event concludes.
+> **Note**: This architecture is already at near-minimum cost. The primary savings opportunity is resource cleanup after the microhack event concludes.
 
 ## Detailed Cost Breakdown
 

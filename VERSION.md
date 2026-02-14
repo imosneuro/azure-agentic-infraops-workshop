@@ -12,8 +12,8 @@ Current Version: 1.0.0
 
 This project uses [Semantic Versioning](https://semver.org/):
 
-- **MAJOR**: Breaking changes to hackathon structure or challenge flow
-- **MINOR**: New challenges, scenarios, or significant hackathon enhancements
+- **MAJOR**: Breaking changes to microhack structure or challenge flow
+- **MINOR**: New challenges, scenarios, or significant microhack enhancements
 - **PATCH**: Bug fixes, documentation improvements, timing corrections
 
 ## Automation

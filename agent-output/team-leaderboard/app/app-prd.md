@@ -4,7 +4,7 @@
 ![Status](https://img.shields.io/badge/Status-Ready-brightgreen)
 ![Audience](https://img.shields.io/badge/Audience-App%20Dev%20Team-green)
 
-> **Audience**: Application development team building the frontend + API for the hackathon leaderboard.
+> **Audience**: Application development team building the frontend + API for the microhack leaderboard.
 > Infrastructure is already deployed — this document defines _what the app must do_, not how the infra works.
 
 ---
@@ -314,10 +314,10 @@ User → SWA → /.auth/login/github → GitHub OAuth → callback → /.auth/me
 | --------------- | ------------------------------------------------------------------------------- |
 | **Priority**    | Must-Have                                                                       |
 | **Role**        | Admin / Facilitator only (upload); All authenticated (view active rubric)       |
-| **Description** | Admin uploads a Markdown rubric file to configure scoring for each hackathon    |
+| **Description** | Admin uploads a Markdown rubric file to configure scoring for each microhack    |
 
 > **Why**: The default scoring model (105 base + 25 bonus) is specific to one
-> hackathon format. Rubric templates make the app reusable across events with
+> microhack format. Rubric templates make the app reusable across events with
 > different categories, criteria, point scales, bonus items, and grading tiers.
 
 **Acceptance Criteria:**
@@ -343,7 +343,7 @@ User → SWA → /.auth/login/github → GitHub OAuth → callback → /.auth/me
 The uploaded `rubric.md` must follow a parseable structure. Example:
 
 ```markdown
-# My Hackathon Rubric
+# My Microhack Rubric
 
 ## Categories
 
@@ -371,7 +371,7 @@ The uploaded `rubric.md` must follow a parseable structure. Example:
 ```json
 {
   "rubricId": "uuid",
-  "name": "Azure InfraOps Hackathon 2026",
+  "name": "Azure InfraOps Microhack 2026",
   "version": 1,
   "categories": [
     {
@@ -436,7 +436,7 @@ All data persists in Azure Table Storage (`stteamleadpromn2ksi`). Shared key acc
 | `PartitionKey` | string              | PK  | Fixed: `"rubric"`                            |
 | `RowKey`       | string              | RK  | Rubric ID (GUID)                             |
 | `name`         | string              |     | Rubric display name                          |
-| `eventName`    | string              |     | Hackathon / event name                       |
+| `eventName`    | string              |     | Microhack / event name                       |
 | `version`      | int32               |     | Rubric version number                        |
 | `configJson`   | string (JSON)       |     | Full parsed rubric JSON (categories, bonus, grading, awards) |
 | `sourceMarkdown` | string            |     | Original uploaded Markdown content           |
@@ -737,7 +737,7 @@ Then add the required workflow surfaces from PRD features:
 | ---------------- | ------------------------- | ---------------------------------- |
 | Availability     | 99.9%                     | SWA Standard SLA is 99.95%         |
 | Response time    | < 2s                      | CDN for static assets; API < 500ms |
-| Concurrent users | 50                        | Small hackathon audience           |
+| Concurrent users | 50                        | Small microhack audience           |
 | Data retention   | Event + 30 days           | Delete resources after             |
 | Accessibility    | WCAG 2.1 AA               | Standard web accessibility         |
 | Browser support  | Modern evergreen browsers | Chrome, Edge, Firefox, Safari      |
@@ -756,7 +756,7 @@ Then add the required workflow surfaces from PRD features:
 
 ## References
 
-- [Scoring Rubric Source](../../../hackathon/facilitator/scoring-rubric.md) — Definitive scoring criteria
+- [Scoring Rubric Source](../../../microhack/facilitator/scoring-rubric.md) — Definitive scoring criteria
 - [01-requirements.md](../01-requirements.md) — Infrastructure requirements (source material)
 - [02-architecture-assessment.md](../02-architecture-assessment.md) — Architecture decisions
 - [06-deployment-summary.md](../06-deployment-summary.md) — Deployed resource details

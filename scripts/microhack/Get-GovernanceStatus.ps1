@@ -12,14 +12,14 @@
 .PARAMETER ResourceGroupName
     Optional. Scope to a specific resource group.
 
-.PARAMETER HackathonOnly
-    Only show hackathon-prefixed policies.
+.PARAMETER MicrohackOnly
+    Only show microhack-prefixed policies.
 
 .EXAMPLE
     .\Get-GovernanceStatus.ps1 -SubscriptionId "12345678-..."
 
 .EXAMPLE
-    .\Get-GovernanceStatus.ps1 -SubscriptionId "12345678-..." -HackathonOnly
+    .\Get-GovernanceStatus.ps1 -SubscriptionId "12345678-..." -MicrohackOnly
 #>
 [CmdletBinding()]
 param(
@@ -30,7 +30,7 @@ param(
     [string]$ResourceGroupName,
 
     [Parameter()]
-    [switch]$HackathonOnly
+    [switch]$MicrohackOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -56,14 +56,14 @@ if ($ResourceGroupName) {
 Write-Host "`nFetching policy assignments..." -ForegroundColor Yellow
 $Assignments = az policy assignment list --scope $Scope 2>$null | ConvertFrom-Json
 
-if ($HackathonOnly) {
-    $Assignments = $Assignments | Where-Object { $_.name -like 'hackathon-*' }
+if ($MicrohackOnly) {
+    $Assignments = $Assignments | Where-Object { $_.name -like 'microhack-*' }
 }
 
 if ($Assignments.Count -eq 0) {
     Write-Host "`n⚠️  No policy assignments found." -ForegroundColor Yellow
-    if ($HackathonOnly) {
-        Write-Host "   Run Setup-GovernancePolicies.ps1 to deploy hackathon policies." -ForegroundColor Yellow
+    if ($MicrohackOnly) {
+        Write-Host "   Run Setup-GovernancePolicies.ps1 to deploy microhack policies." -ForegroundColor Yellow
     }
     exit 0
 }
@@ -103,25 +103,25 @@ try {
     Write-Host "  ℹ️  Compliance data not yet available (may take 15-30 minutes)" -ForegroundColor DarkGray
 }
 
-# Hackathon readiness check
-if ($HackathonOnly -or ($Assignments | Where-Object { $_.name -like 'hackathon-*' })) {
-    Write-Host "`n🎓 Hackathon Readiness" -ForegroundColor Cyan
+# Microhack readiness check
+if ($MicrohackOnly -or ($Assignments | Where-Object { $_.name -like 'microhack-*' })) {
+    Write-Host "`n🎓 Microhack Readiness" -ForegroundColor Cyan
     Write-Host "-" * 60
     
-    $HackathonPolicies = $Assignments | Where-Object { $_.name -like 'hackathon-*' }
+    $MicrohackPolicies = $Assignments | Where-Object { $_.name -like 'microhack-*' }
     $ExpectedPolicies = @(
-        'hackathon-allowed-locations',
-        'hackathon-require-tag-environment',
-        'hackathon-require-tag-project',
-        'hackathon-sql-aad-only',
-        'hackathon-storage-https',
-        'hackathon-appservice-https'
+        'microhack-allowed-locations',
+        'microhack-require-tag-environment',
+        'microhack-require-tag-project',
+        'microhack-sql-aad-only',
+        'microhack-storage-https',
+        'microhack-appservice-https'
     )
     
-    $Missing = $ExpectedPolicies | Where-Object { $_ -notin $HackathonPolicies.name }
+    $Missing = $ExpectedPolicies | Where-Object { $_ -notin $MicrohackPolicies.name }
     
     if ($Missing.Count -eq 0) {
-        Write-Host "  ✅ All core hackathon policies deployed" -ForegroundColor Green
+        Write-Host "  ✅ All core microhack policies deployed" -ForegroundColor Green
     } else {
         Write-Host "  ⚠️  Missing policies:" -ForegroundColor Yellow
         $Missing | ForEach-Object { Write-Host "      - $_" -ForegroundColor Yellow }

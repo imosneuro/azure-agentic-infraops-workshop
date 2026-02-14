@@ -1,4 +1,4 @@
-# Hackathon Feedback Form
+# Microhack Feedback Form
 
 > **Thank you for participating!** Your feedback helps us improve future events.
 
@@ -15,7 +15,7 @@
 
 ## Overall Experience
 
-### 1. How would you rate the overall hackathon experience?
+### 1. How would you rate the overall microhack experience?
 
 ☐ ⭐⭐⭐⭐⭐ Excellent  
 ☐ ⭐⭐⭐⭐ Good  
@@ -29,7 +29,7 @@
 ☐ Just right  
 ☐ Too long — could be condensed
 
-### 3. How challenging was the hackathon?
+### 3. How challenging was the microhack?
 
 ☐ Too easy  
 ☐ Just right  
@@ -125,7 +125,7 @@ If yes, describe:
 [Your answer]
 ```
 
-### 12. What was the best part of the hackathon?
+### 12. What was the best part of the microhack?
 
 ```
 [Your answer]
@@ -137,7 +137,7 @@ If yes, describe:
 [Your answer]
 ```
 
-### 14. Would you recommend this hackathon to colleagues?
+### 14. Would you recommend this microhack to colleagues?
 
 ☐ Definitely yes  
 ☐ Probably yes  
@@ -162,7 +162,7 @@ If yes, describe:
 | Name | |
 | Email | |
 | ☐ Contact me about future events | |
-| ☐ I'd like to help facilitate future hackathons | |
+| ☐ I'd like to help facilitate future microhacks | |
 
 ---
 

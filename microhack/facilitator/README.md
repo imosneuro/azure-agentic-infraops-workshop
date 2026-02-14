@@ -1,6 +1,6 @@
 # Facilitator Materials
 
-> **For hackathon coaches and facilitators only.**
+> **For microhack coaches and facilitators only.**
 
 | File                                           | Purpose                                              |
 | ---------------------------------------------- | ---------------------------------------------------- |
@@ -14,15 +14,15 @@
 
 ```powershell
 # Score individual team
-.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" -ShowcaseScore 8
+.\scripts\microhack\Score-Team.ps1 -TeamName "freshconnect" -ShowcaseScore 8
 
 # Score all teams
 Get-ChildItem .\agent-output -Directory | ForEach-Object {
-    .\scripts\hackathon\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck -ShowcaseScore 0
+    .\scripts\microhack\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck -ShowcaseScore 0
 }
 
 # Display leaderboard
-.\scripts\hackathon\Get-Leaderboard.ps1
+.\scripts\microhack\Get-Leaderboard.ps1
 ```
 
 ### Curveball Timing

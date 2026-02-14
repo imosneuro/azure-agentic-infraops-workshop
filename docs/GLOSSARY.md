@@ -27,7 +27,7 @@ declaratively. Files use the `.bicep` extension.
 
 ## C
 
-**Challenge** — A time-boxed task in the hackathon aligned to one or more
+**Challenge** — A time-boxed task in the microhack aligned to one or more
 workflow steps. There are 8 challenges progressing from requirements through
 deployment, documentation, diagnostics, and a final showcase.
 
@@ -37,7 +37,7 @@ that coordinates all other agents through the 7-step workflow.
 **Conventional Commits** — A commit message format (`type: description`) used
 for automated versioning. Enforced by commitlint and lefthook.
 
-**Curveball** — A surprise requirement change announced mid-hackathon
+**Curveball** — A surprise requirement change announced mid-microhack
 (Challenge 4). Simulates real-world scope changes by introducing multi-region
 disaster recovery requirements.
 
@@ -54,11 +54,11 @@ configurations. Discovered during Step 4 (Planning) and saved to
 
 ## F
 
-**Facilitator** — The event organiser who runs the hackathon: manages the schedule,
+**Facilitator** — The event organiser who runs the microhack: manages the schedule,
 announces the curveball, coaches teams, and runs the scoring scripts.
 
 **FreshConnect** — The project codename for the Nordic Fresh Foods delivery
-platform used as the hackathon scenario. All agent output goes to
+platform used as the microhack scenario. All agent output goes to
 `agent-output/freshconnect/`.
 
 ## H
@@ -94,7 +94,7 @@ For example, the Requirements agent is 📜 Scribe and the Architect agent is
 
 ## S
 
-**Scoring** — WAF-aligned evaluation of hackathon submissions. Base score is
+**Scoring** — WAF-aligned evaluation of microhack submissions. Base score is
 105 points across eight scored categories plus up to 25 bonus points for advanced features
 like zone redundancy and private endpoints.
 

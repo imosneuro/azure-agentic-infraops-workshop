@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Cleans up Azure resources created during the hackathon.
+    Cleans up Azure resources created during the microhack.
 
 .DESCRIPTION
-    Deletes resource groups matching hackathon naming patterns.
+    Deletes resource groups matching microhack naming patterns.
     Supports dry-run mode to preview deletions.
 
 .PARAMETER TeamName
@@ -19,15 +19,15 @@
     Skip confirmation prompts.
 
 .EXAMPLE
-    .\Cleanup-HackathonResources.ps1 -WhatIf
+    .\Cleanup-MicrohackResources.ps1 -WhatIf
     # Preview all resource groups that would be deleted
 
 .EXAMPLE
-    .\Cleanup-HackathonResources.ps1 -TeamName "freshconnect"
+    .\Cleanup-MicrohackResources.ps1 -TeamName "freshconnect"
     # Delete only freshconnect team's resources
 
 .EXAMPLE
-    .\Cleanup-HackathonResources.ps1 -Force
+    .\Cleanup-MicrohackResources.ps1 -Force
     # Delete all matching resources without prompts
 #>
 [CmdletBinding(SupportsShouldProcess)]
@@ -44,7 +44,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-Write-Host "`n🧹 Hackathon Resource Cleanup" -ForegroundColor Cyan
+Write-Host "`n🧹 Microhack Resource Cleanup" -ForegroundColor Cyan
 Write-Host "=" * 50
 
 # Check Azure CLI login

@@ -1,17 +1,17 @@
 # Know Before You Go
 
-> [Current Version](../VERSION.md) | Everything you need to know before joining the hackathon or exploring the repo
+> [Current Version](../VERSION.md) | Everything you need to know before joining the microhack or exploring the repo
 
 ## Who This Is For
 
-- **Hackathon participants**: Complete the setup checklist and read the "What to Expect"
+- **Microhack participants**: Complete the setup checklist and read the "What to Expect"
   section before event day.
 - **Self-guided learners**: Follow the same setup steps to explore the agentic workflow
   at your own pace.
 
 ## What to Expect
 
-### The Hackathon in 60 Seconds
+### The Microhack in 60 Seconds
 
 Your team will build real Azure infrastructure — from business requirements through
 deployed resources — using AI agents instead of manual coding. You'll use GitHub Copilot
@@ -35,7 +35,7 @@ Bicep Infrastructure as Code.
 | Challenge 8 (30 min) | Present your solution to the group |
 
 > [!TIP]
-> See the full schedule in [AGENDA.md](../hackathon/AGENDA.md).
+> See the full schedule in [AGENDA.md](../microhack/AGENDA.md).
 
 ### Mindset Tips
 
@@ -126,12 +126,12 @@ git --version
 ### 1. GitHub Account with Copilot Pro+ or Enterprise
 
 > [!WARNING]
-> This hackathon requires **GitHub Copilot Pro+** or **GitHub Copilot Enterprise**.
+> This microhack requires **GitHub Copilot Pro+** or **GitHub Copilot Enterprise**.
 > Custom agents are **NOT available** on Copilot Free, Copilot Pro, or Copilot Business.
 
 **Plan compatibility:**
 
-| Plan | Custom Agents | Hackathon Compatible |
+| Plan | Custom Agents | Microhack Compatible |
 |---|---|---|
 | Copilot Free | No | No |
 | Copilot Pro | No | No |
@@ -178,7 +178,7 @@ FAQ: [Azure account options](https://azure.microsoft.com/en-us/pricing/purchase-
 
 - **Owner** access on the subscription (required for Azure Policy in governance
   challenges)
-- Sufficient quota for hackathon resources — see
+- Sufficient quota for microhack resources — see
   [Quota Requirements](quota-requirements.md)
 - A subscription can be shared across teams if quota permits
 
@@ -200,7 +200,7 @@ You should see at least one subscription where you have Owner access.
 
 ## Pre-Event Setup (30-45 Minutes)
 
-Complete these steps **before** the hackathon to avoid network congestion on the day.
+Complete these steps **before** the microhack to avoid network congestion on the day.
 
 ### Clone the Repository
 
@@ -311,7 +311,7 @@ For more detailed fixes, see [Troubleshooting](troubleshooting.md).
 - [Copilot Guide](copilot-guide.md) — VS Code, agents, skills, and instructions
 - [Quick Reference Card](quick-reference-card.md) — Printable one-page cheat sheet
 - [Quota Requirements](quota-requirements.md) — Azure resource quota per team
-- [Hackathon AGENDA](../hackathon/AGENDA.md) — Full schedule with block timing
+- [Microhack AGENDA](../microhack/AGENDA.md) — Full schedule with block timing
 
 [azure-billing]: https://docs.github.com/en/billing/how-tos/set-up-payment/connect-azure-sub
 [azure-limits]: https://learn.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits

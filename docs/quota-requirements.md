@@ -1,6 +1,6 @@
 # Azure Quota Requirements
 
-> **Verify your subscription has sufficient quota BEFORE the hackathon.**
+> **Verify your subscription has sufficient quota BEFORE the microhack.**
 
 ## Per-Team Resource Requirements
 
@@ -104,14 +104,14 @@ If you need to increase quotas:
 1. Go to [Azure Portal → Quotas](https://portal.azure.com/#view/Microsoft_Azure_Capacity/QuotaMenuBlade/~/overview)
 2. Select the resource type
 3. Click "Request increase"
-4. Provide justification (e.g., "Hackathon event with 4 teams")
+4. Provide justification (e.g., "Microhack event with 4 teams")
 5. Allow 24-48 hours for approval
 
-> ⚠️ **Request quota increases at least 1 week before the hackathon** to ensure approval.
+> ⚠️ **Request quota increases at least 1 week before the microhack** to ensure approval.
 
 ## Estimated Costs
 
-Approximate costs for a 6-hour hackathon (resources running for ~8 hours including setup/cleanup):
+Approximate costs for a 6-hour microhack (resources running for ~8 hours including setup/cleanup):
 
 | Configuration          | Estimated Cost |
 | ---------------------- | -------------- |
@@ -119,10 +119,10 @@ Approximate costs for a 6-hour hackathon (resources running for ~8 hours includi
 | Single team (with DR)  | €10-20         |
 | 4 teams (shared sub)   | €30-50         |
 
-> 💡 **Tip**: Delete all resources immediately after the hackathon to minimize costs.
-> Use the cleanup script: `scripts/hackathon/Cleanup-HackathonResources.ps1`
+> 💡 **Tip**: Delete all resources immediately after the microhack to minimize costs.
+> Use the cleanup script: `scripts/microhack/Cleanup-MicrohackResources.ps1`
 
-## Pre-Hackathon Verification
+## Pre-Microhack Verification
 
 Run this verification before the event:
 
@@ -140,4 +140,4 @@ az group create --name rg-quota-test --location swedencentral
 az group delete --name rg-quota-test --yes --no-wait
 ```
 
-If this succeeds, your subscription is ready for the hackathon.
+If this succeeds, your subscription is ready for the microhack.

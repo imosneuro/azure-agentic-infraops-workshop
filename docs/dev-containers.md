@@ -17,7 +17,7 @@ development environment with all tools pre-installed. It works with both
 | GitHub CLI (`gh`) | Latest | Repository and PR management |
 | Node.js + npm | 20.x | Linting, validation scripts |
 | Python 3 + pip | 3.12+ | Diagram generation, MCP server |
-| PowerShell | 7.x | Hackathon scripts, deployment |
+| PowerShell | 7.x | Microhack scripts, deployment |
 | Git | Latest | Version control |
 
 ## Getting Started

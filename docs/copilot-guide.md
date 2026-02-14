@@ -64,7 +64,7 @@ proposes edits you can accept or reject.
 commands, create files, search the codebase, and iterate until the task is complete.
 
 **When to use**: Complex tasks that span multiple files and require tool use. **This is
-the primary mode for this hackathon.**
+the primary mode for this microhack.**
 
 **Example prompts**:
 
@@ -294,7 +294,7 @@ You (prompt)
         └─→ Generates Artifacts (agent-output/{project}/*.md)
 ```
 
-### Workflow Through the Hackathon
+### Workflow Through the Microhack
 
 ```text
 Challenge 1 → requirements agent → 01-requirements.md

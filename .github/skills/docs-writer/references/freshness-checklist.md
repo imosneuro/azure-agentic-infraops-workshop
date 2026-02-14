@@ -79,21 +79,21 @@ appropriate category table. Remove entries for deleted skills.
 - `orchestration-helper`
 - `.github/templates/` (old path; now `.github/skills/azure-artifacts/templates/`)
 - `docs/copilot-tips.md` (replaced by `docs/copilot-guide.md`)
-- `hackathon/participant/copilot-guide.md` (moved to `docs/copilot-guide.md`)
-- `hackathon/participant/pre-work-checklist.md` (absorbed into `docs/know-before-you-go.md`)
-- `hackathon/participant/scenario-brief.md` (moved to `docs/scenario-brief.md`)
-- `hackathon/participant/hints-and-tips.md` (moved to `docs/hints-and-tips.md`)
-- `hackathon/participant/quick-reference-card.md` (moved to `docs/quick-reference-card.md`)
-- `hackathon/participant/team-role-cards.md` (moved to `docs/team-role-cards.md`)
-- `hackathon/participant/quota-requirements.md` (moved to `docs/quota-requirements.md`)
+- `microhack/participant/copilot-guide.md` (moved to `docs/copilot-guide.md`)
+- `microhack/participant/pre-work-checklist.md` (absorbed into `docs/know-before-you-go.md`)
+- `microhack/participant/scenario-brief.md` (moved to `docs/scenario-brief.md`)
+- `microhack/participant/hints-and-tips.md` (moved to `docs/hints-and-tips.md`)
+- `microhack/participant/quick-reference-card.md` (moved to `docs/quick-reference-card.md`)
+- `microhack/participant/team-role-cards.md` (moved to `docs/team-role-cards.md`)
+- `microhack/participant/quota-requirements.md` (moved to `docs/quota-requirements.md`)
 
-**Banned agent names in hackathon docs** (`hackathon/**/*.md`):
+**Banned agent names in microhack docs** (`microhack/**/*.md`):
 
 - `docs` agent (renamed to `design`)
 - `diagram` agent (replaced by `design` agent + `azure-diagrams` skill)
 - `plan` agent (renamed to `requirements`)
 
-**Files to check**: All `docs/**/*.md`, `hackathon/**/*.md`, `README.md`, `CONTRIBUTING.md`.
+**Files to check**: All `docs/**/*.md`, `microhack/**/*.md`, `README.md`, `CONTRIBUTING.md`.
 
 **Auto-fix**: Replace with the correct skill reference
 (see `references/doc-standards.md` → Prohibited References table).
@@ -128,11 +128,11 @@ template counts.
 
 **Auto-fix**: Update count reference.
 
-### 8. Hackathon Agent References
+### 8. Microhack Agent References
 
-**Rule**: All hackathon files must reference only current agent names.
+**Rule**: All microhack files must reference only current agent names.
 
-**Files to check**: All `hackathon/**/*.md`.
+**Files to check**: All `microhack/**/*.md`.
 
 **Verify**:
 
@@ -146,35 +146,35 @@ template counts.
 **Auto-fix**: Replace old agent names with current names.
 Add brief context about the agent's role where helpful.
 
-### 9. Hackathon Duration and Team Count
+### 9. Microhack Duration and Team Count
 
-**Source of truth**: `hackathon/AGENDA.md` schedule (10:00-16:00 = 6 hours).
+**Source of truth**: `microhack/AGENDA.md` schedule (10:00-16:00 = 6 hours).
 
 **Files to check**:
 
 | File                                         | What to verify                 |
 | -------------------------------------------- | ------------------------------ |
-| `hackathon/workshop-invitation.md`           | Duration says "6 hours"        |
-| `hackathon/feedback-form.md`                 | Duration says "6-hour"         |
-| `hackathon/facilitator/facilitator-guide.md` | Block timing matches AGENDA.md |
+| `microhack/workshop-invitation.md`           | Duration says "6 hours"        |
+| `microhack/feedback-form.md`                 | Duration says "6-hour"         |
+| `microhack/facilitator/facilitator-guide.md` | Block timing matches AGENDA.md |
 
 **Team policy**: Verify all files use the same team-size and team-count policy.
 
 **Auto-fix**: Replace incorrect duration/team counts.
 
-### 11. Hackathon Scoring and Tooling Alignment
+### 11. Microhack Scoring and Tooling Alignment
 
-**Source of truth**: `hackathon/facilitator/scoring-rubric.md`
+**Source of truth**: `microhack/facilitator/scoring-rubric.md`
 
 **Files to check**:
 
 | File                                                   | What to verify                                       |
 | ------------------------------------------------------ | ---------------------------------------------------- |
-| `hackathon/README.md`                                  | Base points and scoring narrative align with rubric  |
-| `hackathon/AGENDA.md`                                  | Challenge points align with rubric                   |
-| `hackathon/challenges/challenge-8-partner-showcase.md` | Showcase points and format align with rubric         |
-| `scripts/hackathon/Score-Team.ps1`                     | Category weights and fields align with rubric        |
-| `scripts/hackathon/Get-Leaderboard.ps1`                | Display columns/denominators align with script model |
+| `microhack/README.md`                                  | Base points and scoring narrative align with rubric  |
+| `microhack/AGENDA.md`                                  | Challenge points align with rubric                   |
+| `microhack/challenges/challenge-8-partner-showcase.md` | Showcase points and format align with rubric         |
+| `scripts/microhack/Score-Team.ps1`                     | Category weights and fields align with rubric        |
+| `scripts/microhack/Get-Leaderboard.ps1`                | Display columns/denominators align with script model |
 
 **Auto-fix**: Update docs, scripts, and leaderboard formatting as one change set.
 

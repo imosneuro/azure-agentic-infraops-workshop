@@ -20,17 +20,17 @@
       alt="Logo" width="120" height="120">
   </a>
 
-  <h1 align="center">Agentic InfraOps Hackathon</h1>
+  <h1 align="center">Agentic InfraOps Microhack</h1>
 
   <p align="center">
-    <strong>A hands-on hackathon for building Azure infrastructure with AI agents</strong>
+    <strong>A hands-on microhack for building Azure infrastructure with AI agents</strong>
     <br />
     <em>Requirements → Architecture → Plan → Code → Deploy → Documentation</em>
     <br />
     <br />
     <a href="#-quick-start"><strong>Quick Start »</strong></a>
     ·
-    <a href="hackathon/">Hackathon Guide</a>
+    <a href="microhack/">Microhack Guide</a>
     ·
     <a href="agent-output/">Sample Outputs</a>
     ·
@@ -110,9 +110,9 @@ dedicated prompt. This reduces hallucinations as the context fills up.
 ---
 
 <details>
-<summary>🎓 Hackathon</summary>
+<summary>🎓 Microhack</summary>
 
-## 🎓 Hackathon
+## 🎓 Microhack
 
 ### 🏆 6-Hour Hands-On Challenge
 
@@ -122,7 +122,7 @@ Transform business requirements into deployed Azure infrastructure using AI agen
 
 - IT Pros familiar with Azure Portal, new to IaC
 - Teams of 3-4 (20-24 participants total)
-- Hackathon coaches and trainers
+- Microhack coaches and trainers
 
 **Includes:**
 
@@ -132,19 +132,19 @@ Transform business requirements into deployed Azure infrastructure using AI agen
 - Quick reference cards and team role definitions
 
 ```text
-hackathon/
+microhack/
 ├── challenges/        # 8 challenge files
 ├── participant/       # Redirects to docs/
 ├── facilitator/       # Guide, scoring, solutions
 └── feedback-form.md   # Post-event survey
 
-scripts/hackathon/
+scripts/microhack/
 ├── Score-Team.ps1
 ├── Get-Leaderboard.ps1
-└── Cleanup-HackathonResources.ps1
+└── Cleanup-MicrohackResources.ps1
 ```
 
-📖 **[Start the Hackathon →](hackathon/README.md)**
+📖 **[Start the Microhack →](microhack/README.md)**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -479,7 +479,7 @@ Real-time Azure retail pricing for cost-aware SKU decisions. Pre-configured in t
 │   ├── 📁 skills/              # 8 reusable skills
 ├── 📁 agent-output/           # Generated artifacts per project
 ├── 📁 docs/                   # Documentation and guides
-├── 📁 hackathon/              # 🎓 6-hour hands-on hackathon
+├── 📁 microhack/              # 🎓 6-hour hands-on microhack
 ├── 📁 infra/bicep/            # Generated Bicep templates
 ├── 📁 mcp/azure-pricing-mcp/  # 💰 Pricing MCP add-on
 └── 📁 scripts/                # Validation, scoring, and cleanup scripts

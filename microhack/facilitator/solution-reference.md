@@ -101,7 +101,7 @@ param projectName string = 'freshconnect'
 param location string = 'swedencentral'
 
 @description('Owner for tagging')
-param owner string = 'hackathon-team'
+param owner string = 'microhack-team'
 
 // Generate unique suffix ONCE
 var uniqueSuffix = uniqueString(resourceGroup().id)

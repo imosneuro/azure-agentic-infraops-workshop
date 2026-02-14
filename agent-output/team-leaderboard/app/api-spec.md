@@ -660,7 +660,7 @@ List all rubric configurations (most recent first).
 [
   {
     "rubricId": "a1b2c3d4-...",
-    "name": "Azure InfraOps Hackathon 2026",
+    "name": "Azure InfraOps Microhack 2026",
     "eventName": "Partner Summit Q1",
     "version": 1,
     "baseTotal": 105,
@@ -692,7 +692,7 @@ Raw Markdown content of the rubric file with `Content-Type: text/markdown`.
 
 ```json
 {
-  "name": "Azure InfraOps Hackathon 2026",
+  "name": "Azure InfraOps Microhack 2026",
   "eventName": "Partner Summit Q1",
   "sourceMarkdown": "# My Rubric\n\n## Categories\n...",
   "activate": true
@@ -707,7 +707,7 @@ previously active rubric is deactivated.
 ```json
 {
   "rubricId": "a1b2c3d4-...",
-  "name": "Azure InfraOps Hackathon 2026",
+  "name": "Azure InfraOps Microhack 2026",
   "baseTotal": 105,
   "bonusTotal": 25,
   "isActive": true,
@@ -742,7 +742,7 @@ Retrieve the currently active rubric configuration (full JSON).
 ```json
 {
   "rubricId": "a1b2c3d4-...",
-  "name": "Azure InfraOps Hackathon 2026",
+  "name": "Azure InfraOps Microhack 2026",
   "version": 1,
   "categories": [
     {

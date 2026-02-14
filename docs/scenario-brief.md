@@ -107,9 +107,9 @@ Design and deploy the Azure infrastructure for the **FreshConnect MVP** (Minimum
 
 ---
 
-## The Hackathon Journey
+## The Microhack Journey
 
-This 6-hour hackathon walks you through the full infrastructure lifecycle across **8 challenges**:
+This 6-hour microhack walks you through the full infrastructure lifecycle across **8 challenges**:
 
 1. **Requirements** — Capture business needs using `requirements` agent
 2. **Architecture** — Design Azure solution aligned with Well-Architected Framework
@@ -126,5 +126,5 @@ Not all teams will complete all challenges — the goal is learning the agentic 
 
 ## Getting Started
 
-Begin with [Challenge 1: Requirements](../hackathon/challenges/challenge-1-requirements.md) to capture these
+Begin with [Challenge 1: Requirements](../microhack/challenges/challenge-1-requirements.md) to capture these
 requirements using the **requirements** agent.

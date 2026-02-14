@@ -1,6 +1,6 @@
 # Facilitator Guide
 
-> **For hackathon coaches and facilitators only.**
+> **For microhack coaches and facilitators only.**
 
 ## Event Overview
 
@@ -58,13 +58,13 @@ Deploy Azure Policies to create realistic governance constraints. Teams will enc
 
 ```powershell
 # Check current governance status
-.\scripts\hackathon\Get-GovernanceStatus.ps1 -SubscriptionId "<sub-id>"
+.\scripts\microhack\Get-GovernanceStatus.ps1 -SubscriptionId "<sub-id>"
 
-# Deploy hackathon policies (checks for existing before creating)
-.\scripts\hackathon\Setup-GovernancePolicies.ps1 -SubscriptionId "<sub-id>"
+# Deploy microhack policies (checks for existing before creating)
+.\scripts\microhack\Setup-GovernancePolicies.ps1 -SubscriptionId "<sub-id>"
 
 # After event: Remove policies
-.\scripts\hackathon\Remove-GovernancePolicies.ps1 -SubscriptionId "<sub-id>"
+.\scripts\microhack\Remove-GovernancePolicies.ps1 -SubscriptionId "<sub-id>"
 ```
 
 **Policies deployed:**
@@ -290,11 +290,11 @@ After each presentation, briefly comment on:
 ```powershell
 # Score all teams
 Get-ChildItem .\agent-output -Directory | ForEach-Object {
-    .\scripts\hackathon\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck -ShowcaseScore 0
+    .\scripts\microhack\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck -ShowcaseScore 0
 }
 
 # Display leaderboard
-.\scripts\hackathon\Get-Leaderboard.ps1
+.\scripts\microhack\Get-Leaderboard.ps1
 ```
 
 - Share key learnings from presentations
@@ -309,15 +309,15 @@ Get-ChildItem .\agent-output -Directory | ForEach-Object {
 
 ```powershell
 # Individual team
-.\scripts\hackathon\Score-Team.ps1 -TeamName "freshconnect" -ResourceGroupName "rg-freshconnect-dev-swc"
+.\scripts\microhack\Score-Team.ps1 -TeamName "freshconnect" -ResourceGroupName "rg-freshconnect-dev-swc"
 
 # All teams
 Get-ChildItem .\agent-output -Directory | Where-Object { $_.Name -ne ".gitkeep" } | ForEach-Object {
-    .\scripts\hackathon\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck -ShowcaseScore 0
+    .\scripts\microhack\Score-Team.ps1 -TeamName $_.Name -SkipAzureCheck -ShowcaseScore 0
 }
 
 # Leaderboard
-.\scripts\hackathon\Get-Leaderboard.ps1
+.\scripts\microhack\Get-Leaderboard.ps1
 ```
 
 > [!TIP]

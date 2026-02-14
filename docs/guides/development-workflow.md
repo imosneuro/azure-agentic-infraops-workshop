@@ -133,7 +133,7 @@ git status
 git add .
 
 # Commit with conventional commit message
-git commit -m "feat(hackathon): add challenge 7 with advanced scenarios
+git commit -m "feat(microhack): add challenge 7 with advanced scenarios
 
 - Add challenge-7-advanced.md
 - Update facilitator guide
@@ -160,7 +160,7 @@ git push -u origin feat/add-challenge-7
 ```bash
 # Create PR using GitHub CLI
 gh pr create \
-  --title "feat(hackathon): add challenge 7 with advanced scenarios" \
+  --title "feat(microhack): add challenge 7 with advanced scenarios" \
   --body "## Description
 
   Adds a new advanced challenge for experienced participants.
@@ -461,9 +461,9 @@ git checkout main && git pull
 git checkout -b feat/challenge-8
 
 # 2. Make multiple commits
-git commit -m "feat(hackathon): add challenge 8 skeleton"
-git commit -m "feat(hackathon): add scoring criteria"
-git commit -m "docs(hackathon): update facilitator guide"
+git commit -m "feat(microhack): add challenge 8 skeleton"
+git commit -m "feat(microhack): add scoring criteria"
+git commit -m "docs(microhack): update facilitator guide"
 
 # 3. Push and create PR
 git push -u origin feat/challenge-8

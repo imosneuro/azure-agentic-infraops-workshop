@@ -269,7 +269,7 @@ gantt
 ### 5.3 — Default Rubric Bootstrap
 
 - [ ] Create `src/data/defaultRubric.js` with the 105+25 model from
-      `hackathon/facilitator/scoring-rubric.md`
+      `microhack/facilitator/scoring-rubric.md`
 - [ ] On first API call to `/api/rubrics/active`, if no rubric exists,
       seed the default rubric to the Rubrics table
 - [ ] Include default rubric in data seeding script (Phase 2.4)
@@ -496,4 +496,4 @@ gantt
 - [App Design](./app-design.md)
 - [Scaffold Guide](./app-scaffold.md)
 - [Handoff Checklist](./app-handoff-checklist.md)
-- [Scoring Rubric](../../../hackathon/facilitator/scoring-rubric.md)
+- [Scoring Rubric](../../../microhack/facilitator/scoring-rubric.md)

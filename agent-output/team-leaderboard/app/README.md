@@ -5,7 +5,7 @@
 ![Platform](https://img.shields.io/badge/Platform-Azure%20SWA-purple)
 ![Runtime](https://img.shields.io/badge/Runtime-Node.js%2020-green)
 
-> Browser-based scoring, validation, and leaderboard for hackathon events.
+> Browser-based scoring, validation, and leaderboard for microhack events.
 > Replaces manual JSON handling and script-only scoring with a live web UI.
 
 ---
@@ -125,7 +125,7 @@ Full request/response schemas in [api-spec.md](./api-spec.md).
 > The scoring model is configurable via rubric templates (F11). The values
 > below are the **default rubric** that ships with the app. Admins can upload
 > a custom `rubric.md` to define different categories, criteria, and grading
-> scales for each hackathon event.
+> scales for each microhack event.
 
 | Category                | Points | Grade Scale (of 105 base) |
 | ----------------------- | ------ | ------------------------- |
@@ -140,7 +140,7 @@ Full request/response schemas in [api-spec.md](./api-spec.md).
 | **Base Total**          | **105**|                           |
 | Bonus (4 items)         | +25 max|                           |
 
-Definitive scoring criteria: [Scoring Rubric](../../../hackathon/facilitator/scoring-rubric.md)
+Definitive scoring criteria: [Scoring Rubric](../../../microhack/facilitator/scoring-rubric.md)
 
 ## Current Status
 
@@ -153,4 +153,4 @@ full backlog, milestones, and TDD implementation plan.
 - [Infrastructure Requirements](../01-requirements.md)
 - [Architecture Assessment](../02-architecture-assessment.md)
 - [Deployment Summary](../06-deployment-summary.md)
-- [Scoring Rubric](../../../hackathon/facilitator/scoring-rubric.md)
+- [Scoring Rubric](../../../microhack/facilitator/scoring-rubric.md)

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Scores a hackathon team's submission based on WAF-aligned criteria.
+    Scores a microhack team's submission based on WAF-aligned criteria.
 
 .DESCRIPTION
     Evaluates team artifacts against the scoring rubric (105 base + 25 bonus points).
@@ -46,7 +46,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-# Paths - go up 2 levels from scripts/hackathon/ to repo root
+# Paths - go up 2 levels from scripts/microhack/ to repo root
 $RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $ArtifactPath = Join-Path $RepoRoot "agent-output" $TeamName
 $BicepPath = Join-Path $RepoRoot "infra" "bicep" $TeamName

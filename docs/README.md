@@ -61,7 +61,7 @@ Validation subagents: `bicep-lint-subagent`, `bicep-whatif-subagent`, `bicep-rev
 │   └── instructions/       # 15 file-type instruction files
 ├── agent-output/{project}/ # Agent-generated artifacts (01-07)
 ├── docs/                   # User-facing documentation (this folder)
-├── hackathon/              # 6-hour hands-on hackathon materials
+├── microhack/              # 6-hour hands-on microhack materials
 ├── infra/bicep/            # Generated Bicep templates
 ├── mcp/azure-pricing-mcp/  # Azure Pricing MCP server
 └── scripts/                # Validation and automation scripts

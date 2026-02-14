@@ -75,6 +75,6 @@ to understand what each step produces.
 ## Next Steps
 
 - Read the [Copilot Guide](copilot-guide.md) for prompting best practices
-- See the [Know Before You Go](know-before-you-go.md) for hackathon prep
+- See the [Know Before You Go](know-before-you-go.md) for microhack prep
 - See the [Development Workflow](guides/development-workflow.md) for contributing
 - Check [Troubleshooting](troubleshooting.md) if you hit issues

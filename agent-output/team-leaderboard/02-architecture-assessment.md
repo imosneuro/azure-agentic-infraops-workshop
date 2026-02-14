@@ -47,7 +47,7 @@ All required categories are documented with actionable values. No blocking gaps.
 
 ### Recommended Architecture
 
-**Azure Static Web Apps (Standard) + Azure Table Storage** — a serverless, low-cost architecture for hosting a hackathon scoring dashboard with GitHub authentication.
+**Azure Static Web Apps (Standard) + Azure Table Storage** — a serverless, low-cost architecture for hosting a microhack scoring dashboard with GitHub authentication.
 
 | Attribute                  | Value                                                           |
 | -------------------------- | --------------------------------------------------------------- |
@@ -153,7 +153,7 @@ flowchart TB
 | **Right-Sizing**          | SWA Standard is the minimum SKU supporting custom auth and SLA. Table Storage LRS is cheapest persistence option. No over-provisioning. | 9/10  |
 | **Cost Predictability**   | Fixed $9/mo for SWA. Table Storage <$0.10/mo. Total highly predictable at ~$9.05/mo. Well within $50/mo budget.                         | 9/10  |
 | **Cost Monitoring**       | Azure Cost Management available. Budget alerts can be set on the resource group.                                                        | 7/10  |
-| **Optimization Leverage** | SWA Free tier possible if custom auth not required (saves $9/mo). Event-scoped — can delete resources after hackathon to stop billing.  | 8/10  |
+| **Optimization Leverage** | SWA Free tier possible if custom auth not required (saves $9/mo). Event-scoped — can delete resources after microhack to stop billing.  | 8/10  |
 
 **Gaps & Recommendations:**
 

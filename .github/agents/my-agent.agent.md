@@ -28,7 +28,7 @@ This workshop repo is a challenge-based, hands-on fork of the source repo.
 It shares agents, instructions, skills, devcontainer config, and scripts
 with the source, but has its own:
 
-- `hackathon/` folder (challenges, facilitator guides, participant materials)
+- `microhack/` folder (challenges, facilitator guides, participant materials)
 - `docs/` folder (workshop-specific guides like Know Before You Go)
 - `.github/skills/docs-writer/` (customized for workshop file structure)
 - `README.md`, `VERSION.md`, `CHANGELOG.md` (independent versioning)
@@ -43,7 +43,7 @@ these updates don't break the workshop-specific content.
 
 These are workshop-customized and must not be changed during sync review:
 
-- `hackathon/**` — all hackathon materials
+- `microhack/**` — all microhack materials
 - `.github/skills/docs-writer/**` — workshop-customized skill
 - `docs/know-before-you-go.md` — workshop pre-event guide
 - `docs/copilot-guide.md` — workshop copilot guide

@@ -39,7 +39,7 @@ None — all tools and references are workspace-local.
 All markdown documentation **except** `agent-output/**/*.md`:
 
 - `docs/` — user-facing docs (quickstart, workflow, troubleshooting, etc.)
-- `hackathon/` — hackathon materials (challenges, participant guides, facilitator docs)
+- `microhack/` — microhack materials (challenges, participant guides, facilitator docs)
 - `README.md` — repo root README
 - `CONTRIBUTING.md` — contribution guidelines
 - `CHANGELOG.md` — release history
@@ -81,8 +81,8 @@ When a new agent, skill, or scenario is added to the repo:
      `.github/instructions/docs.instructions.md` agent count/table
    - New skill → update `docs/README.md` skill tables,
      `.github/instructions/docs.instructions.md` skill count/table
-   - New hackathon challenge → update `hackathon/challenges/README.md` table,
-     `docs/README.md` hackathon references
+   - New microhack challenge → update `microhack/challenges/README.md` table,
+     `docs/README.md` microhack references
 3. **Match existing patterns**: Study adjacent entries in each table
    to match column format, emoji conventions, and description style.
 4. **Update counts**: Increment totals in section headings
@@ -200,21 +200,21 @@ issue with `docs-freshness` label
 3. Run `npm run lint:docs-freshness` to verify 0 findings remain
 4. Summarize changes made
 
-### Workflow 8: Hackathon Consistency Audit
+### Workflow 8: Microhack Consistency Audit
 
-Use this workflow for `hackathon/**/*.md` updates.
+Use this workflow for `microhack/**/*.md` updates.
 
 1. **Set canonical precedence**:
-   - Event timing source of truth: `hackathon/AGENDA.md`
-   - Scoring policy source of truth: `hackathon/facilitator/scoring-rubric.md`
+   - Event timing source of truth: `microhack/AGENDA.md`
+   - Scoring policy source of truth: `microhack/facilitator/scoring-rubric.md`
 2. **Validate critical consistency points**:
    - Curveball time is consistent in all participant and facilitator docs
    - Team-size policy is consistent across invitation, README, agenda, and facilitator guide
    - Presentation format is consistent between challenge and facilitator docs
    - Deliverable filenames match challenge and facilitator references
 3. **Scoring authority check**:
-   - If scoring rubric changes, verify `scripts/hackathon/Score-Team.ps1` and
-     `scripts/hackathon/Get-Leaderboard.ps1` still reflect scoring weights and fields.
+   - If scoring rubric changes, verify `scripts/microhack/Score-Team.ps1` and
+     `scripts/microhack/Get-Leaderboard.ps1` still reflect scoring weights and fields.
 4. **Finalize with an issue table**:
    - File path, mismatch type, canonical value, and exact fix applied.
 
@@ -226,8 +226,8 @@ Use this workflow for `hackathon/**/*.md` updates.
 - **Always verify** line length ≤ 120 characters after edits
 - **Preserve** existing Mermaid diagram theme directives
 - **Use** `VERSION.md` as the single source of truth for version numbers
-- **Treat** `hackathon/AGENDA.md` as timing source of truth for hackathon docs
-- **Treat** `hackathon/facilitator/scoring-rubric.md` as scoring source of truth
+- **Treat** `microhack/AGENDA.md` as timing source of truth for microhack docs
+- **Treat** `microhack/facilitator/scoring-rubric.md` as scoring source of truth
 
 ## Troubleshooting
 

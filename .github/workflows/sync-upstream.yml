@@ -186,7 +186,7 @@ jobs:
 
           ## Never Modify These Files
 
-          - `hackathon/**` — all hackathon materials
+          - `microhack/**` — all microhack materials
           - `.github/skills/docs-writer/**` — workshop-customized skill
           - `docs/**` — all workshop documentation
           - `README.md`, `VERSION.md`, `CHANGELOG.md`, `CONTRIBUTORS.md` — workshop identity
@@ -259,7 +259,7 @@ jobs:
           This workshop repo (`jonathan-vella/azure-agentic-infraops-workshop`) is
           a challenge-based fork of the source repo (`jonathan-vella/azure-agentic-infraops`).
           It shares agents, instructions, skills, devcontainer config, and scripts
-          with the source, but has its own `hackathon/`, `docs/`, and `docs-writer` skill.
+          with the source, but has its own `microhack/`, `docs/`, and `docs-writer` skill.
 
           The sync brought in updates to shared files. Your job is to validate these
           updates don't break workshop-specific content.
@@ -283,7 +283,7 @@ jobs:
 
           These are workshop-customized and must not be changed:
 
-          - `hackathon/**` — all hackathon materials
+          - `microhack/**` — all microhack materials
           - `.github/skills/docs-writer/**` — workshop-customized skill
           - `docs/**` — all workshop documentation
           - `README.md`, `VERSION.md`, `CHANGELOG.md`, `CONTRIBUTORS.md` — workshop identity

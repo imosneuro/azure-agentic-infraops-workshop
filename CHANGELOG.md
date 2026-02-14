@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to **Agentic InfraOps Hackathon** will be documented in this file.
+All notable changes to **Agentic InfraOps Microhack** will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -39,12 +39,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - expand upstream sync to include config files and automation
-- add hackathon proofreading prompt
+- add microhack proofreading prompt
 - create single-source AGENDA.md and reduce duplication
-- add hackathon scripts README and fix governance policies
-- add Challenge 6 Partner Showcase and hackathon invitation
+- add microhack scripts README and fix governance policies
+- add Challenge 6 Partner Showcase and microhack invitation
 - add Azure Policy governance constraints
-- add 5-hour hands-on hackathon package
+- add 5-hour hands-on microhack package
 
 ### Changed
 
@@ -55,19 +55,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - change auto-version to create PR instead of direct push (#7)
 - use cat instead of sed for CHANGELOG insertion (#5)
-- correct hackathon duration to 5 hours (#4)
+- correct microhack duration to 5 hours (#4)
 - upgrade to softprops/action-gh-release@v2 (#2)
 - hide curveball details in AGENDA.md
 - adjust lunch to 35min and add 15min presentation prep
 - update schedule timing with 10am start and lunch break
-- correct repo root path calculation in hackathon scripts
+- correct repo root path calculation in microhack scripts
 - resolve MD013 line length violations
 
 ## [0.1.0] - 2026-01-22 (pre-reset)
 
 ### Fixed
 
-- **Timing consistency across hackathon documentation** - Fixed relative timing to absolute times
+- **Timing consistency across microhack documentation** - Fixed relative timing to absolute times
   - Changed README.md schedule from relative (0:00-5:00) to absolute (10:00-15:00) matching AGENDA.md
   - Updated curveball announcement timing from "4:15" to "13:20" across all files
   - Corrected challenge durations to match AGENDA.md:
@@ -85,7 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **5-hour hackathon** - Complete hands-on training program
+- **5-hour microhack** - Complete hands-on training program
   - 6 challenges covering full Infrastructure as Code workflow
   - Team-based learning (3-4 members per team, 20-24 participants)
   - Real Azure deployment with scoring and leaderboard
@@ -107,17 +107,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - WAF-aligned scoring rubric (105 base + 25 bonus points)
   - Solution reference with expected outputs and patterns
   - PowerShell scoring scripts for automated evaluation
-- **Hackathon invitation** - Marketing material for participant recruitment
+- **Microhack invitation** - Marketing material for participant recruitment
 - **AGENDA.md** - Detailed schedule with 10:00-15:00 absolute timing
-- **Feedback form** - Post-hackathon evaluation mechanism
+- **Feedback form** - Post-microhack evaluation mechanism
 
 ### Changed
 
-- **Hackathon format** - Designed for partner enablement and customer demonstrations
+- **Microhack format** - Designed for partner enablement and customer demonstrations
   - SI partners delivering Azure projects
   - IT Pros learning Infrastructure as Code
   - Customers evaluating agentic workflows
-- **Curveball challenge** - Mid-hackathon surprise requirement at 13:20
+- **Curveball challenge** - Mid-microhack surprise requirement at 13:20
   - Tests adaptability to changing requirements (real-world simulation)
   - Multi-region DR requirement increases budget from €500 to €700/month
 
@@ -125,8 +125,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This project uses [Semantic Versioning](https://semver.org/):
 
-- **MAJOR**: Breaking changes to hackathon structure or challenge flow
-- **MINOR**: New challenges, scenarios, or significant hackathon enhancements
+- **MAJOR**: Breaking changes to microhack structure or challenge flow
+- **MINOR**: New challenges, scenarios, or significant microhack enhancements
 - **PATCH**: Bug fixes, documentation improvements, timing corrections
 
 ## Links

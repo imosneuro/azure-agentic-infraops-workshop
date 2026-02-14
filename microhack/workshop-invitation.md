@@ -1,4 +1,4 @@
-# Agentic InfraOps Hackathon — Invitation
+# Agentic InfraOps Microhack — Invitation
 
 > **Transform how you deliver Azure infrastructure using AI-powered agents**
 
@@ -6,9 +6,9 @@
 
 ## What Is This?
 
-A **6-hour hands-on hackathon** where you'll experience the future of Infrastructure as Code.
+A **6-hour hands-on microhack** where you'll experience the future of Infrastructure as Code.
 
-Forget writing Bicep templates line by line. In this hackathon, you'll orchestrate **specialized
+Forget writing Bicep templates line by line. In this microhack, you'll orchestrate **specialized
 AI agents** that collaborate to transform business requirements into production-ready Azure
 infrastructure — complete with:
 
@@ -73,7 +73,7 @@ ability to adapt to changing requirements — just like real projects!
 |                  |                                                           |
 | ---------------- | --------------------------------------------------------- |
 | **Duration**     | 6 hours (including breaks)                                |
-| **Format**       | Team-based hackathon (3-6 per team)                       |
+| **Format**       | Team-based microhack (3-6 per team)                       |
 | **Skill Level**  | Beginner to Intermediate                                  |
 | **Deliverables** | Working Azure infrastructure + architecture documentation |
 
@@ -81,7 +81,7 @@ ability to adapt to changing requirements — just like real projects!
 
 ## What Makes This Different?
 
-This isn't a traditional hackathon where you follow step-by-step instructions.
+This isn't a traditional microhack where you follow step-by-step instructions.
 You'll **collaborate with AI agents** that understand Azure best practices,
 making decisions together and learning why certain patterns work.
 
@@ -96,7 +96,7 @@ By the end, you'll have:
 
 ## Questions?
 
-Reach out to the workshop team at [hackathon@contoso.com](mailto:hackathon@contoso.com)
+Reach out to the workshop team at [microhack@contoso.com](mailto:microhack@contoso.com)
 
 ---
 

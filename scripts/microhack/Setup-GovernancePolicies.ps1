@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Sets up Azure Policies for the hackathon environment.
+    Sets up Azure Policies for the microhack environment.
 
 .DESCRIPTION
     Deploys governance policies that force teams to handle real compliance constraints.
@@ -41,72 +41,72 @@ $ErrorActionPreference = 'Stop'
 # Policy definitions to assign (built-in Azure Policies)
 $Policies = @(
     @{
-        Name           = 'hackathon-allowed-locations'
-        DisplayName    = '[Hackathon] Allowed locations'
+        Name           = 'microhack-allowed-locations'
+        DisplayName    = '[Microhack] Allowed locations'
         Description    = 'Restricts deployments to approved regions for GDPR compliance'
         PolicyId       = 'e56962a6-4747-49cd-b67b-bf8b01975c4c'  # Built-in: Allowed locations
         Parameters     = @{ listOfAllowedLocations = @{ value = $AllowedLocations } }
         Effect         = 'Deny'
     },
     @{
-        Name           = 'hackathon-require-tag-environment'
-        DisplayName    = '[Hackathon] Require Environment tag'
+        Name           = 'microhack-require-tag-environment'
+        DisplayName    = '[Microhack] Require Environment tag'
         Description    = 'Requires Environment tag on all resources'
         PolicyId       = '871b6d14-10aa-478d-b590-94f262ecfa99'  # Built-in: Require a tag on resources
         Parameters     = @{ tagName = @{ value = 'Environment' } }
         Effect         = 'Deny'
     },
     @{
-        Name           = 'hackathon-require-tag-project'
-        DisplayName    = '[Hackathon] Require Project tag'
+        Name           = 'microhack-require-tag-project'
+        DisplayName    = '[Microhack] Require Project tag'
         Description    = 'Requires Project tag on all resources'
         PolicyId       = '871b6d14-10aa-478d-b590-94f262ecfa99'
         Parameters     = @{ tagName = @{ value = 'Project' } }
         Effect         = 'Deny'
     },
     @{
-        Name           = 'hackathon-sql-aad-only'
-        DisplayName    = '[Hackathon] SQL Azure AD-only authentication'
+        Name           = 'microhack-sql-aad-only'
+        DisplayName    = '[Microhack] SQL Azure AD-only authentication'
         Description    = 'Azure SQL must use Azure AD-only authentication'
         PolicyId       = 'abda6d70-9778-44e7-84a8-06713e6db027'  # Built-in: Azure SQL should have AAD-only auth
         Parameters     = @{}
         Effect         = 'Deny'
     },
     @{
-        Name           = 'hackathon-storage-https'
-        DisplayName    = '[Hackathon] Storage HTTPS only'
+        Name           = 'microhack-storage-https'
+        DisplayName    = '[Microhack] Storage HTTPS only'
         Description    = 'Storage accounts must use HTTPS'
         PolicyId       = '404c3081-a854-4457-ae30-26a93ef643f9'  # Built-in: Secure transfer to storage accounts
         Parameters     = @{}
         Effect         = 'Deny'
     },
     @{
-        Name           = 'hackathon-storage-tls12'
-        DisplayName    = '[Hackathon] Storage minimum TLS 1.2'
+        Name           = 'microhack-storage-tls12'
+        DisplayName    = '[Microhack] Storage minimum TLS 1.2'
         Description    = 'Storage accounts must use TLS 1.2 or higher'
         PolicyId       = 'fe83a0eb-a853-422d-aac2-1bffd182c5d0'  # Built-in: Storage accounts should have the specified minimum TLS version
         Parameters     = @{ minimumTlsVersion = @{ value = 'TLS1_2' } }
         Effect         = 'Deny'
     },
     @{
-        Name           = 'hackathon-storage-no-public-blob'
-        DisplayName    = '[Hackathon] Storage no public blob access'
+        Name           = 'microhack-storage-no-public-blob'
+        DisplayName    = '[Microhack] Storage no public blob access'
         Description    = 'Storage accounts must not allow public blob access'
         PolicyId       = '4fa4b6c0-31ca-4c0d-b10d-24b96f62a751'  # Built-in: Storage public access should be disallowed
         Parameters     = @{}
         Effect         = 'Deny'
     },
     @{
-        Name           = 'hackathon-appservice-https'
-        DisplayName    = '[Hackathon] App Service HTTPS only'
+        Name           = 'microhack-appservice-https'
+        DisplayName    = '[Microhack] App Service HTTPS only'
         Description    = 'App Services must use HTTPS'
         PolicyId       = 'a4af4a39-4135-47fb-b175-47fbdf85311d'  # Built-in: App Service should only be accessible over HTTPS
         Parameters     = @{}
         Effect         = 'Deny'
     },
     @{
-        Name           = 'hackathon-appservice-tls12'
-        DisplayName    = '[Hackathon] App Service minimum TLS 1.2'
+        Name           = 'microhack-appservice-tls12'
+        DisplayName    = '[Microhack] App Service minimum TLS 1.2'
         Description    = 'App Services should use TLS 1.2 or higher'
         PolicyId       = 'f0e6e85b-9b9f-4a4b-b67b-f730d42f1b0b'  # Built-in: App Service TLS
         Parameters     = @{}
@@ -114,7 +114,7 @@ $Policies = @(
     }
 )
 
-Write-Host "`n🔒 Hackathon Governance Policy Setup" -ForegroundColor Cyan
+Write-Host "`n🔒 Microhack Governance Policy Setup" -ForegroundColor Cyan
 Write-Host "=" * 50
 
 # Set subscription context
