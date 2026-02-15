@@ -1,4 +1,4 @@
-# Step 6: Deployment Summary - team-leaderboard
+# Step 6: Deployment Summary - hacker-board
 
 ![Step](https://img.shields.io/badge/Step-6-blue)
 ![Status](https://img.shields.io/badge/Status-Succeeded-success)
@@ -133,7 +133,7 @@ BCP318 warnings are expected and harmless — they relate to the safe-dereferenc
 
 ```powershell
 # Navigate to Bicep directory
-cd infra/bicep/team-leaderboard
+cd infra/bicep/hacker-board
 
 # Preview changes (what-if)
 ./deploy.ps1 -CostCenter "microhack" -TechnicalContact "team@contoso.com" -WhatIf
@@ -156,19 +156,19 @@ cd infra/bicep/team-leaderboard
 ```bash
 # Create resource group
 az group create \
-  --name "rg-team-leaderboard-prod" \
+  --name "rg-hacker-board-prod" \
   --location "westeurope" \
   --tags environment=prod owner=agentic-infraops costcenter=microhack \
-        application=team-leaderboard workload=team-leaderboard sla=99.9% \
+        application=hacker-board workload=hacker-board sla=99.9% \
         backup-policy=none maint-window=sat-02-06-utc technical-contact=team@contoso.com
 
 # Deploy
 az deployment group create \
-  --resource-group "rg-team-leaderboard-prod" \
+  --resource-group "rg-hacker-board-prod" \
   --template-file main.bicep \
   --parameters main.bicepparam \
   --parameters costCenter="microhack" technicalContact="team@contoso.com" \
-  --name "team-leaderboard-$(date +%Y%m%d%H%M%S)"
+  --name "hacker-board-$(date +%Y%m%d%H%M%S)"
 ```
 
 </details>
@@ -199,7 +199,7 @@ az deployment group create \
 
 ---
 
-_Deployment summary for team-leaderboard._
+_Deployment summary for hacker-board._
 
 ---
 

@@ -1,4 +1,4 @@
-# Azure Cost Estimate: team-leaderboard
+# Azure Cost Estimate: hacker-board
 
 ![Step](https://img.shields.io/badge/Step-3-blue)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)

@@ -1,4 +1,4 @@
-# Step 1: Requirements - team-leaderboard
+# Step 1: Requirements - hacker-board
 
 ![Step](https://img.shields.io/badge/Step-1-blue)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
@@ -146,7 +146,7 @@ flowchart LR
 | ------------- | ------------------ |
 | `Environment` | `prod`             |
 | `ManagedBy`   | `Bicep`            |
-| `Project`     | `team-leaderboard` |
+| `Project`     | `hacker-board` |
 | `Owner`       | `agentic-infraops` |
 
 ## Budget

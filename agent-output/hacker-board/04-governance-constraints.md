@@ -1,4 +1,4 @@
-# Governance Constraints - team-leaderboard
+# Governance Constraints - hacker-board
 
 ![Step](https://img.shields.io/badge/Step-4a-blue)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
@@ -139,8 +139,8 @@ The 9 required tags are:
 | 1   | `environment`       | `environment` parameter (default: `prod`)        |
 | 2   | `owner`             | `owner` parameter (default: `agentic-infraops`)  |
 | 3   | `costcenter`        | `costCenter` parameter                           |
-| 4   | `application`       | `team-leaderboard` (hardcoded from project name) |
-| 5   | `workload`          | `team-leaderboard` (hardcoded)                   |
+| 4   | `application`       | `hacker-board` (hardcoded from project name) |
+| 5   | `workload`          | `hacker-board` (hardcoded)                   |
 | 6   | `sla`               | `99.9%` (from requirements)                      |
 | 7   | `backup-policy`     | `none` (event-scoped, no backup required)        |
 | 8   | `maint-window`      | `sat-02-06-utc` (weekend maintenance)            |
@@ -160,8 +160,8 @@ tags: {
   environment: environment
   owner: owner
   costcenter: costCenter
-  application: 'team-leaderboard'
-  workload: 'team-leaderboard'
+  application: 'hacker-board'
+  workload: 'hacker-board'
   sla: '99.9%'
   'backup-policy': 'none'
   'maint-window': 'sat-02-06-utc'

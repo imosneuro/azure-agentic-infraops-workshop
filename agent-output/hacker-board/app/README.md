@@ -1,4 +1,4 @@
-# Team Leaderboard App
+# HackerBoard App
 
 ![Type](https://img.shields.io/badge/Type-Application-blue)
 ![Status](https://img.shields.io/badge/Status-Planning-yellow)
@@ -83,7 +83,7 @@ functions against these specs.
 ```bash
 # 1. Clone the app repo (separate from this infra repo)
 git clone <your-app-repo-url>
-cd team-leaderboard-app
+cd hacker-board-app
 
 # 2. Install dependencies
 npm install

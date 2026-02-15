@@ -5,13 +5,13 @@
     "_generator": {
       "name": "bicep",
       "version": "0.40.2.10011",
-      "templateHash": "4636695249261656426"
+      "templateHash": "13255612577546856222"
     }
   },
   "parameters": {
     "projectName": {
       "type": "string",
-      "defaultValue": "team-leaderboard",
+      "defaultValue": "hacker-board",
       "metadata": {
         "description": "Project name used in resource naming."
       }

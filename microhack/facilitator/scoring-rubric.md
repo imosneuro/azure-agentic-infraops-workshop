@@ -27,9 +27,9 @@
 ```
 
 > [!TIP]
-> For live events, the **Team Leaderboard web app** provides a browser-based
+> For live events, the **HackerBoard web app** provides a browser-based
 > alternative to script-based scoring.
-> See [`agent-output/team-leaderboard/app/app-prd.md`](../../agent-output/team-leaderboard/app/app-prd.md)
+> See [`agent-output/hacker-board/app/app-prd.md`](../../agent-output/hacker-board/app/app-prd.md)
 > for details.
 
 Results saved to `agent-output/{team}/score-results.json`.

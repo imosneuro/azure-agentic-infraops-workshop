@@ -2,7 +2,7 @@
 ![Status](https://img.shields.io/badge/Status-Ready-brightgreen)
 ![Audience](https://img.shields.io/badge/Audience-App%20Dev%20Team-green)
 
-> Purpose: Define the UI and interaction design for the Team Leaderboard app implementation.
+> Purpose: Define the UI and interaction design for the HackerBoard app implementation.
 > Scope: App UX and frontend architecture only; infrastructure design is out of scope.
 
 ## Problem, Users, Value

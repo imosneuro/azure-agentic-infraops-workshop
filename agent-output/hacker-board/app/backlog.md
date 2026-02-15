@@ -1,9 +1,9 @@
-# Team Leaderboard App — Project Plan
+# HackerBoard App — Project Plan
 
 ![Type](https://img.shields.io/badge/Type-Project%20Plan-blue)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
-> Living project plan, roadmap, and task tracker for the Team Leaderboard application.
+> Living project plan, roadmap, and task tracker for the HackerBoard application.
 > Phases are ordered by dependency — each phase builds on the previous.
 > Check off tasks as they are completed; add new items at the end of the
 > relevant phase.
@@ -28,7 +28,7 @@
 
 ```mermaid
 gantt
-    title Team Leaderboard — Project Plan
+      title HackerBoard — Project Plan
     dateFormat  YYYY-MM-DD
     axisFormat  %b %d
     todayMarker off

@@ -1,5 +1,5 @@
 """
-Architecture Diagram: team-leaderboard
+Architecture Diagram: hacker-board
 =======================================
 Generates a PNG architecture diagram for the microhack scoring leaderboard app.
 
@@ -10,7 +10,7 @@ Prerequisites:
     apt-get install -y graphviz  # Ubuntu/Debian
 
 Generate:
-    cd agent-output/team-leaderboard
+    cd agent-output/hacker-board
     python3 03-des-diagram.py
 """
 
@@ -33,7 +33,7 @@ graph_attr = {
     "fontname": "Arial Bold",
     "fontsize": "18",
     "dpi": "150",
-    "label": "team-leaderboard | Design Architecture\nAzure Static Web Apps + Table Storage",
+    "label": "hacker-board | Design Architecture\nAzure Static Web Apps + Table Storage",
     "labelloc": "t",
     "labeljust": "c",
 }
@@ -73,9 +73,9 @@ with Diagram(
 
     with Cluster("Azure Subscription", graph_attr=cluster_style):
 
-        with Cluster("rg-team-leaderboard-prod\n(westeurope)", graph_attr=rg_style):
+        with Cluster("rg-hacker-board-prod\n(westeurope)", graph_attr=rg_style):
 
-            with Cluster("Azure Static Web Apps\nstapp-team-leaderboard-prod\n(Standard, westeurope)", graph_attr={
+            with Cluster("Azure Static Web Apps\nstapp-hacker-board-prod\n(Standard, westeurope)", graph_attr={
                 **cluster_style,
                 "bgcolor": "#E8F4FD",
                 "style": "rounded",

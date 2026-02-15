@@ -1,7 +1,7 @@
 {
   "$schema": "governance-constraints/v1",
   "metadata": {
-    "project": "team-leaderboard",
+    "project": "hacker-board",
     "generatedBy": "bicep-plan agent",
     "generatedAt": "2026-02-12T00:00:00Z",
     "discoveryMethod": "Azure REST API (/providers/Microsoft.Authorization/policyAssignments?api-version=2022-06-01)",
@@ -64,13 +64,13 @@
       {
         "key": "application",
         "required": true,
-        "defaultValue": "team-leaderboard",
+        "defaultValue": "hacker-board",
         "parameterSource": "hardcoded"
       },
       {
         "key": "workload",
         "required": true,
-        "defaultValue": "team-leaderboard",
+        "defaultValue": "hacker-board",
         "parameterSource": "hardcoded"
       },
       {

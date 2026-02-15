@@ -5,7 +5,7 @@ targetScope = 'resourceGroup'
 // ──────────────────────────────────────────────────────────────────────────────
 
 @description('Project name used in resource naming.')
-param projectName string = 'team-leaderboard'
+param projectName string = 'hacker-board'
 
 @allowed(['dev', 'staging', 'prod'])
 @description('Deployment environment.')

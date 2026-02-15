@@ -1,4 +1,4 @@
-# Step 4: Implementation Plan - team-leaderboard
+# Step 4: Implementation Plan - hacker-board
 
 ![Step](https://img.shields.io/badge/Step-4-blue)
 ![Status](https://img.shields.io/badge/Status-Draft-orange)
@@ -56,7 +56,7 @@ Implement a serverless microhack scoring dashboard using Azure Static Web Apps (
 ## Module Structure
 
 ```
-infra/bicep/team-leaderboard/
+infra/bicep/hacker-board/
 ├── main.bicep                     # Orchestration — parameters, variables, module calls
 ├── main.bicepparam                # Parameter values file
 ├── modules/
@@ -85,7 +85,7 @@ infra/bicep/team-leaderboard/
 **Parameters**:
 
 ```yaml
-- projectName: string = 'team-leaderboard'
+- projectName: string = 'hacker-board'
 - environment: string = 'prod'
 - swaLocation: string = 'westeurope'
 - storageLocation: string = 'westeurope'
@@ -294,10 +294,10 @@ infra/bicep/team-leaderboard/
 ```mermaid
 %%{init: {'theme':'neutral'}}%%
 graph TD
-    RG["📦 Resource Group\n(9 required tags)"] --> LOG["📊 Log Analytics\nlog-team-leaderboard-prod"]
+    RG["📦 Resource Group\n(9 required tags)"] --> LOG["📊 Log Analytics\nlog-hacker-board-prod"]
     RG --> ST["💾 Storage Account\nstteamlbrdprod{suffix}\n5 Tables: Teams, Attendees, Scores, Awards, Submissions"]
-    RG --> SWA["💻 Static Web App\nstapp-team-leaderboard-prod\nGitHub Auth (mandatory)"]
-    LOG --> APPI["📈 Application Insights\nappi-team-leaderboard-prod"]
+    RG --> SWA["💻 Static Web App\nstapp-hacker-board-prod\nGitHub Auth (mandatory)"]
+    LOG --> APPI["📈 Application Insights\nappi-hacker-board-prod"]
     APPI -.-> SWA
     ST -.-> SWA
 
@@ -352,11 +352,11 @@ sequenceDiagram
 
 | Resource             | Pattern                  | Example                       | Generated Name                |
 | -------------------- | ------------------------ | ----------------------------- | ----------------------------- |
-| Resource Group       | `rg-{project}-{env}`     | `rg-team-leaderboard-prod`    | `rg-team-leaderboard-prod`    |
-| Log Analytics        | `log-{project}-{env}`    | `log-team-leaderboard-prod`   | `log-team-leaderboard-prod`   |
+| Resource Group       | `rg-{project}-{env}`     | `rg-hacker-board-prod`        | `rg-hacker-board-prod`        |
+| Log Analytics        | `log-{project}-{env}`    | `log-hacker-board-prod`       | `log-hacker-board-prod`       |
 | Storage Account      | `st{short}{env}{suffix}` | `stteamlbrdprod{6chars}`      | `stteamlbrdprodxxxxxx`        |
-| Application Insights | `appi-{project}-{env}`   | `appi-team-leaderboard-prod`  | `appi-team-leaderboard-prod`  |
-| Static Web App       | `stapp-{project}-{env}`  | `stapp-team-leaderboard-prod` | `stapp-team-leaderboard-prod` |
+| Application Insights | `appi-{project}-{env}`   | `appi-hacker-board-prod`      | `appi-hacker-board-prod`      |
+| Static Web App       | `stapp-{project}-{env}`  | `stapp-hacker-board-prod`     | `stapp-hacker-board-prod`     |
 
 > [!NOTE]
 > Storage Account name uses `take()` truncation to stay within 24-char limit:

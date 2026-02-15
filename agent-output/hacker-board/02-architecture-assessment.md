@@ -1,4 +1,4 @@
-# Step 2: Architecture Assessment - team-leaderboard
+# Step 2: Architecture Assessment - hacker-board
 
 ![Step](https://img.shields.io/badge/Step-2-blue)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
@@ -278,11 +278,11 @@ xychart-beta
 
 | Resource                      | Type                    | Module                                             | Priority      |
 | ----------------------------- | ----------------------- | -------------------------------------------------- | ------------- |
-| `rg-team-leaderboard-prod`    | Resource Group          | N/A (deployment scope)                             | P0            |
-| `stapp-team-leaderboard-prod` | Static Web App          | `br/public:avm/res/web/static-site`                | P0            |
+| `rg-hacker-board-prod`        | Resource Group          | N/A (deployment scope)                             | P0            |
+| `stapp-hacker-board-prod`     | Static Web App          | `br/public:avm/res/web/static-site`                | P0            |
 | `stteamlbrdprod{suffix}`      | Storage Account         | `br/public:avm/res/storage/storage-account`        | P0            |
-| `appi-team-leaderboard-prod`  | Application Insights    | `br/public:avm/res/insights/component`             | P1 (optional) |
-| `log-team-leaderboard-prod`   | Log Analytics Workspace | `br/public:avm/res/operational-insights/workspace` | P1 (optional) |
+| `appi-hacker-board-prod`      | Application Insights    | `br/public:avm/res/insights/component`             | P1 (optional) |
+| `log-hacker-board-prod`       | Log Analytics Workspace | `br/public:avm/res/operational-insights/workspace` | P1 (optional) |
 
 ### Configuration Notes
 
@@ -302,7 +302,7 @@ xychart-beta
 
 The Bicep templates must also be exported to `azuredeploy.json` (ARM) for the "Deploy to Azure" button. Parameters to expose:
 
-- `projectName` (default: `team-leaderboard`)
+- `projectName` (default: `hacker-board`)
 - `environment` (default: `prod`)
 - `owner` (default: `agentic-infraops`)
 - `location` (default: `westeurope`)

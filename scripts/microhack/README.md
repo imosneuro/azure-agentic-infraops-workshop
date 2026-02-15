@@ -157,7 +157,7 @@ pwsh -File scripts/microhack/Cleanup-MicrohackResources.ps1 -Force
 | Show leaderboard    | `pwsh -File scripts/microhack/Get-Leaderboard.ps1`                                                                                            |
 
 > [!TIP]
-> For live events, the **Team Leaderboard web app** provides a browser-based alternative to these scripts. See [`agent-output/team-leaderboard/app/app-prd.md`](../../agent-output/team-leaderboard/app/app-prd.md).
+> For live events, the **HackerBoard web app** provides a browser-based alternative to these scripts. See [`agent-output/hacker-board/app/app-prd.md`](../../agent-output/hacker-board/app/app-prd.md).
 
 ---
 

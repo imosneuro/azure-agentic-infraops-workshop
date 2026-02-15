@@ -1,5 +1,5 @@
 """
-User Flow Diagram (Simplified Cartoon Style): team-leaderboard
+User Flow Diagram (Simplified Cartoon Style): hacker-board
 ================================================================
 A fun, easy-to-read overview of the scoring workflow.
 
@@ -8,7 +8,7 @@ Prerequisites:
     apt-get install -y graphviz
 
 Generate:
-    cd agent-output/team-leaderboard
+    cd agent-output/hacker-board
     python3 03-des-user-flow-simple.py
 """
 

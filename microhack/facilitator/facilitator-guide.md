@@ -321,9 +321,9 @@ Get-ChildItem .\agent-output -Directory | Where-Object { $_.Name -ne ".gitkeep" 
 ```
 
 > [!TIP]
-> Scores can also be submitted and reviewed via the **Team Leaderboard web app**
+> Scores can also be submitted and reviewed via the **HackerBoard web app**
 > for a browser-based experience during live events.
-> See the [app PRD](../../agent-output/team-leaderboard/app/app-prd.md) for setup details.
+> See the [app PRD](../../agent-output/hacker-board/app/app-prd.md) for setup details.
 
 ### Manual Verification (Bonus Points)
 

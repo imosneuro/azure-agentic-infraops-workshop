@@ -1,4 +1,4 @@
-# App Handoff Checklist — Team Leaderboard
+# App Handoff Checklist — HackerBoard
 
 ![Type](https://img.shields.io/badge/Type-Handoff-blue)
 ![Status](https://img.shields.io/badge/Status-Ready-brightgreen)
@@ -24,18 +24,18 @@
 - [ ] Azure CLI installed and authenticated (`az login`)
 - [ ] GitHub CLI installed and authenticated (`gh auth login`)
 - [ ] Access to subscription `noalz` (`00858ffc-dded-4f0f-8bbf-e17fff0d47d9`)
-- [ ] Access to resource group `rg-team-leaderboard-prod` (Contributor role)
+- [ ] Access to resource group `rg-hacker-board-prod` (Contributor role)
 - [ ] A new GitHub repository for the app code (or an existing one)
 
 ## Deployed Infrastructure Reference
 
 | Resource        | Name                                                  | Type         |
 | --------------- | ----------------------------------------------------- | ------------ |
-| Resource Group  | `rg-team-leaderboard-prod`                            | —            |
-| Static Web App  | `stapp-team-leaderboard-prod`                         | Standard     |
+| Resource Group  | `rg-hacker-board-prod`                                | —            |
+| Static Web App  | `stapp-hacker-board-prod`                             | Standard     |
 | Storage Account | `stteamleadpromn2ksi`                                 | Standard_LRS |
-| App Insights    | `appi-team-leaderboard-prod`                          | —            |
-| Log Analytics   | `log-team-leaderboard-prod`                           | PerGB2018    |
+| App Insights    | `appi-hacker-board-prod`                              | —            |
+| Log Analytics   | `log-hacker-board-prod`                               | PerGB2018    |
 | SWA URL         | `https://purple-bush-029df9903.4.azurestaticapps.net` | —            |
 
 ---
@@ -45,8 +45,8 @@
 ### 1.1 — Create the App Repository
 
 ```bash
-gh repo create <org>/team-leaderboard-app --public --clone
-cd team-leaderboard-app
+gh repo create <org>/hacker-board-app --public --clone
+cd hacker-board-app
 ```
 
 ### 1.2 — Initialize Project Structure
@@ -71,7 +71,7 @@ See [app-scaffold.md](./app-scaffold.md) for the recommended folder layout. At m
 Copy from this repo into the new app repo:
 
 ```bash
-cp agent-output/team-leaderboard/app/staticwebapp.config.json <app-repo>/staticwebapp.config.json
+cp agent-output/hacker-board/app/staticwebapp.config.json <app-repo>/staticwebapp.config.json
 ```
 
 ---
@@ -82,8 +82,8 @@ cp agent-output/team-leaderboard/app/staticwebapp.config.json <app-repo>/staticw
 
 ```bash
 az staticwebapp secrets list \
-  --name "stapp-team-leaderboard-prod" \
-  --resource-group "rg-team-leaderboard-prod" \
+  --name "stapp-hacker-board-prod" \
+  --resource-group "rg-hacker-board-prod" \
   --query "properties.apiKey" -o tsv
 ```
 
@@ -93,7 +93,7 @@ Store this as a GitHub Actions secret named `AZURE_STATIC_WEB_APPS_API_TOKEN`.
 
 ```bash
 gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN \
-  --repo <org>/team-leaderboard-app \
+  --repo <org>/hacker-board-app \
   --body "<token-from-step-2.1>"
 ```
 
@@ -163,7 +163,7 @@ Place this file at the **root** of your app repo (same level as `package.json`).
 
 In the Azure Portal:
 
-1. Navigate to `stapp-team-leaderboard-prod` → **Role management**
+1. Navigate to `stapp-hacker-board-prod` → **Role management**
 2. Invite facilitators with the `admin` role
 3. Invite participants with the `member` role
 
@@ -172,8 +172,8 @@ Or via CLI:
 ```bash
 # Invite an admin
 az staticwebapp users invite \
-  --name "stapp-team-leaderboard-prod" \
-  --resource-group "rg-team-leaderboard-prod" \
+  --name "stapp-hacker-board-prod" \
+  --resource-group "rg-hacker-board-prod" \
   --authentication-provider "github" \
   --user-details "<github-username>" \
   --role "admin" \
@@ -181,8 +181,8 @@ az staticwebapp users invite \
 
 # Invite a member
 az staticwebapp users invite \
-  --name "stapp-team-leaderboard-prod" \
-  --resource-group "rg-team-leaderboard-prod" \
+  --name "stapp-hacker-board-prod" \
+  --resource-group "rg-hacker-board-prod" \
   --authentication-provider "github" \
   --user-details "<github-username>" \
   --role "member" \
@@ -199,8 +199,8 @@ The SWA has a system-assigned managed identity created during deployment. Get it
 
 ```bash
 az staticwebapp show \
-  --name "stapp-team-leaderboard-prod" \
-  --resource-group "rg-team-leaderboard-prod" \
+  --name "stapp-hacker-board-prod" \
+  --resource-group "rg-hacker-board-prod" \
   --query "identity.principalId" -o tsv
 ```
 
@@ -211,12 +211,12 @@ Shared key access is disabled on the storage account. The API Functions must use
 ```bash
 STORAGE_ID=$(az storage account show \
   --name "stteamleadpromn2ksi" \
-  --resource-group "rg-team-leaderboard-prod" \
+  --resource-group "rg-hacker-board-prod" \
   --query "id" -o tsv)
 
 PRINCIPAL_ID=$(az staticwebapp show \
-  --name "stapp-team-leaderboard-prod" \
-  --resource-group "rg-team-leaderboard-prod" \
+  --name "stapp-hacker-board-prod" \
+  --resource-group "rg-hacker-board-prod" \
   --query "identity.principalId" -o tsv)
 
 az role assignment create \
@@ -261,8 +261,8 @@ These environment variables are available to the managed Functions at runtime:
 
 ```bash
 az staticwebapp appsettings set \
-  --name "stapp-team-leaderboard-prod" \
-  --resource-group "rg-team-leaderboard-prod" \
+  --name "stapp-hacker-board-prod" \
+  --resource-group "rg-hacker-board-prod" \
   --setting-names \
     STORAGE_ACCOUNT_NAME="stteamleadpromn2ksi" \
     APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=f3d2348a-616b-436d-9914-aab8e046a3ea;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=e6b79597-68b9-44e7-83d1-20c2cfad6ecb"
@@ -272,8 +272,8 @@ az staticwebapp appsettings set \
 
 ```bash
 az staticwebapp appsettings list \
-  --name "stapp-team-leaderboard-prod" \
-  --resource-group "rg-team-leaderboard-prod"
+  --name "stapp-hacker-board-prod" \
+  --resource-group "rg-hacker-board-prod"
 ```
 
 ---
@@ -318,8 +318,8 @@ az storage table list \
 
 # App Insights receiving telemetry
 az monitor app-insights metrics show \
-  --app "appi-team-leaderboard-prod" \
-  --resource-group "rg-team-leaderboard-prod" \
+  --app "appi-hacker-board-prod" \
+  --resource-group "rg-hacker-board-prod" \
   --metric "requests/count" \
   --interval PT1H
 ```
@@ -331,8 +331,8 @@ az monitor app-insights metrics show \
 ```bash
 # Add custom domain
 az staticwebapp hostname set \
-  --name "stapp-team-leaderboard-prod" \
-  --resource-group "rg-team-leaderboard-prod" \
+  --name "stapp-hacker-board-prod" \
+  --resource-group "rg-hacker-board-prod" \
   --hostname "leaderboard.yourdomain.com"
 ```
 

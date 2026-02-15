@@ -73,9 +73,9 @@ provides file-type-specific coding standards to Copilot.
 
 ## L
 
-**Leaderboard App** — A browser-based Team Leaderboard web application
+**Leaderboard App** — A browser-based HackerBoard web application
 built on Azure Static Web Apps. Replaces manual script-based scoring with
-a submission and review workflow. See `agent-output/team-leaderboard/app/`.
+a submission and review workflow. See `agent-output/hacker-board/app/`.
 
 ## M
 

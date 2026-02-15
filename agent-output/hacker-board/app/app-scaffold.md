@@ -1,10 +1,10 @@
-# App Scaffolding Guide — Team Leaderboard
+# App Scaffolding Guide — HackerBoard
 
 ![Type](https://img.shields.io/badge/Type-Scaffold-blue)
 ![Runtime](https://img.shields.io/badge/Runtime-Node.js%2020-green)
 ![Platform](https://img.shields.io/badge/Platform-Azure%20SWA-purple)
 
-> Reference folder structure and setup guide for the team-leaderboard application repository.
+> Reference folder structure and setup guide for the hacker-board application repository.
 > This is a template — adapt the frontend framework choice to your team's preference.
 
 ---
@@ -12,7 +12,7 @@
 ## Recommended Folder Structure
 
 ```
-team-leaderboard-app/
+hacker-board-app/
 ├── .github/
 │   └── workflows/
 │       └── deploy-swa.yml          # GitHub Actions CI/CD (see handoff checklist)
@@ -116,7 +116,7 @@ team-leaderboard-app/
 
 ```json
 {
-  "name": "team-leaderboard-api",
+  "name": "hacker-board-api",
   "version": "1.0.0",
   "private": true,
   "engines": {
@@ -211,7 +211,7 @@ module.exports = { getTableClient };
 ```bash
 # Clone and install
 git clone <app-repo-url>
-cd team-leaderboard-app
+cd hacker-board-app
 
 # Install frontend dependencies
 npm install
@@ -275,7 +275,7 @@ Adjust the `output_location` in your GitHub Actions workflow and SWA config acco
 
 ```json
 {
-  "name": "team-leaderboard-app",
+  "name": "hacker-board-app",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -304,7 +304,7 @@ Implement API authorization and validation with these invariants:
 ## Starter `README.md` for the App Repo
 
 ```markdown
-# Team Leaderboard App
+# HackerBoard App
 
 Microhack scoring dashboard — Azure Static Web Apps + managed Functions + Table Storage.
 
@@ -322,9 +322,9 @@ Pushes to `main` trigger automatic deployment via GitHub Actions.
 
 ## Documentation
 
-- [Product Requirements](../../agent-output/team-leaderboard/app/app-prd.md)
-- [API Specification](../../agent-output/team-leaderboard/app/api-spec.md)
-- [Handoff Checklist](../../agent-output/team-leaderboard/app/app-handoff-checklist.md)
+- [Product Requirements](../../agent-output/hacker-board/app/app-prd.md)
+- [API Specification](../../agent-output/hacker-board/app/api-spec.md)
+- [Handoff Checklist](../../agent-output/hacker-board/app/app-handoff-checklist.md)
 ```
 
 ---

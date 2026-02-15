@@ -1,6 +1,6 @@
 using 'main.bicep'
 
-param projectName = 'team-leaderboard'
+param projectName = 'hacker-board'
 param environment = 'prod'
 param location = 'westeurope'
 param owner = 'agentic-infraops'

@@ -1,4 +1,4 @@
-# Product Requirements Document — Team Leaderboard App
+# Product Requirements Document — HackerBoard App
 
 ![Type](https://img.shields.io/badge/Type-PRD-blue)
 ![Status](https://img.shields.io/badge/Status-Ready-brightgreen)
@@ -534,7 +534,7 @@ All endpoints are under `/api/` and require authentication. See [api-spec.md](./
 
 ```
 ┌─────────────────────────────────────────────────┐
-│  🏆 Team Leaderboard          [User] [Logout]   │
+│  🏆 HackerBoard               [User] [Logout]   │
 ├─────────────────────────────────────────────────┤
 │                                                   │
 │  Rank │ Team         │ Score │ Grade │ Awards    │
@@ -581,14 +581,14 @@ All endpoints are under `/api/` and require authentication. See [api-spec.md](./
 
 ---
 
-## Coding Agent Prompt (Adapted for Team Leaderboard)
+## Coding Agent Prompt (Adapted for HackerBoard)
 
 Use this prompt when implementing the leaderboard UI so the generated app matches both the
 target visual style and this project's functional scope.
 
 ### Prompt
 
-You are a senior frontend engineer building the Team Leaderboard app for this repository.
+You are a senior frontend engineer building the HackerBoard app for this repository.
 
 Use the supplied reference screenshot as visual direction for layout, hierarchy, spacing,
 and card/table composition. Recreate the same modern leaderboard feel, but implement against

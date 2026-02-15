@@ -1,14 +1,14 @@
 <#
 .SYNOPSIS
-    Deploys team-leaderboard Azure infrastructure using Bicep templates.
+    Deploys hacker-board Azure infrastructure using Bicep templates.
 
 .DESCRIPTION
     Provisions Azure Static Web App, Table Storage, Log Analytics, and Application
-    Insights for the microhack team leaderboard. Supports phased deployment with
+    Insights for the microhack HackerBoard app. Supports phased deployment with
     approval gates between foundation and application layers.
 
 .PARAMETER ResourceGroupName
-    Name of the resource group. Default: rg-team-leaderboard-prod
+    Name of the resource group. Default: rg-hacker-board-prod
 
 .PARAMETER Location
     Azure region for all resources. Default: westeurope
@@ -46,7 +46,7 @@
 
 [CmdletBinding(SupportsShouldProcess)]
 param(
-    [string]$ResourceGroupName = 'rg-team-leaderboard-prod',
+    [string]$ResourceGroupName = 'rg-hacker-board-prod',
     [string]$Location = 'westeurope',
 
     [ValidateSet('dev', 'staging', 'prod')]
@@ -71,7 +71,7 @@ $ErrorActionPreference = 'Stop'
 
 Write-Host ""
 Write-Host "╔════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║   Team Leaderboard - Azure Deployment  ║" -ForegroundColor Cyan
+Write-Host "║      HackerBoard - Azure Deployment    ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════╝" -ForegroundColor Cyan
 Write-Host ""
 
@@ -146,8 +146,8 @@ az group create `
         "environment=$Environment" `
         "owner=$Owner" `
         "costcenter=$CostCenter" `
-        "application=team-leaderboard" `
-        "workload=team-leaderboard" `
+        "application=hacker-board" `
+        "workload=hacker-board" `
         "sla=99.9%" `
         "backup-policy=none" `
         "maint-window=sat-02-06-utc" `
@@ -165,7 +165,7 @@ Write-Host "  ✅ Resource group ready with 9 required tags" -ForegroundColor Gr
 $deployParams = @(
     '--resource-group', $ResourceGroupName
     '--template-file', $templateFile
-    '--parameters', "projectName=team-leaderboard"
+    '--parameters', "projectName=hacker-board"
     '--parameters', "environment=$Environment"
     '--parameters', "location=$Location"
     '--parameters', "owner=$Owner"
@@ -202,7 +202,7 @@ function Deploy-Phase {
     $phaseParams = @(
         '--resource-group', $ResourceGroupName
         '--template-file', $templateFile
-        '--parameters', "projectName=team-leaderboard"
+        '--parameters', "projectName=hacker-board"
         '--parameters', "environment=$Environment"
         '--parameters', "location=$Location"
         '--parameters', "owner=$Owner"
@@ -211,7 +211,7 @@ function Deploy-Phase {
         '--parameters', "repositoryUrl=$RepositoryUrl"
         '--parameters', "repositoryBranch=$RepositoryBranch"
         '--parameters', "phase=$PhaseValue"
-        '--name', "team-leaderboard-$PhaseValue-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+        '--name', "hacker-board-$PhaseValue-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
         '--output', 'json'
     )
 

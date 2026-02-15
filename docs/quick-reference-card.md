@@ -29,7 +29,7 @@
 | ------------------- | ----------------------------------------------------------------------------------------------- |
 | **Script scoring**  | `pwsh scripts/microhack/Score-Team.ps1 -TeamName "<team>" -SkipAzureCheck -ShowcaseScore 0`     |
 | **Leaderboard CLI** | `pwsh scripts/microhack/Get-Leaderboard.ps1`                                                    |
-| **Web app**         | Open the Team Leaderboard app URL — submit scores via browser and view live standings            |
+| **Web app**         | Open the HackerBoard app URL — submit scores via browser and view live standings                 |
 | **Rubric**          | [Scoring Rubric](../microhack/facilitator/scoring-rubric.md) — single source of truth for points |
 
 ---

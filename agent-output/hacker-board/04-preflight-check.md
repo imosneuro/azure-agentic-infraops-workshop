@@ -1,4 +1,4 @@
-# Step 4b: Pre-Flight AVM Check - team-leaderboard
+# Step 4b: Pre-Flight AVM Check - hacker-board
 
 ![Step](https://img.shields.io/badge/Step-4b-blue)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
@@ -164,7 +164,7 @@ Based on [Azure Defaults Skill](../../.github/skills/azure-defaults/SKILL.md):
 
 ---
 
-_Pre-flight validation for team-leaderboard Bicep implementation_
+_Pre-flight validation for hacker-board Bicep implementation_
 
 ---
 

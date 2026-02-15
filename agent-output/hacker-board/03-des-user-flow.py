@@ -1,5 +1,5 @@
 """
-User Flow Diagram: team-leaderboard
+User Flow Diagram: hacker-board
 =====================================
 Swimlane process flow showing how facilitators and participants
 interact with the scoring system — manual entry, JSON upload, 
@@ -10,13 +10,13 @@ Prerequisites:
     apt-get install -y graphviz
 
 Generate:
-    cd agent-output/team-leaderboard
+    cd agent-output/hacker-board
     python3 03-des-user-flow.py
 """
 
 from graphviz import Digraph
 
-dot = Digraph("Team Leaderboard - User Flow", format="png")
+dot = Digraph("HackerBoard - User Flow", format="png")
 dot.attr(
     rankdir="TB",
     compound="true",
@@ -26,7 +26,7 @@ dot.attr(
     ranksep="0.7",
     fontname="Arial Bold",
     fontsize="18",
-    label="team-leaderboard | Scoring User Flow\nWho does what, when, and how",
+    label="hacker-board | Scoring User Flow\nWho does what, when, and how",
     labelloc="t",
     labeljust="c",
     dpi="150",

@@ -8,9 +8,9 @@
 ![Step](https://img.shields.io/badge/Step-6%20of%207-blue?style=for-the-badge)
 ![Cost](https://img.shields.io/badge/Est.%20Cost-$9.05%2Fmo-purple?style=for-the-badge)
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjonathan-vella%2Fazure-agentic-infraops-workshop%2Fmain%2Finfra%2Fbicep%2Fteam-leaderboard%2Fazuredeploy.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjonathan-vella%2Fazure-agentic-infraops-workshop%2Fmain%2Finfra%2Fbicep%2Fhacker-board%2Fazuredeploy.json)
 
-# 🏗️ team-leaderboard
+# 🏗️ hacker-board
 
 **Serverless microhack scoring dashboard using Azure Static Web Apps with managed Functions and Azure Table Storage.**
 
@@ -102,7 +102,7 @@
 ### Step 5 — Bicep Code
 
 - [05-implementation-reference.md](./05-implementation-reference.md)
-- [`infra/bicep/team-leaderboard/`](../../infra/bicep/team-leaderboard/) — Bicep templates
+- [`infra/bicep/hacker-board/`](../../infra/bicep/hacker-board/) — Bicep templates
   - `main.bicep` — Orchestration with phased deployment
   - `main.bicepparam` — Parameter file (prod defaults)
   - `deploy.ps1` — PowerShell deployment script
@@ -126,14 +126,14 @@
 - [app/api-spec.md](./app/api-spec.md) — Full API specification (endpoints, schemas, errors)
 - [app/app-scaffold.md](./app/app-scaffold.md) — Recommended folder structure and starter code
 - [app/staticwebapp.config.json](./app/staticwebapp.config.json) — Auth, routes, and security headers
-- [`azuredeploy.json`](../../infra/bicep/team-leaderboard/azuredeploy.json) — ARM template for Deploy to Azure button
+- [`azuredeploy.json`](../../infra/bicep/hacker-board/azuredeploy.json) — ARM template for Deploy to Azure button
 
 ---
 
 ## 🚀 Quick Start
 
 ```powershell
-cd infra/bicep/team-leaderboard
+cd infra/bicep/hacker-board
 ./deploy.ps1 -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 ```
 

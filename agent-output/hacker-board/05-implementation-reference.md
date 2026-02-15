@@ -1,4 +1,4 @@
-# Step 5: Implementation Reference - team-leaderboard
+# Step 5: Implementation Reference - hacker-board
 
 ![Step](https://img.shields.io/badge/Step-5-blue)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
@@ -24,12 +24,12 @@
 
 ## Bicep Templates Location
 
-📁 **Code Location**: [`infra/bicep/team-leaderboard/`](../../infra/bicep/team-leaderboard/)
+📁 **Code Location**: [`infra/bicep/hacker-board/`](../../infra/bicep/hacker-board/)
 
 ## File Structure
 
 ```
-infra/bicep/team-leaderboard/
+infra/bicep/hacker-board/
 ├── main.bicep              # Orchestration — parameters, variables, phased module calls
 ├── main.bicepparam         # Parameter file (prod defaults)
 ├── deploy.ps1              # PowerShell deployment script with phased deployment
@@ -67,10 +67,10 @@ graph TD
     MAIN --> ST["storage.bicep"]
     MAIN --> APPI["app-insights.bicep"]
     MAIN --> SWA["static-web-app.bicep"]
-    LOG --> R1["📊 Log Analytics\nlog-team-leaderboard-prod"]
+    LOG --> R1["📊 Log Analytics\nlog-hacker-board-prod"]
     ST --> R2["💾 Storage Account\nstteamlbrdprod{suffix}\n5 Tables: Teams, Attendees, Scores, Awards, Submissions"]
-    APPI --> R3["📈 App Insights\nappi-team-leaderboard-prod"]
-    SWA --> R4["💻 Static Web App\nstapp-team-leaderboard-prod"]
+    APPI --> R3["📈 App Insights\nappi-hacker-board-prod"]
+    SWA --> R4["💻 Static Web App\nstapp-hacker-board-prod"]
 
     subgraph "Phase 1: Foundation"
         LOG
@@ -89,7 +89,7 @@ graph TD
 <summary><strong>🟢 Quick Deploy (PowerShell)</strong></summary>
 
 ```powershell
-cd infra/bicep/team-leaderboard
+cd infra/bicep/hacker-board
 ./deploy.ps1 -CostCenter "microhack" -TechnicalContact "team@contoso.com"
 ```
 
@@ -109,7 +109,7 @@ cd infra/bicep/team-leaderboard
 
 ```powershell
 ./deploy.ps1 `
-    -ResourceGroupName "rg-team-leaderboard-dev" `
+    -ResourceGroupName "rg-hacker-board-dev" `
     -Location "westeurope" `
     -Environment "dev" `
     -CostCenter "microhack" `
@@ -122,13 +122,13 @@ cd infra/bicep/team-leaderboard
 <summary><strong>🚀 Azure CLI (Direct)</strong></summary>
 
 ```bash
-az group create --name rg-team-leaderboard-prod --location westeurope \
+az group create --name rg-hacker-board-prod --location westeurope \
   --tags environment=prod owner=agentic-infraops costcenter=microhack \
-  application=team-leaderboard workload=team-leaderboard sla=99.9% \
+    application=hacker-board workload=hacker-board sla=99.9% \
   backup-policy=none maint-window=sat-02-06-utc technical-contact=team@contoso.com
 
 az deployment group create \
-  --resource-group rg-team-leaderboard-prod \
+    --resource-group rg-hacker-board-prod \
   --template-file main.bicep \
   --parameters main.bicepparam
 ```

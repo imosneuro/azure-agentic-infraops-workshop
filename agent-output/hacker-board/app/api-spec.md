@@ -1,4 +1,4 @@
-# API Specification — Team Leaderboard
+# API Specification — HackerBoard
 
 ![Type](https://img.shields.io/badge/Type-API%20Spec-blue)
 ![Runtime](https://img.shields.io/badge/Runtime-Node.js%2020-green)
