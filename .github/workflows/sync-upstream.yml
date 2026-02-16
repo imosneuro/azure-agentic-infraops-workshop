@@ -1,15 +1,17 @@
 # Upstream Sync Workflow
 #
 # Syncs files from azure-agentic-infraops (source) to this workshop repo.
-# Creates a staging branch, draft PR, and assigns Copilot to fix lint issues.
+# Creates a staging branch and PR with upstream-authoritative updates.
 #
-# Trigger: manual only (workflow_dispatch)
-# Auth:    requires SYNC_PAT secret (fine-grained PAT with contents:write,
-#          issues:write, pull-requests:write, metadata:read)
+# Trigger: manual (workflow_dispatch) + daily schedule
+# Auth: requires SYNC_PAT secret (fine-grained PAT with contents:write,
+# pull-requests:write, metadata:read)
 
 name: upstream-sync
 
 on:
+  schedule:
+    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       source_ref:
@@ -32,7 +34,6 @@ concurrency:
 
 permissions:
   contents: write
-  issues: write
   pull-requests: write
 
 jobs:
@@ -61,13 +62,16 @@ jobs:
         run: |
           chmod +x scripts/sync-upstream.sh
 
-          if [[ "${{ inputs.dry_run }}" == "true" ]]; then
-            scripts/sync-upstream.sh --dry-run --ref "${{ inputs.source_ref }}" | tee sync-output.txt
+          SOURCE_REF="${{ inputs.source_ref || 'main' }}"
+          DRY_RUN="${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}"
+
+          if [[ "$DRY_RUN" == "true" ]]; then
+            scripts/sync-upstream.sh --dry-run --ref "$SOURCE_REF" | tee sync-output.txt
             echo "changes=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          scripts/sync-upstream.sh --ref "${{ inputs.source_ref }}" | tee sync-output.txt
+          scripts/sync-upstream.sh --ref "$SOURCE_REF" | tee sync-output.txt
 
           if [[ ! -f SYNC-MANIFEST.md ]]; then
             echo "changes=false" >> "$GITHUB_OUTPUT"
@@ -79,13 +83,32 @@ jobs:
           fi
 
       - name: Dry-run summary
-        if: inputs.dry_run == 'true'
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true'
         run: |
           echo "## 🔍 Dry Run Results" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           cat sync-output.txt >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "No files were modified. Run again with dry_run=false to apply." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Preflight changed paths summary
+        if: hashFiles('SYNC-MANIFEST.md') != ''
+        run: |
+          echo "## 📂 Changed Paths (Preflight)" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          TOTAL=$(grep -c '^\- `' SYNC-MANIFEST.md || echo "0")
+          MAX_SHOW=50
+
+          grep '^\- `' SYNC-MANIFEST.md | \
+            sed -E 's/^\- `([^`]+)`.*/\1/' | \
+            head -n "$MAX_SHOW" | \
+            sed 's/^/- `&`/' >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ "$TOTAL" -gt "$MAX_SHOW" ]]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "_Showing first $MAX_SHOW of $TOTAL changed paths._" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Commit and push staging branch
         if: steps.sync.outputs.changes == 'true'
@@ -104,7 +127,7 @@ jobs:
 
           git push origin "$SYNC_BRANCH"
 
-      - name: Create draft PR
+      - name: Create PR
         id: create_pr
         if: steps.sync.outputs.changes == 'true'
         env:
@@ -115,7 +138,6 @@ jobs:
 
           PR_URL=$(gh pr create \
             --repo "${{ github.repository }}" \
-            --draft \
             --base main \
             --head "$SYNC_BRANCH" \
             --title "chore(sync): upstream sync $DATE" \
@@ -128,13 +150,6 @@ jobs:
           - Files changed: ${{ steps.sync.outputs.change_count }}
 
           $MANIFEST
-
-          ## Review Checklist
-
-          - [ ] \`npm run lint:md\` passes
-          - [ ] \`npm run lint:agent-frontmatter\` passes
-          - [ ] \`npm run lint:skills-format\` passes
-          - [ ] No workshop-specific content overwritten
           ")
 
           echo "## ✅ Upstream Sync Complete" >> "$GITHUB_STEP_SUMMARY"
@@ -146,16 +161,23 @@ jobs:
           PR_NUMBER=$(echo "$PR_URL" | grep -oE '[0-9]+$')
           echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
 
-      - name: Assign Copilot to fix lint issues
+      - name: Enable auto-merge (best effort)
         if: steps.sync.outputs.changes == 'true'
         env:
           GH_TOKEN: ${{ secrets.SYNC_PAT }}
         run: |
           PR_NUMBER="${{ steps.create_pr.outputs.pr_number }}"
 
-          gh pr comment "$PR_NUMBER" \
+          if gh pr merge "$PR_NUMBER" \
             --repo "${{ github.repository }}" \
-            --body "@copilot Fix lint failures on this PR. Run \`npm install\`, then fix issues found by \`npm run lint:md\`, \`npm run lint:agent-frontmatter\`, and \`npm run lint:skills-format\`. Push fixes to this branch. Do not create new PRs or branches."
+            --auto \
+            --squash \
+            --delete-branch; then
+            echo "- **Auto-merge**: enabled for PR #$PR_NUMBER" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "⚠️ Could not enable auto-merge for PR #$PR_NUMBER" >&2
+            echo "- **Auto-merge**: could not enable (check repository settings/permissions)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: No changes summary
         if: steps.sync.outputs.changes == 'false' && inputs.dry_run == 'false'

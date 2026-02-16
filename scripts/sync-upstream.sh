@@ -2,7 +2,7 @@
 # sync-upstream.sh — Sync files from azure-agentic-infraops (source) to the workshop repo.
 #
 # Reads .sync-config.json at the workspace root, clones the source repo,
-# and copies autoSync + reviewSync files into the current working tree.
+# and copies sync-listed files into the current working tree.
 # Generates a SYNC-MANIFEST.md with a diff report for use in issue bodies.
 #
 # Usage:
@@ -107,7 +107,7 @@ NEVERSYNC_FILE="$TMPDIR/neversync.txt"
 # autoSync patterns — copy unconditionally
 build_file_list "autoSync" > "$INCLUDE_FILE"
 
-# reviewSync patterns — also copy (flagged in manifest)
+# reviewSync patterns — also copy (if any)
 build_file_list "reviewSync" >> "$INCLUDE_FILE"
 
 # neverSync patterns — exclude
@@ -154,23 +154,6 @@ fi
 ADDED=()
 MODIFIED=()
 DELETED_CANDIDATES=()
-REVIEW_FLAGS=()
-
-# Load reviewSync patterns for flagging
-REVIEW_PATTERNS=()
-while IFS= read -r p; do
-  REVIEW_PATTERNS+=("$p")
-done < <(build_file_list "reviewSync")
-
-is_review_file() {
-  local file="$1"
-  for pattern in "${REVIEW_PATTERNS[@]}"; do
-    if [[ "$file" == $pattern ]]; then
-      return 0
-    fi
-  done
-  return 1
-}
 
 while IFS= read -r file; do
   src="$SOURCE_DIR/$file"
@@ -188,9 +171,6 @@ while IFS= read -r file; do
     fi
   elif ! diff -q "$src" "$dst" > /dev/null 2>&1; then
     MODIFIED+=("$file")
-    if is_review_file "$file"; then
-      REVIEW_FLAGS+=("$file")
-    fi
     if [[ "$DRY_RUN" == "false" ]]; then
       cp "$src" "$dst"
     fi
@@ -232,22 +212,6 @@ fi
     echo "## Modified (${#MODIFIED[@]})"
     echo ""
     for f in "${MODIFIED[@]}"; do
-      local_flag=""
-      if is_review_file "$f"; then
-        local_flag=" ⚠️ **reviewSync** — check for workshop compatibility"
-      fi
-      echo "- \`$f\`${local_flag}"
-    done
-    echo ""
-  fi
-
-  if [[ ${#REVIEW_FLAGS[@]} -gt 0 ]]; then
-    echo "## ⚠️ Files Needing Workshop Review"
-    echo ""
-    echo "These files are in the \`reviewSync\` tier. They were copied from"
-    echo "upstream but may need workshop-specific adaptation."
-    echo ""
-    for f in "${REVIEW_FLAGS[@]}"; do
       echo "- \`$f\`"
     done
     echo ""

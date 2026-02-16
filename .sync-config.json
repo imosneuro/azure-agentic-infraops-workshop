@@ -16,6 +16,7 @@
     ".github/instructions/**",
     ".github/skills/**",
     ".github/prompts/**",
+    ".github/copilot-instructions.md",
     ".github/ISSUE_TEMPLATE/**",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".github/CODEOWNERS",
@@ -50,12 +51,7 @@
     "mcp/azure-pricing-mcp/CHANGELOG.md",
     "agent-output/_sample/**"
   ],
-  "reviewSync": [
-    ".github/copilot-instructions.md",
-    ".devcontainer/README.md",
-    ".gitignore",
-    "pyproject.toml"
-  ],
+  "reviewSync": [],
   "neverSync": [
     "README.md",
     "VERSION.md",
