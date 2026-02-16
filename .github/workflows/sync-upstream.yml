@@ -202,6 +202,35 @@ jobs:
               --comment "Superseded by upstream-sync PR #${CURRENT_PR}. Closing stale sync PR."
           done
 
+      - name: Cleanup orphaned copilot sub-PRs
+        if: steps.sync.outputs.changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_PAT }}
+        run: |
+          gh pr list \
+            --repo "${{ github.repository }}" \
+            --state open \
+            --json number,headRefName,baseRefName \
+            -q '.[] | select(.headRefName | startswith("copilot/sub-pr-")) | "\(.number) \(.headRefName) \(.baseRefName)"' | while read -r SUB_PR HEAD_REF BASE_REF; do
+
+            PARENT_PR="${HEAD_REF##copilot/sub-pr-}"
+
+            PARENT_STATE=$(gh pr view "$PARENT_PR" \
+              --repo "${{ github.repository }}" \
+              --json state \
+              -q '.state' 2>/dev/null || echo "MISSING")
+
+            if [[ "$PARENT_STATE" == "OPEN" ]]; then
+              continue
+            fi
+
+            echo "Closing orphaned Copilot sub-PR #$SUB_PR (parent #$PARENT_PR state: $PARENT_STATE)"
+            gh pr close "$SUB_PR" \
+              --repo "${{ github.repository }}" \
+              --delete-branch \
+              --comment "Parent PR #${PARENT_PR} is ${PARENT_STATE}. Closing orphaned Copilot sub-PR."
+          done
+
       - name: Fallback merge when checks are green
         if: steps.sync.outputs.changes == 'true'
         env:
