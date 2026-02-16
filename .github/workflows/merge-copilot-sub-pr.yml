@@ -12,7 +12,9 @@ name: merge-copilot-sub-pr
 on:
   pull_request:
     types: [opened]
-    branches: [main]
+    branches:
+      - main
+      - 'sync/upstream-*'
 
 permissions:
   contents: write
