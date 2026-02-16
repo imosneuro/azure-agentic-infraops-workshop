@@ -62,40 +62,40 @@ pie title File Classification (~59 patterns)
 
 These files serve the same purpose in both repos and should always track upstream:
 
-| Category | Examples |
-| --- | --- |
-| Agents | `.github/agents/**` (11 files) |
-| Instructions | `.github/instructions/**` (15 files) |
-| Skills | `.github/skills/**` (all except `docs-writer` via neverSync) |
-| DevContainer | `devcontainer.json`, `post-create.sh`, `update-tools.sh` |
-| VS Code | `.vscode/**` |
-| Config | `lefthook.yml`, `commitlint.config.js`, `.gitattributes` |
-| Scripts | `scripts/*.mjs`, `scripts/*.ps1`, `scripts/workflow-generator/*.mjs` etc. |
-| MCP | `mcp/azure-pricing-mcp/src/**`, `tests/**`, `docs/**`, `scripts/**`, config files |
-| Samples | `agent-output/_sample/**` |
-| Root | `CONTRIBUTING.md`, `LICENSE`, `requirements.txt` |
+| Category     | Examples                                                                          |
+| ------------ | --------------------------------------------------------------------------------- |
+| Agents       | `.github/agents/**` (11 files)                                                    |
+| Instructions | `.github/instructions/**` (15 files)                                              |
+| Skills       | `.github/skills/**` (all except `docs-writer` via neverSync)                      |
+| DevContainer | `devcontainer.json`, `post-create.sh`, `update-tools.sh`                          |
+| VS Code      | `.vscode/**`                                                                      |
+| Config       | `lefthook.yml`, `commitlint.config.js`, `.gitattributes`                          |
+| Scripts      | `scripts/*.mjs`, `scripts/*.ps1`, `scripts/workflow-generator/*.mjs` etc.         |
+| MCP          | `mcp/azure-pricing-mcp/src/**`, `tests/**`, `docs/**`, `scripts/**`, config files |
+| Samples      | `agent-output/_sample/**`                                                         |
+| Root         | `CONTRIBUTING.md`, `LICENSE`, `requirements.txt`                                  |
 
 ### reviewSync — Copy and Flag for Review
 
 These files get copied but the sync-reviewer agent pays extra attention:
 
-| File | Why It Needs Review |
-| --- | --- |
-| `.github/copilot-instructions.md` | May contain source-specific content needing workshop adaptation |
-| `.devcontainer/README.md` | May contain source-specific content needing workshop adaptation |
-| `.gitignore` | Workshop has extra entries (`SYNC-MANIFEST.md`, agent artifacts) |
-| `pyproject.toml` | Version number differs; dependencies may be useful |
+| File                              | Why It Needs Review                                              |
+| --------------------------------- | ---------------------------------------------------------------- |
+| `.github/copilot-instructions.md` | May contain source-specific content needing workshop adaptation  |
+| `.devcontainer/README.md`         | May contain source-specific content needing workshop adaptation  |
+| `.gitignore`                      | Workshop has extra entries (`SYNC-MANIFEST.md`, agent artifacts) |
+| `pyproject.toml`                  | Version number differs; dependencies may be useful               |
 
 ### neverSync — Workshop-Only, Never Overwrite
 
-| Category | Examples |
-| --- | --- |
-| Identity | `README.md`, `VERSION.md`, `CHANGELOG.md`, `CONTRIBUTORS.md`, `package.json` |
-| Docs-Writer Skill | `.github/skills/docs-writer/**` (customized for workshop) |
-| Microhack | `microhack/**` (challenges, facilitator, participant) |
-| Workshop Docs | `docs/**` (Know Before You Go, Copilot Guide, etc.) |
-| Workshop Scripts | `scripts/microhack/**` |
-| Infrastructure | `infra/**` |
+| Category          | Examples                                                                     |
+| ----------------- | ---------------------------------------------------------------------------- |
+| Identity          | `README.md`, `VERSION.md`, `CHANGELOG.md`, `CONTRIBUTORS.md`, `package.json` |
+| Docs-Writer Skill | `.github/skills/docs-writer/**` (customized for workshop)                    |
+| Microhack         | `microhack/**` (challenges, facilitator, participant)                        |
+| Workshop Docs     | `docs/**` (Know Before You Go, Copilot Guide, etc.)                          |
+| Workshop Scripts  | `scripts/microhack/**`                                                       |
+| Infrastructure    | `infra/**`                                                                   |
 
 | Workflows | `.github/workflows/**` (workshop manages its own) |
 | MCP Archive | `mcp/azure-pricing-mcp/.archive/**`, `.github/**`, `.pre-commit-config.yaml` |
@@ -220,14 +220,14 @@ The [.sync-config.json](../.sync-config.json) file defines the sync behaviour.
 }
 ```
 
-| Field | Purpose |
-| --- | --- |
-| `source.owner` / `source.repo` | GitHub coordinates of the upstream repo |
-| `source.defaultRef` | Default branch or tag to sync from |
-| `target.branchPrefix` | Prefix for staging branches (`sync/upstream-{id}`) |
-| `autoSync` | Glob patterns for files copied without question |
-| `reviewSync` | Glob patterns for files copied but flagged for agent review |
-| `neverSync` | Glob patterns for files that are never touched |
+| Field                          | Purpose                                                     |
+| ------------------------------ | ----------------------------------------------------------- |
+| `source.owner` / `source.repo` | GitHub coordinates of the upstream repo                     |
+| `source.defaultRef`            | Default branch or tag to sync from                          |
+| `target.branchPrefix`          | Prefix for staging branches (`sync/upstream-{id}`)          |
+| `autoSync`                     | Glob patterns for files copied without question             |
+| `reviewSync`                   | Glob patterns for files copied but flagged for agent review |
+| `neverSync`                    | Glob patterns for files that are never touched              |
 
 ### Adding a New File to Sync
 
@@ -279,12 +279,12 @@ repository secret named `SYNC_PAT`.
 
 **Required permissions** (scoped to this repository):
 
-| Permission | Access |
-| --- | --- |
-| Contents | Read and write |
-| Issues | Read and write |
+| Permission    | Access         |
+| ------------- | -------------- |
+| Contents      | Read and write |
+| Issues        | Read and write |
 | Pull requests | Read and write |
-| Metadata | Read |
+| Metadata      | Read           |
 
 To create the secret:
 
@@ -315,13 +315,13 @@ Create an `upstream-sync` label in the repository for issue tracking:
 
 ## Troubleshooting
 
-| Problem | Cause | Fix |
-| --- | --- | --- |
-| Workflow exits with "No changes detected" | Source and workshop are already in sync | Nothing to do — this is expected |
+| Problem                                    | Cause                                             | Fix                                                              |
+| ------------------------------------------ | ------------------------------------------------- | ---------------------------------------------------------------- |
+| Workflow exits with "No changes detected"  | Source and workshop are already in sync           | Nothing to do — this is expected                                 |
 | "Could not assign to Copilot coding agent" | PAT lacks permissions or coding agent is disabled | Check `SYNC_PAT` permissions and enable coding agent in Settings |
-| Agent fails or creates empty PR | Issue body was truncated or agent hit rate limit | Re-run the workflow; if persistent, manually assign the issue |
-| Lint errors in synced files | Upstream introduced formatting issues | Agent should auto-fix; if not, fix manually on the PR branch |
-| PAT expired | Fine-grained PATs have configurable expiry | Regenerate and update the `SYNC_PAT` secret |
+| Agent fails or creates empty PR            | Issue body was truncated or agent hit rate limit  | Re-run the workflow; if persistent, manually assign the issue    |
+| Lint errors in synced files                | Upstream introduced formatting issues             | Agent should auto-fix; if not, fix manually on the PR branch     |
+| PAT expired                                | Fine-grained PATs have configurable expiry        | Regenerate and update the `SYNC_PAT` secret                      |
 
 [source-repo]: https://github.com/jonathan-vella/azure-agentic-infraops
 [workshop-repo]: https://github.com/jonathan-vella/azure-agentic-infraops-workshop
