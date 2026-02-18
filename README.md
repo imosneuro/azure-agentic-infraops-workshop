@@ -80,18 +80,26 @@ A **structured 7-step workflow** that coordinates specialized AI agents through 
 
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': {'fontFamily': 'Comic Sans MS, cursive'}, 'flowchart': {'curve': 'basis'}} }%%
-flowchart LR
-    A([📜 1\nRequirements]) -->|✅ captured| B([🏛️ 2\nArchitect])
-    B -->|✅ WAF + cost| C([🎨 3\nDesign\noptional])
-    C -->|✅ diagrams| D([📐 4\nBicep Plan])
-    B -->|skip design| D
-    D -->|🔒 GATE| E([⚒️ 5\nBicep Code])
-    E -->|lint · what-if · review| F([🚀 6\nDeploy])
-    F -->|🔒 GATE| G([📚 7\nAs-Built\nDocs])
+flowchart TB
+    COND([🎼 InfraOps Conductor])
 
+    subgraph STEPS[ ]
+        direction LR
+        A([📜 1 · Requirements]) -->|captured| B([🏛️ 2 · Architect])
+        B -->|WAF + cost| C([🎨 3 · Design])
+        C -->|diagrams| D([📐 4 · Bicep Plan])
+        B -->|skip design| D
+        D -->|🔒 GATE| E([⚒️ 5 · Bicep Code])
+        E -->|lint · what-if · review| F([🚀 6 · Deploy])
+        F -->|🔒 GATE| G([📚 7 · As-Built])
+    end
+
+    COND --> STEPS
+
+    style COND fill:#0078D4,stroke:#005A9E,stroke-width:2px,color:#fff
+    style C fill:#f0f8e8,stroke:#57A300,stroke-width:2px,stroke-dasharray:5
     style A fill:#e8f4fd,stroke:#0078D4,stroke-width:2px
     style B fill:#e8f4fd,stroke:#0078D4,stroke-width:2px
-    style C fill:#f0f8e8,stroke:#57A300,stroke-width:2px,stroke-dasharray:5
     style D fill:#e8f4fd,stroke:#0078D4,stroke-width:2px
     style E fill:#e8f4fd,stroke:#0078D4,stroke-width:2px
     style F fill:#e8f4fd,stroke:#0078D4,stroke-width:2px
