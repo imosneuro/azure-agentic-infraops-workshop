@@ -28,7 +28,7 @@ Each file has exactly ONE H1 heading (the title). Use H2+ for all other sections
 
 ### Link Style
 
-- Use relative links for internal docs (example pattern: `Getting Started -> getting-started.md`)
+- Use relative links for internal docs (example pattern: `Quickstart -> quickstart.md`)
 - For root file references, increase `../` depth based on folder nesting (for example: `../VERSION.md`,
   `../../VERSION.md`)
 - Use reference-style links for external URLs
