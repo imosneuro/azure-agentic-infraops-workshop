@@ -4,8 +4,7 @@
 # Creates a staging branch and PR with upstream-authoritative updates.
 #
 # Trigger: manual (workflow_dispatch) + daily schedule
-# Auth: requires SYNC_PAT secret (fine-grained PAT with contents:write,
-# pull-requests:write, metadata:read)
+# Auth: uses built-in github.token with workflow-level permissions
 
 name: upstream-sync
 
@@ -47,7 +46,7 @@ jobs:
       - name: Checkout workshop repo
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.SYNC_PAT }}
+          token: ${{ github.token }}
           fetch-depth: 0
 
       - name: Verify prerequisites
@@ -131,7 +130,7 @@ jobs:
         id: create_pr
         if: steps.sync.outputs.changes == 'true'
         env:
-          GH_TOKEN: ${{ secrets.SYNC_PAT }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           DATE=$(date -u +%Y-%m-%d)
           MANIFEST=$(cat SYNC-MANIFEST.md)
@@ -164,7 +163,7 @@ jobs:
       - name: Enable auto-merge (best effort)
         if: steps.sync.outputs.changes == 'true'
         env:
-          GH_TOKEN: ${{ secrets.SYNC_PAT }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           PR_NUMBER="${{ steps.create_pr.outputs.pr_number }}"
 
@@ -182,7 +181,7 @@ jobs:
       - name: Close stale upstream-sync PRs
         if: steps.sync.outputs.changes == 'true'
         env:
-          GH_TOKEN: ${{ secrets.SYNC_PAT }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           CURRENT_PR="${{ steps.create_pr.outputs.pr_number }}"
 
@@ -205,7 +204,7 @@ jobs:
       - name: Cleanup orphaned copilot sub-PRs
         if: steps.sync.outputs.changes == 'true'
         env:
-          GH_TOKEN: ${{ secrets.SYNC_PAT }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh pr list \
             --repo "${{ github.repository }}" \
@@ -234,7 +233,7 @@ jobs:
       - name: Fallback merge when checks are green
         if: steps.sync.outputs.changes == 'true'
         env:
-          GH_TOKEN: ${{ secrets.SYNC_PAT }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           PR_NUMBER="${{ steps.create_pr.outputs.pr_number }}"
           MAX_ATTEMPTS=30
