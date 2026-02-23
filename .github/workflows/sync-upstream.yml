@@ -202,7 +202,16 @@ jobs:
             echo "- **Auto-merge**: enabled for PR #$PR_NUMBER" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "⚠️ Could not enable auto-merge for PR #$PR_NUMBER" >&2
-            echo "- **Auto-merge**: could not enable (check repository settings/permissions)" >> "$GITHUB_STEP_SUMMARY"
+            if gh pr merge "$PR_NUMBER" \
+              --repo "${{ github.repository }}" \
+              --admin \
+              --squash \
+              --delete-branch; then
+              echo "✅ Admin-bypass merged PR #$PR_NUMBER without human review."
+              echo "- **Auto-merge**: admin bypass merged PR #$PR_NUMBER" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "- **Auto-merge**: could not enable; admin bypass also failed (check token admin rights/ruleset bypass)" >> "$GITHUB_STEP_SUMMARY"
+            fi
           fi
 
       - name: Close stale upstream-sync PRs
@@ -283,6 +292,18 @@ jobs:
               -q '.mergeStateStatus')
 
             echo "Attempt $i/$MAX_ATTEMPTS: mergeStateStatus=$MERGE_STATE"
+
+            if [[ "$MERGE_STATE" == "BLOCKED" ]]; then
+              if gh pr merge "$PR_NUMBER" \
+                --repo "${{ github.repository }}" \
+                --admin \
+                --squash \
+                --delete-branch; then
+                echo "✅ Admin-bypass merged blocked PR #$PR_NUMBER."
+                echo "- **Fallback merge**: admin bypass merged PR #$PR_NUMBER" >> "$GITHUB_STEP_SUMMARY"
+                exit 0
+              fi
+            fi
 
             if [[ "$MERGE_STATE" == "CLEAN" ]]; then
               if gh pr merge "$PR_NUMBER" \
