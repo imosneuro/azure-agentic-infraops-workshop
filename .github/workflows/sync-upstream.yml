@@ -4,7 +4,9 @@
 # Creates a staging branch and PR with upstream-authoritative updates.
 #
 # Trigger: manual (workflow_dispatch) + daily schedule
-# Auth: uses built-in github.token with workflow-level permissions
+# Auth:
+# - checkout/fetch uses built-in github.token
+# - push/PR operations use SYNC_PAT so downstream PR checks (e.g., lint) run
 
 name: upstream-sync
 
@@ -109,8 +111,22 @@ jobs:
             echo "_Showing first $MAX_SHOW of $TOTAL changed paths._" >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      - name: Validate sync token for PR automation
+        if: steps.sync.outputs.changes == 'true' && !(github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
+        env:
+          SYNC_PAT: ${{ secrets.SYNC_PAT }}
+        run: |
+          if [[ -z "$SYNC_PAT" ]]; then
+            echo "❌ Missing required secret: SYNC_PAT" >&2
+            echo "SYNC_PAT is required for push/PR automation so required checks (like lint) are triggered." >&2
+            echo "Add SYNC_PAT (fine-grained PAT with contents:write, pull-requests:write, metadata:read)." >&2
+            exit 1
+          fi
+
       - name: Commit and push staging branch
         if: steps.sync.outputs.changes == 'true'
+        env:
+          SYNC_PAT: ${{ secrets.SYNC_PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -124,13 +140,13 @@ jobs:
           Synced from jonathan-vella/azure-agentic-infraops @ ${{ inputs.source_ref }}
           Files changed: ${{ steps.sync.outputs.change_count }}"
 
-          git push origin "$SYNC_BRANCH"
+          git push "https://x-access-token:${SYNC_PAT}@github.com/${{ github.repository }}.git" "$SYNC_BRANCH"
 
       - name: Create PR
         id: create_pr
         if: steps.sync.outputs.changes == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SYNC_PAT }}
         run: |
           DATE=$(date -u +%Y-%m-%d)
           MANIFEST=$(cat SYNC-MANIFEST.md)
@@ -163,7 +179,7 @@ jobs:
       - name: Enable auto-merge (best effort)
         if: steps.sync.outputs.changes == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SYNC_PAT }}
         run: |
           PR_NUMBER="${{ steps.create_pr.outputs.pr_number }}"
 
@@ -181,7 +197,7 @@ jobs:
       - name: Close stale upstream-sync PRs
         if: steps.sync.outputs.changes == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SYNC_PAT }}
         run: |
           CURRENT_PR="${{ steps.create_pr.outputs.pr_number }}"
 
@@ -204,7 +220,7 @@ jobs:
       - name: Cleanup orphaned copilot sub-PRs
         if: steps.sync.outputs.changes == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SYNC_PAT }}
         run: |
           gh pr list \
             --repo "${{ github.repository }}" \
@@ -233,7 +249,7 @@ jobs:
       - name: Fallback merge when checks are green
         if: steps.sync.outputs.changes == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SYNC_PAT }}
         run: |
           PR_NUMBER="${{ steps.create_pr.outputs.pr_number }}"
           MAX_ATTEMPTS=30
