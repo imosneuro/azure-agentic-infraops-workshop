@@ -177,7 +177,32 @@ while IFS= read -r file; do
   fi
 done < "$SYNC_FILES"
 
-TOTAL_CHANGES=$(( ${#ADDED[@]} + ${#MODIFIED[@]} ))
+# Find target files in sync scope that no longer exist in source sync list.
+TARGET_SYNC_FILES="$TMPDIR/target-sync-files.txt"
+expand_patterns "$REPO_ROOT" "$INCLUDE_FILE" > "$TARGET_SYNC_FILES"
+
+# Remove any neverSync matches from target list
+if [[ -s "$NEVER_FILES" ]]; then
+  grep -Fxvf "$NEVER_FILES" "$TARGET_SYNC_FILES" > "$TMPDIR/target-filtered.txt" || true
+  mv "$TMPDIR/target-filtered.txt" "$TARGET_SYNC_FILES"
+fi
+
+while IFS= read -r file; do
+  [[ -z "$file" ]] && continue
+
+  # If file exists in target sync scope but not in source sync scope, delete it.
+  if ! grep -Fxq "$file" "$SYNC_FILES"; then
+    dst="$REPO_ROOT/$file"
+    if [[ -f "$dst" ]]; then
+      DELETED_CANDIDATES+=("$file")
+      if [[ "$DRY_RUN" == "false" ]]; then
+        rm -f "$dst"
+      fi
+    fi
+  fi
+done < "$TARGET_SYNC_FILES"
+
+TOTAL_CHANGES=$(( ${#ADDED[@]} + ${#MODIFIED[@]} + ${#DELETED_CANDIDATES[@]} ))
 
 if [[ "$TOTAL_CHANGES" -eq 0 ]]; then
   log "All sync-safe files are already up to date. Nothing to do."
@@ -217,6 +242,15 @@ fi
     echo ""
   fi
 
+  if [[ ${#DELETED_CANDIDATES[@]} -gt 0 ]]; then
+    echo "## Deleted (${#DELETED_CANDIDATES[@]})"
+    echo ""
+    for f in "${DELETED_CANDIDATES[@]}"; do
+      echo "- \`$f\`"
+    done
+    echo ""
+  fi
+
   echo "---"
   echo "*To preview changes locally: \`./scripts/sync-upstream.sh --dry-run\`*"
 } > "$MANIFEST"
@@ -228,6 +262,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
   echo ""
   [[ ${#ADDED[@]} -gt 0 ]] && echo "Added (${#ADDED[@]}):" && printf '  + %s\n' "${ADDED[@]}"
   [[ ${#MODIFIED[@]} -gt 0 ]] && echo "Modified (${#MODIFIED[@]}):" && printf '  ~ %s\n' "${MODIFIED[@]}"
+  [[ ${#DELETED_CANDIDATES[@]} -gt 0 ]] && echo "Deleted (${#DELETED_CANDIDATES[@]}):" && printf '  - %s\n' "${DELETED_CANDIDATES[@]}"
   echo ""
   echo "Total: $TOTAL_CHANGES file(s)"
 else
