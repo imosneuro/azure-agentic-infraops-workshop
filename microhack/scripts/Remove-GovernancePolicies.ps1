@@ -5,41 +5,42 @@
     Deletes all policy assignments with the 'microhack-' prefix from the
     specified subscription. Use after the event to restore the subscription
     to its pre-event state.
-.PARAMETER SubscriptionId
-    Azure subscription ID to remove policies from.
+.PARAMETER Subscription
+    Azure subscription name or ID to remove policies from.
 .EXAMPLE
-    .\Remove-GovernancePolicies.ps1 -SubscriptionId "00000000-0000-0000-0000-000000000000" -WhatIf
+    .\Remove-GovernancePolicies.ps1 -Subscription "my-subscription-name" -WhatIf
 .EXAMPLE
-    .\Remove-GovernancePolicies.ps1 -SubscriptionId "00000000-0000-0000-0000-000000000000"
+    .\Remove-GovernancePolicies.ps1 -Subscription "my-subscription-name"
 #>
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
 param(
     [Parameter(Mandatory)]
-    [ValidatePattern('^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')]
-    [string]$SubscriptionId
+    [string]$Subscription
 )
 
 begin {
     $ErrorActionPreference = 'Stop'
     Set-StrictMode -Version Latest
 
-    $Scope = "/subscriptions/$SubscriptionId"
     $AssignmentPrefix = 'microhack-'
 }
 
 process {
-    Write-Verbose "Setting subscription context to $SubscriptionId"
-    az account set --subscription $SubscriptionId 2>&1 | Out-Null
+    Write-Verbose "Setting subscription context to '$Subscription'"
+    az account set --subscription $Subscription 2>&1 | Out-Null
     if ($LASTEXITCODE -ne 0) {
         $PSCmdlet.ThrowTerminatingError(
             [System.Management.Automation.ErrorRecord]::new(
                 [System.Exception]::new("Failed to set subscription context. Run 'az login' first."),
                 'SubscriptionContextFailed',
                 [System.Management.Automation.ErrorCategory]::AuthenticationError,
-                $SubscriptionId
+                $Subscription
             )
         )
     }
+
+    $SubscriptionId = az account show --query id -o tsv 2>&1
+    $Scope = "/subscriptions/$SubscriptionId"
 
     Write-Verbose "Listing microhack policy assignments on scope $Scope"
     $assignmentsJson = az policy assignment list --scope $Scope --query "[?starts_with(name, '$AssignmentPrefix')]" -o json 2>&1
@@ -94,6 +95,7 @@ process {
     }
 
     [PSCustomObject]@{
+        Subscription   = $Subscription
         SubscriptionId = $SubscriptionId
         Removed        = $removed
         Failed         = $failed

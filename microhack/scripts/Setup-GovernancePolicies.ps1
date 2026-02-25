@@ -9,25 +9,22 @@
 
     All assignments use the 'microhack-' prefix for easy identification
     and cleanup via Remove-GovernancePolicies.ps1.
-.PARAMETER SubscriptionId
-    Azure subscription ID to deploy policies to.
+.PARAMETER Subscription
+    Azure subscription name or ID to deploy policies to.
 .EXAMPLE
-    .\Setup-GovernancePolicies.ps1 -SubscriptionId "00000000-0000-0000-0000-000000000000" -WhatIf
+    .\Setup-GovernancePolicies.ps1 -Subscription "my-subscription-name" -WhatIf
 .EXAMPLE
-    .\Setup-GovernancePolicies.ps1 -SubscriptionId "00000000-0000-0000-0000-000000000000"
+    .\Setup-GovernancePolicies.ps1 -Subscription "my-subscription-name"
 #>
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
 param(
     [Parameter(Mandatory)]
-    [ValidatePattern('^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')]
-    [string]$SubscriptionId
+    [string]$Subscription
 )
 
 begin {
     $ErrorActionPreference = 'Stop'
     Set-StrictMode -Version Latest
-
-    $Scope = "/subscriptions/$SubscriptionId"
 
     # Built-in Azure Policy definitions used by the microhack.
     # Each entry maps to a well-known definition ID; the script validates
@@ -45,7 +42,7 @@ begin {
         @{
             Name           = 'microhack-require-environment-tag'
             DisplayName    = 'Microhack: Require Environment tag'
-            DefinitionId   = '871b6d14-10aa-478d-b466-ce35242c7b29'
+            DefinitionId   = '871b6d14-10aa-478d-b590-94f262ecfa99'
             Description    = 'Deny resources without an Environment tag'
             Parameters     = @{
                 tagName = @{ value = 'Environment' }
@@ -54,7 +51,7 @@ begin {
         @{
             Name           = 'microhack-require-project-tag'
             DisplayName    = 'Microhack: Require Project tag'
-            DefinitionId   = '871b6d14-10aa-478d-b466-ce35242c7b29'
+            DefinitionId   = '871b6d14-10aa-478d-b590-94f262ecfa99'
             Description    = 'Deny resources without a Project tag'
             Parameters     = @{
                 tagName = @{ value = 'Project' }
@@ -81,7 +78,7 @@ begin {
         @{
             Name           = 'microhack-storage-min-tls'
             DisplayName    = 'Microhack: Storage minimum TLS 1.2'
-            DefinitionId   = 'fe83a0eb-a853-422d-aff8-9de5e35cf926'
+            DefinitionId   = 'fe83a0eb-a853-422d-aac2-1bffd182c5d0'
             Description    = 'Deny storage accounts with TLS version below 1.2'
             Parameters     = @{
                 effect            = @{ value = 'Deny' }
@@ -110,18 +107,21 @@ begin {
 }
 
 process {
-    Write-Verbose "Setting subscription context to $SubscriptionId"
-    az account set --subscription $SubscriptionId 2>&1 | Out-Null
+    Write-Verbose "Setting subscription context to '$Subscription'"
+    az account set --subscription $Subscription 2>&1 | Out-Null
     if ($LASTEXITCODE -ne 0) {
         $PSCmdlet.ThrowTerminatingError(
             [System.Management.Automation.ErrorRecord]::new(
                 [System.Exception]::new("Failed to set subscription context. Run 'az login' first."),
                 'SubscriptionContextFailed',
                 [System.Management.Automation.ErrorCategory]::AuthenticationError,
-                $SubscriptionId
+                $Subscription
             )
         )
     }
+
+    $SubscriptionId = az account show --query id -o tsv 2>&1
+    $Scope = "/subscriptions/$SubscriptionId"
 
     $created = 0
     $skipped = 0
@@ -129,10 +129,9 @@ process {
 
     foreach ($policy in $Policies) {
         $assignmentName = $policy.Name
-        $definitionPath = "/providers/Microsoft.Authorization/policyDefinitions/$($policy.DefinitionId)"
 
         # Check if assignment already exists
-        $existing = az policy assignment show --name $assignmentName --scope $Scope 2>&1
+        az policy assignment show --name $assignmentName --scope $Scope 2>&1 | Out-Null
         if ($LASTEXITCODE -eq 0) {
             Write-Verbose "Assignment '$assignmentName' already exists — skipping"
             $skipped++
@@ -147,7 +146,7 @@ process {
                 $result = az policy assignment create `
                     --name $assignmentName `
                     --display-name $policy.DisplayName `
-                    --policy $definitionPath `
+                    --policy $policy.DefinitionId `
                     --scope $Scope `
                     --params $parametersJson `
                     --enforcement-mode 'Default' `
@@ -168,6 +167,7 @@ process {
     }
 
     [PSCustomObject]@{
+        Subscription   = $Subscription
         SubscriptionId = $SubscriptionId
         Created        = $created
         Skipped        = $skipped

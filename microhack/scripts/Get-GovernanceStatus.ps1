@@ -5,20 +5,19 @@
     Lists policy assignments on the specified subscription and reports their
     compliance state. Use -MicrohackOnly to filter to assignments created
     by Setup-GovernancePolicies.ps1 (those with the 'microhack-' prefix).
-.PARAMETER SubscriptionId
-    Azure subscription ID to check.
+.PARAMETER Subscription
+    Azure subscription name or ID to check.
 .PARAMETER MicrohackOnly
     When specified, shows only microhack policy assignments instead of all.
 .EXAMPLE
-    .\Get-GovernanceStatus.ps1 -SubscriptionId "00000000-0000-0000-0000-000000000000"
+    .\Get-GovernanceStatus.ps1 -Subscription "my-subscription-name"
 .EXAMPLE
-    .\Get-GovernanceStatus.ps1 -SubscriptionId "00000000-0000-0000-0000-000000000000" -MicrohackOnly
+    .\Get-GovernanceStatus.ps1 -Subscription "my-subscription-name" -MicrohackOnly
 #>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)]
-    [ValidatePattern('^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')]
-    [string]$SubscriptionId,
+    [string]$Subscription,
 
     [Parameter()]
     [switch]$MicrohackOnly
@@ -28,23 +27,25 @@ begin {
     $ErrorActionPreference = 'Stop'
     Set-StrictMode -Version Latest
 
-    $Scope = "/subscriptions/$SubscriptionId"
     $AssignmentPrefix = 'microhack-'
 }
 
 process {
-    Write-Verbose "Setting subscription context to $SubscriptionId"
-    az account set --subscription $SubscriptionId 2>&1 | Out-Null
+    Write-Verbose "Setting subscription context to '$Subscription'"
+    az account set --subscription $Subscription 2>&1 | Out-Null
     if ($LASTEXITCODE -ne 0) {
         $PSCmdlet.ThrowTerminatingError(
             [System.Management.Automation.ErrorRecord]::new(
                 [System.Exception]::new("Failed to set subscription context. Run 'az login' first."),
                 'SubscriptionContextFailed',
                 [System.Management.Automation.ErrorCategory]::AuthenticationError,
-                $SubscriptionId
+                $Subscription
             )
         )
     }
+
+    $SubscriptionId = az account show --query id -o tsv 2>&1
+    $Scope = "/subscriptions/$SubscriptionId"
 
     # Retrieve policy assignments
     $filter = if ($MicrohackOnly) {
@@ -75,7 +76,7 @@ process {
 
     # Retrieve compliance summary
     Write-Verbose 'Fetching compliance states'
-    $complianceJson = az policy state summarize --subscription $SubscriptionId -o json 2>&1
+    $complianceJson = az policy state summarize --subscription $SubscriptionId --scope $Scope -o json 2>&1
     $complianceLookup = @{}
     if ($LASTEXITCODE -eq 0) {
         $summary = $complianceJson | ConvertFrom-Json
