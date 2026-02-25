@@ -49,6 +49,8 @@
     <br />
     <a href="#️⃣-quick-start"><strong>Quick Start »</strong></a>
     ·
+    <a href="docs/getting-started.md">Requirements Guide</a>
+    ·
     <a href="microhack/README.md">Microhack Guide</a>
     ·
     <a href="agent-output/">Sample Outputs</a>
@@ -339,6 +341,8 @@ Agents are defined in `.github/agents/*.agent.md` — edit `model`, instructions
 | **Azure subscription** | For deployments (optional for learning)                                                   |
 
 Dev Container includes: Azure CLI + Bicep · PowerShell 7+ · Python 3.10+ · all VS Code extensions · Pricing MCP · diagrams library
+
+📋 **Full prerequisites, quota requirements, and setup checklist**: [docs/getting-started.md](docs/getting-started.md)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

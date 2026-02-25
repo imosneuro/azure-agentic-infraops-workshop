@@ -69,10 +69,31 @@ Bicep Infrastructure as Code.
 
 > [!WARNING]
 > All items in this section are **mandatory**. The microhack cannot proceed without every
-> prerequisite in place. Complete the [Event-Day Checklist](#event-day-checklist) to confirm
+> prerequisite in place. Complete the [Pre-Event Day Checklist](#pre-event-checklist) to confirm
 > readiness before the event.
 
-### Software
+### ✅ Pre-Event Checklist
+
+> [!IMPORTANT]
+> Complete every item below **before the event day**. Arrive ready — there is no setup
+> time built into the agenda.
+
+- [ ] **Docker Desktop** installed and running
+- [ ] **VS Code** 1.100+ with Dev Containers and GitHub Copilot Chat extensions
+- [ ] **Azure CLI** 2.50+ installed (`az version`)
+- [ ] **PowerShell 7** installed (`pwsh --version`)
+- [ ] **Git** installed (2.40+)
+- [ ] **GitHub account** with Copilot Pro+ or Enterprise
+- [ ] **Azure subscription** with Owner access
+- [ ] **Repository cloned** locally
+- [ ] **Dev Container image pulled and built** (F1 → Reopen in Container)
+- [ ] **Azure CLI authenticated** (`az login` successful)
+- [ ] **Custom agents enabled** (VS Code setting)
+- [ ] **Network access** verified (no proxy issues)
+- [ ] **Quota verified** for Sweden Central
+
+<details>
+<summary><strong>Software Requirements</strong></summary>
 
 #### Docker Desktop
 
@@ -200,7 +221,10 @@ git --version
 
 </details>
 
-### Accounts
+</details>
+
+<details>
+<summary><strong>Account Requirements</strong></summary>
 
 #### GitHub with Copilot Pro+ or Enterprise
 
@@ -262,6 +286,8 @@ Setup guide: [VS Code Copilot Setup](https://code.visualstudio.com/docs/copilot/
 az login
 az account list --output table
 ```
+
+</details>
 
 ---
 
@@ -349,7 +375,8 @@ The repo includes a Dev Container with all tools pre-installed. It works with
 > Complete **all steps below before the event day**. Steps 1 and 2 pull and build the
 > Dev Container image (~1–2 GB download). Do not leave this for the morning of the event.
 
-### 1. Clone and Open
+<details>
+<summary><strong>1. Clone and Open</strong></summary>
 
 ```bash
 git clone https://github.com/jonathan-vella/azure-agentic-infraops-workshop.git
@@ -359,7 +386,10 @@ code .
 
 When VS Code opens, accept the **"Reopen in Container"** prompt.
 
-### 2. Pull and Build the Dev Container
+</details>
+
+<details>
+<summary><strong>2. Pull and Build the Dev Container</strong></summary>
 
 > [!WARNING]
 > **Do this before the event.** The initial image pull and build takes 3–5 minutes and
@@ -375,7 +405,10 @@ bicep --version   # Expected: 0.20+
 pwsh --version    # Expected: 7+
 ```
 
-### 3. Authenticate with Azure
+</details>
+
+<details>
+<summary><strong>3. Authenticate with Azure</strong></summary>
 
 ```bash
 az login
@@ -383,7 +416,10 @@ az account set --subscription "<your-subscription-id>"
 az account show --query "{Name:name, SubscriptionId:id, TenantId:tenantId}" -o table
 ```
 
-### 4. Enable Custom Agents
+</details>
+
+<details>
+<summary><strong>4. Enable Custom Agents</strong></summary>
 
 Open VS Code Settings (`Ctrl+,`) and add:
 
@@ -397,7 +433,10 @@ Open VS Code Settings (`Ctrl+,`) and add:
 }
 ```
 
-### 5. Verify Prerequisites
+</details>
+
+<details>
+<summary><strong>5. Verify Prerequisites</strong></summary>
 
 ```powershell
 pwsh scripts/check-prerequisites.ps1
@@ -405,7 +444,10 @@ pwsh scripts/check-prerequisites.ps1
 
 This validates Azure CLI, Bicep CLI, Node.js, npm, and GitHub CLI.
 
-### 6. Start the Workflow
+</details>
+
+<details>
+<summary><strong>6. Start the Workflow</strong></summary>
 
 Open Copilot Chat (`Ctrl+Shift+I`) and select **InfraOps Conductor**:
 
@@ -436,6 +478,8 @@ Ensure your network allows outbound HTTPS to:
 | GitHub Copilot | `copilot.github.com`, `*.githubusercontent.com`               |
 | Azure          | `*.azure.com`, `*.microsoft.com`, `login.microsoftonline.com` |
 | Docker         | `docker.io`, `registry-1.docker.io`                           |
+
+</details>
 
 </details>
 
@@ -560,26 +604,6 @@ az group delete --name rg-quota-test --yes --no-wait
 </details>
 
 ---
-
-## ✅ Pre-Event Checklist
-
-> [!IMPORTANT]
-> Complete every item below **before the event day**. Arrive ready — there is no setup
-> time built into the agenda.
-
-- [ ] **Docker Desktop** installed and running
-- [ ] **VS Code** 1.100+ with Dev Containers and GitHub Copilot Chat extensions
-- [ ] **Azure CLI** 2.50+ installed (`az version`)
-- [ ] **PowerShell 7** installed (`pwsh --version`)
-- [ ] **Git** installed (2.40+)
-- [ ] **GitHub account** with Copilot Pro+ or Enterprise
-- [ ] **Azure subscription** with Owner access
-- [ ] **Repository cloned** locally
-- [ ] **Dev Container image pulled and built** (F1 → Reopen in Container)
-- [ ] **Azure CLI authenticated** (`az login` successful)
-- [ ] **Custom agents enabled** (VS Code setting)
-- [ ] **Network access** verified (no proxy issues)
-- [ ] **Quota verified** for Sweden Central
 
 ## ⏱️ First 10 Minutes on Event Day
 
