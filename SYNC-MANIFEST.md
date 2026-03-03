@@ -4,37 +4,11 @@
 
 **Source**: `jonathan-vella/azure-agentic-infraops` @ `2aa4ce8`
 **Date**: 2026-03-03
-**Files changed**: 24
+**Files changed**: 1
 
-## Added (4)
+## Added (1)
 
-- `.github/skills/azure-artifacts/templates/00-session-state.template.json`
-- `.github/skills/session-resume/SKILL.md`
 - `.vscode/settings.json`
-- `scripts/validate-session-state.mjs`
-
-## Modified (20)
-
-- `.devcontainer/devcontainer.json`
-- `.github/agents/01-conductor.agent.md`
-- `.github/agents/02-requirements.agent.md`
-- `.github/agents/03-architect.agent.md`
-- `.github/agents/04-design.agent.md`
-- `.github/agents/05b-bicep-planner.agent.md`
-- `.github/agents/05t-terraform-planner.agent.md`
-- `.github/agents/06b-bicep-codegen.agent.md`
-- `.github/agents/06t-terraform-codegen.agent.md`
-- `.github/agents/07b-bicep-deploy.agent.md`
-- `.github/agents/07t-terraform-deploy.agent.md`
-- `.github/agents/08-as-built.agent.md`
-- `.github/agents/11-context-optimizer.agent.md`
-- `.github/copilot-instructions.md`
-- `.github/data/azure-deprecations.json`
-- `.github/prompts/context-optimize.prompt.md`
-- `.github/skills/context-optimizer/SKILL.md`
-- `.github/skills/git-commit/SKILL.md`
-- `.github/skills/github-operations/SKILL.md`
-- `.vscode/mcp.json`
 
 ---
 *To preview changes locally: `./scripts/sync-upstream.sh --dry-run`*
