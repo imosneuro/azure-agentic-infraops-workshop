@@ -28,7 +28,6 @@ tools:
     read/problems,
     read/readFile,
     read/readNotebookCellOutput,
-    agent/runSubagent,
     agent,
     edit/createDirectory,
     edit/createFile,
@@ -257,6 +256,12 @@ Save to `agent-output/{project}/08-resource-health-report.md`:
 | No logs available        | Suggest enabling diagnostics       |
 | Query timeout            | Break into smaller time windows    |
 | MCP tool unavailable     | Fall back to Azure CLI             |
+
+## Boundaries
+
+- **Always**: Use approval-first execution, analyze single resources, save reports to agent-output
+- **Ask first**: Remediation actions, resource modifications, diagnostic commands with side effects
+- **Never**: Modify resources without approval, diagnose multiple resources simultaneously, skip health checks
 
 ## Validation Checklist
 

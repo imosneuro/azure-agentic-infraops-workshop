@@ -32,6 +32,9 @@ const RECOMMENDED_FIELDS = ["agents", "model"];
 let errors = 0;
 let warnings = 0;
 
+// Block scalar check — must run on raw content before parsing
+const BLOCK_SCALAR_PATTERN = /^description:\s*[>|][-\s]*$/m;
+
 /**
  * Validate a single agent file
  */
@@ -40,8 +43,25 @@ function validateAgent(filePath, isSubagent) {
   const frontmatter = parseFrontmatter(content);
   const relativePath = path.relative(process.cwd(), filePath);
 
+  // Check for block scalar description BEFORE parsing (parser swallows it)
+  if (BLOCK_SCALAR_PATTERN.test(content)) {
+    console.error(
+      `❌ ${relativePath}: description uses a YAML block scalar (>, >-, | or |-)`,
+    );
+    console.error(
+      `  Fix: Replace with a single-line description: "..." inline string.`,
+    );
+    console.error(
+      `  Block scalars break VS Code prompts-diagnostics-provider.`,
+    );
+    errors++;
+  }
+
   if (!frontmatter) {
     console.error(`❌ ${relativePath}: No frontmatter found`);
+    console.error(
+      `  Fix: Add YAML frontmatter at the top: ---\nname: ...\ndescription: ...\nuser-invokable: true\ntools: []\n---`,
+    );
     errors++;
     return;
   }
@@ -52,6 +72,9 @@ function validateAgent(filePath, isSubagent) {
   for (const field of requiredFields) {
     if (!(field in frontmatter)) {
       console.error(`❌ ${relativePath}: Missing required field '${field}'`);
+      console.error(
+        `  Fix: Add '${field}: ...' to the YAML frontmatter block.`,
+      );
       errors++;
     }
   }
@@ -100,6 +123,9 @@ function validateAgent(filePath, isSubagent) {
   if ("agents" in frontmatter) {
     if (!Array.isArray(frontmatter.agents)) {
       console.warn(`⚠️  ${relativePath}: 'agents' should be an array`);
+      console.warn(
+        `  Fix: Use YAML list syntax: agents:\n  - agent-name-1\n  - agent-name-2`,
+      );
       warnings++;
     }
   }

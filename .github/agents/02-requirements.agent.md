@@ -30,7 +30,6 @@ tools:
     read/problems,
     read/readFile,
     read/readNotebookCellOutput,
-    agent/runSubagent,
     agent,
     edit/createDirectory,
     edit/createFile,
@@ -338,6 +337,12 @@ This phase is required before presenting Gate 1. Do NOT skip it, even for simple
 > Do NOT add IaC selection prompts to any other agent.
 
 If `askQuestions` is unavailable, gather via chat questions instead.
+
+## Boundaries
+
+- **Always**: Gather requirements through structured questions, validate completeness, save to `01-requirements.md`
+- **Ask first**: Scope expansions, tech stack changes, non-standard compliance requirements
+- **Never**: Make architecture decisions, generate IaC code, skip requirements validation
 
 ## Validation Checklist
 
