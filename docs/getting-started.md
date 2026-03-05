@@ -436,7 +436,7 @@ Open VS Code Settings (`Ctrl+,`) and add:
 </details>
 
 <details>
-<summary><strong>5. Verify Prerequisites</strong></summary>
+<summary><strong>5. Verify Prerequisites - skip this step</strong></summary>
 
 ```powershell
 pwsh scripts/check-prerequisites.ps1
