@@ -13,7 +13,9 @@ It includes all required tools, extensions, and configurations to build Azure in
 
 - **Azure CLI** (latest) with Bicep CLI
 - **Bicep** for Azure infrastructure
-- **Checkov** - Infrastructure security scanner
+- **Terraform** (latest) with **TFLint** (pinned to v0.61.0)
+- **Checkov** - Infrastructure security scanner (replaces tfsec, which is archived and has no ARM64 support)
+- **Go** (latest) — used to install the Terraform MCP Server binary
 
 ### Scripting & Automation
 
@@ -33,6 +35,7 @@ It includes all required tools, extensions, and configurations to build Azure in
 - **Azure MCP Server** - RBAC-aware Azure context for agents
 - **Azure Pricing MCP** - Real-time SKU pricing for cost estimates
 - **Microsoft Learn MCP** - Official Microsoft documentation search, code samples, and page fetching
+- **Terraform MCP Server** - HashiCorp registry, module, and workspace tools (go binary, auto-updated on start)
 
 ### Python Libraries (Auto-installed)
 
@@ -72,6 +75,68 @@ It includes all required tools, extensions, and configurations to build Azure in
 1. Open VS Code in this repository folder
 2. Click "Reopen in Container" when prompted
 
+### GitHub CLI Authentication (GH_TOKEN)
+
+HTTPS-based `gh auth login` can fail inside devcontainers on some platforms (Windows, ARM, WSL 2).
+The **only supported** approach is a **Personal Access Token (PAT)** set in **VS Code User Settings**.
+The container reads it automatically — no `gh auth login` required inside the container.
+
+> **Why not shell exports?** Setting `GH_TOKEN` in `~/.bashrc`, `~/.profile`, or PowerShell
+> environment variables does **not** propagate reliably into devcontainers. VS Code reads
+> `${localEnv:GH_TOKEN}` from its own process environment, which only inherits from the
+> specific shell session that launched it. The VS Code settings method is deterministic and
+> survives rebuilds, reboots, and IDE restarts.
+
+#### Step 1: Create a Fine-Grained PAT
+
+> **Yes, fine-grained PATs work here.** The `gh` CLI fully supports fine-grained tokens
+> (`github_pat_...`) via the `GH_TOKEN` environment variable for all repository-scoped operations.
+
+1. Go to **GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens**
+2. Click **Generate new token**
+3. Set expiry (90 days recommended; rotate via calendar reminder)
+4. **Repository access**: All repositories, or select specific ones
+5. **Permissions** — minimum required:
+
+   | Permission    | Level      |
+   | ------------- | ---------- |
+   | Contents      | Read/Write |
+   | Metadata      | Read       |
+   | Pull requests | Read/Write |
+   | Issues        | Read/Write |
+   | Workflows     | Read/Write |
+
+6. Copy the token (`github_pat_...`)
+
+#### Step 2: Add to VS Code User Settings (once per machine)
+
+1. Open VS Code Settings: **Ctrl+,** (or **Cmd+,** on macOS)
+2. Click the **Open Settings (JSON)** icon (top-right)
+3. Add this entry (replace the placeholder with your actual token):
+
+```jsonc
+"terminal.integrated.env.linux": { "GH_TOKEN": "github_pat_your_token_here" }
+```
+
+<!-- markdownlint-disable MD029 -->
+
+4. Save the file
+5. Rebuild the devcontainer: **F1 → Dev Containers: Rebuild Container**
+<!-- markdownlint-enable MD029 -->
+
+The devcontainer forwards `GH_TOKEN` from VS Code's environment automatically
+(`"GH_TOKEN": "${localEnv:GH_TOKEN}"` in `devcontainer.json`).
+
+#### Step 3: Verify inside the container
+
+```bash
+gh auth status
+# Expected: ✓ Logged in to github.com as <your-username> (token)
+```
+
+> **Token rotation**: When your PAT expires, update the value in VS Code User Settings and
+> rebuild the container (`F1 → Dev Containers: Rebuild Container`).
+
 ### First-Time Setup (Inside Container)
 
 ```bash
@@ -93,9 +158,10 @@ cd ../../infra/bicep/ && tree -L 2
 
 ### Pre-configured Environment Variables
 
-| Variable                  | Value                           | Purpose                                        |
-| ------------------------- | ------------------------------- | ---------------------------------------------- |
-| `AZURE_DEFAULTS_LOCATION` | `swedencentral`                 | Default Azure region (matches repo guidelines) |
+| Variable                  | Value                  | Purpose                                                                             |
+| ------------------------- | ---------------------- | ----------------------------------------------------------------------------------- |
+| `AZURE_DEFAULTS_LOCATION` | `swedencentral`        | Default Azure region (matches repo guidelines)                                      |
+| `GH_TOKEN`                | `${localEnv:GH_TOKEN}` | GitHub PAT set in VS Code User Settings; enables `gh` CLI without interactive login |
 
 ### Azure Credentials Mount
 
@@ -122,22 +188,31 @@ pwsh -Command "Get-Module -ListAvailable Az.*"
 
 ## 🔄 Updating Tools
 
-### Update All Tools
+### Automatic Updates (on every container start)
+
+`post-start.sh` runs automatically via `postStartCommand` and updates:
+
+| Tool                          | Method                         |
+| ----------------------------- | ------------------------------ |
+| `terraform-mcp-server`        | `go install ...@latest`        |
+| Azure Pricing MCP             | `pip install -e .` in its venv |
+| npm local deps                | `npm install`                  |
+| `markdownlint-cli2`           | `npm install -g`               |
+| `checkov`, `ruff`, `diagrams` | `uv pip install --upgrade`     |
+
+### Manual Updates (require rebuild or manual run)
 
 ```bash
-bash .devcontainer/update-tools.sh
+az upgrade                                         # Azure CLI
+az bicep upgrade                                   # Bicep
+pwsh -Command 'Update-Module Az.* -Force'          # PowerShell Az modules
+bash .devcontainer/post-start.sh                   # Re-run all lightweight updates now
 ```
 
-This updates: Azure CLI, Bicep, PowerShell Az modules, Checkov, diagrams, markdownlint
+### Full Rebuild (for feature/OS-level updates)
 
-### Update Specific Tools
-
-```bash
-az upgrade                                    # Azure CLI
-az bicep upgrade                              # Bicep
-pip3 install --upgrade checkov diagrams       # Python packages
-sudo npm update -g markdownlint-cli           # markdownlint
-```
+`F1` → **Dev Containers: Rebuild Container** — re-runs `post-create.sh` which
+installs all tools from scratch including the Go and Terraform features.
 
 ## 🐛 Troubleshooting
 

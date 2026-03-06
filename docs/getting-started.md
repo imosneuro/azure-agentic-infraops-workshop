@@ -126,6 +126,17 @@ docker --version
 
 **Install:** [VS Code](https://code.visualstudio.com/) (version 1.100+)
 
+**Dev Containers system requirements** (from the
+[official docs](https://code.visualstudio.com/docs/devcontainers/containers#_system-requirements)):
+
+| Platform | Requirement |
+| -------- | ----------- |
+| Windows  | Docker Desktop 2.0+ on Windows 10 Pro/Enterprise. Windows 10 Home (2004+) requires Docker Desktop 2.3+ with the [WSL 2 back-end](https://aka.ms/vscode-remote/containers/docker-wsl2). Docker Toolbox is **not** supported. |
+| macOS    | Docker Desktop 2.0+. |
+| Linux    | Docker CE/EE 18.06+ and Docker Compose 1.21+. The Ubuntu snap package is **not** supported. |
+| Remote   | 1 GB RAM minimum (2 GB+ and a 2-core CPU recommended). |
+| Containers | x86_64 / ARMv7l / ARMv8l Debian 9+, Ubuntu 16.04+, CentOS/RHEL 7+, or x86_64 Alpine 3.9+. |
+
 The Dev Container auto-installs most extensions when it starts. You only need to install
 the following on your **host machine** before opening the container:
 
@@ -419,35 +430,7 @@ az account show --query "{Name:name, SubscriptionId:id, TenantId:tenantId}" -o t
 </details>
 
 <details>
-<summary><strong>4. Enable Custom Agents</strong></summary>
-
-Open VS Code Settings (`Ctrl+,`) and add:
-
-```json
-{
-  "github.copilot.chat": {
-    "customAgentInSubagent": {
-      "enabled": true
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-<summary><strong>5. Verify Prerequisites - skip this step</strong></summary>
-
-```powershell
-pwsh scripts/check-prerequisites.ps1
-```
-
-This validates Azure CLI, Bicep CLI, Node.js, npm, and GitHub CLI.
-
-</details>
-
-<details>
-<summary><strong>6. Start the Workflow</strong></summary>
+<summary><strong>4. Start the Workflow</strong></summary>
 
 Open Copilot Chat (`Ctrl+Shift+I`) and select **InfraOps Conductor**:
 
