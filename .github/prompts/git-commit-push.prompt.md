@@ -1,6 +1,6 @@
 ---
 agent: agent
-model: "GPT-5 mini"
+model: "GPT-5.3-Codex"
 description: "Stage changes, create a conventional commit, push to the current branch, and optionally open a pull request to main using the GitHub MCP server."
 argument-hint: "Provide a commit message or leave blank to auto-generate from the diff."
 tools:
